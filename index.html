@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
 <meta name="viewport"
@@ -39,7 +39,44 @@
 
     
     
-        
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
     
 
 
@@ -116,17 +153,17 @@
         <div class="links">
             
                 
-                    <a class="link-item" title="Blog" href="/archives">
+                    <a class="link-item" title="web" target="_blank" rel="noopener" href="https://homestudio.quickconnect.to/">
                         
                         
-                            <i class="iconfont icon-blog"></i>
+                            <i class="iconfont icon-web"></i>
                         
                     </a>
                 
-                    <a class="link-item" title="Tags" target="_blank" rel="noopener" href="https://homestudio.quickconnect.to/">
+                    <a class="link-item" title="Category" href="/category">
                         
                         
-                            <i class="iconfont icon-tags"></i>
+                            <i class="iconfont icon-category"></i>
                         
                     </a>
                 
@@ -137,24 +174,45 @@
                         
                     </a>
                 
-                    <a class="link-item" title="Instagram" target="_blank" rel="noopener" href="http://www.instagram.com/">
+                    <a class="link-item" title="Instagram" target="_blank" rel="noopener" href="https://www.instagram.com/">
                         
                         
                             <i class="iconfont icon-instagram"></i>
                         
                     </a>
                 
-                    <a class="link-item" title="Weibo" target="_blank" rel="noopener" href="http://weibo.com/">
+                    <a class="link-item" title="YouTube" target="_blank" rel="noopener" href="https://www.youtube.com/">
+                        
+                        
+                            <i class="iconfont icon-youtube"></i>
+                        
+                    </a>
+                
+                    <a class="link-item" title="Weibo" target="_blank" rel="noopener" href="https://weibo.com/">
                         
                         
                             <i class="iconfont icon-weibo"></i>
                         
                     </a>
                 
-                    <a class="link-item" title="Douban" target="_blank" rel="noopener" href="http://www.douban.com/">
+                    <a class="link-item" title="douban" target="_blank" rel="noopener" href="http://www.douban.com/">
                         
                         
                             <i class="iconfont icon-douban"></i>
+                        
+                    </a>
+                
+                    <a class="link-item" title="Github" target="_blank" rel="noopener" href="http://www.github.com/">
+                        
+                        
+                            <i class="iconfont icon-github"></i>
+                        
+                    </a>
+                
+                    <a class="link-item" title="wordpress" target="_blank" rel="noopener" href="https://charletson.wordpress.com/">
+                        
+                        
+                            <i class="iconfont icon-wordpress"></i>
                         
                     </a>
                 
@@ -167,7 +225,7 @@
         </div>
         <footer id="footer" class="footer">
     <div class="copyright">
-        <span>Copyright &copy; 2015-2028 chda.top All Rights Reserved.  | Powered by Hexo & Chic</span>
+        <span>Copyright &copy; 2015-2028 chda.top All Rights Reserved. | Powered by Hexo & Chic</span>
     </div>
 </footer>
 
