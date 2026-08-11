@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>量化资产清单 · 指标因子与完整用法</title>
+<style>
+:root{
+  --bg:#0f1115; --card:#1a1d24; --card2:#22262f; --line:#2a2e38;
+  --txt:#e8eaed; --sub:#9aa0aa; --red:#ef4444; --green:#22c55e;
+  --orange:#f59e0b; --yellow:#eab308; --blue:#3b82f6; --accent:#f97316;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--txt);font-size:15px;line-height:1.6;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:960px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:22px;font-weight:800;margin-bottom:4px}
+.sub{font-size:12.5px;color:var(--sub);margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.card h2{font-size:16px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;flex:none}
+.badge.day{background:var(--blue);color:#fff}
+.badge.m15{background:var(--green);color:#062}
+.badge.factor{background:var(--orange);color:#1a1206}
+.badge.tree{background:#64748b;color:#fff}
+table{width:100%;min-width:520px;border-collapse:collapse;font-size:13px;table-layout:fixed}
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;border-radius:8px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--sub);font-weight:600;font-size:12px;background:var(--card2)}
+code{background:var(--card2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12px;
+  font-family:Consolas,monospace;color:#cbd5e1;white-space:nowrap}
+table code{white-space:normal;word-break:break-word}
+.flow{background:var(--card2);border-radius:10px;padding:12px 14px;font-size:13px;font-family:Consolas,monospace;
+  white-space:pre-wrap;color:#cbd5e1;line-height:1.7}
+.tree{background:var(--card2);border-radius:10px;padding:14px 16px;font-size:13px;font-family:Consolas,monospace;
+  white-space:pre-wrap;color:#cbd5e1;line-height:1.65}
+.tree .dir{color:var(--yellow)}
+.tree .f{color:#cbd5e1}
+.tree .c{color:var(--sub)}
+.up{color:var(--red);font-weight:700}
+.down{color:var(--green);font-weight:700}
+.ok{color:var(--green);font-weight:700}
+.note{font-size:12px;color:var(--sub);margin-top:8px}
+.when{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;margin:0;line-height:1.5;white-space:normal;max-width:100%;text-align:center}
+.when.d{background:rgba(59,130,246,.15);color:var(--blue);border:1px solid #1e3a5f}
+.when.m{background:rgba(34,197,94,.12);color:var(--green);border:1px solid #14532d}
+.when.a{background:rgba(245,158,11,.12);color:var(--orange);border:1px solid #57430a}
+.foot{margin-top:18px;font-size:11.5px;color:var(--sub);border-top:1px solid var(--line);padding-top:12px}
+</style>
+
+<link rel="stylesheet" href="assets/site.css">
+<script>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t="light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="bi-chic.css">
+<script src="/js/script.js"></script>
+</head>
+<body>
+    <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">ChDa&#39;s Station</a></div>
+            <div class="menu navbar-right">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+<input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">ChDa&#39;s Station</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+</div>
+        </div>
+    </nav>
+    </header>
+        <div class="wrap">
+
+<div class="card">
+<h2><span class="badge tree">总览</span> 量化回测/ 文件夹 · 完整目录树</h2>
+<div class="tree"><span class="dir">量化回测/</span>
+├── <span class="f">backtest.py</span>            <span class="c"># 日线回测引擎（三法波段+隔日做T+择时）</span>
+├── <span class="f">timing_audit.py</span>        <span class="c"># 命理择时假设审计</span>
+├── <span class="f">report.py</span>              <span class="c"># 生成《量化回测报告.html》</span>
+├── <span class="f">data_fetch.py</span>          <span class="c"># 拉历史日线 → 缓存</span>
+├── <span class="f">indicators.py</span>          <span class="c"># 指标库：BOLL/KDJ/RSI/MA20/量比</span>
+├── <span class="f">scan_15m.py</span>            <span class="c"># 15分钟三法共振扫描（每日信号）</span>
+├── <span class="f">scan_15m_portfolio.py</span>  <span class="c"># 持仓组合开盘扫描（自动化09:50在跑）</span>
+├── <span class="f">backtest_15m.py</span>        <span class="c"># 15分钟做T赢率回测</span>
+├── <span class="f">plot_15m.py</span>            <span class="c"># K线+BOLL/KDJ/RSI 四联可视化</span>
+├── <span class="f">calc_indicators.py</span>     <span class="c"># 通用指标计算器（含止损锚）</span>
+├── <span class="dir">data/</span>                   <span class="c"># 5标的×5年日线缓存</span>
+│   ├── sz159842_day.json  sh600611_day.json  sh600776_day.json
+│   └── sz300123_day.json  sz300437_day.json
+├── <span class="f">sz159842_15m_history.json</span>  <span class="c"># 15分钟扫描历史累积（回测数据源）</span>
+├── <span class="f">sz159842_15m_backtest.json</span> <span class="c"># 15分钟回测结果</span>
+├── <span class="f">backtest_results.json</span>      <span class="c"># 日线回测结果</span>
+└── <span class="f">README.md</span>              <span class="c"># 使用说明（环境准备/跑法/结论）</span></div>
+<div class="note">定位：日线层=月度体检（战略），15分钟层=每日信号（战术）。所有脚本零第三方依赖，纯标准库。</div>
+</div>
+
+<div class="card">
+<h2><span class="badge day">日线层</span> 战略体检工具 · 具体用法</h2>
+<div class="tbl-scroll"><table>
+<colgroup><col style="width:19%"><col style="width:23%"><col style="width:30%"><col style="width:14%"><col style="width:14%"></colgroup>
+<tr><th>文件</th><th>作用</th><th>命令</th><th>产出</th><th>何时用</th></tr>
+<tr><td><code>data_fetch.py</code></td><td>拉取历史日线（前复权）并缓存</td>
+<td><code>python data_fetch.py</code></td><td><code>data/*.json</code>（5标的×5年）</td>
+<td><span class="when a">首次/加标的</span></td></tr>
+<tr><td><code>backtest.py</code></td><td>回测：三法波段+隔日做T+3种择时过滤（无未来函数）</td>
+<td><code>python backtest.py</code></td><td><code>backtest_results.json</code></td>
+<td><span class="when m">每月1次/改策略</span></td></tr>
+<tr><td><code>timing_audit.py</code></td><td>命理择时假设审计：按月/星期/干支分组统计盈亏</td>
+<td><code>python timing_audit.py</code></td><td>控制台分组报表</td>
+<td><span class="when m">每月/想验证择时</span></td></tr>
+<tr><td><code>report.py</code></td><td>把回测结果生成 HTML 报告</td>
+<td><code>python report.py</code></td><td><code>量化回测报告.html</code></td>
+<td><span class="when m">每月回测后</span></td></tr>
+<tr><td><code>indicators.py</code></td><td>指标库：BOLL(20,2)/KDJ(9,3,3)/RSI(14)/MA20/量比</td>
+<td>被其他脚本调用，不直接跑</td><td>因子序列</td>
+<td><span class="when d">始终</span></td></tr>
+</table></div>
+<div class="note">💡 日线层回答"策略5年赚不赚"——不是每日信号源。</div>
+</div>
+
+<div class="card">
+<h2><span class="badge m15">15分钟层</span> 战术信号工具 · 具体用法</h2>
+<div class="tbl-scroll"><table>
+<colgroup><col style="width:20%"><col style="width:22%"><col style="width:30%"><col style="width:14%"><col style="width:14%"></colgroup>
+<tr><th>文件</th><th>作用</th><th>命令</th><th>产出</th><th>何时用</th></tr>
+<tr><td><code>scan_15m.py [标的]</code></td><td>15分钟三法共振扫描，判定今日是否出手</td>
+<td><code>python scan_15m.py sz159842</code></td><td>三法共振判定（❌按兵不动/✅出手）</td>
+<td><span class="when d">每日信号</span></td></tr>
+<tr><td><code>scan_15m_portfolio.py</code></td><td>持仓组合批量扫描（你的自动化09:50在跑）</td>
+<td><code>python scan_15m_portfolio.py</code></td><td>合并 HTML 报告</td>
+<td><span class="when d">每日开盘</span></td></tr>
+<tr><td><code>backtest_15m.py [标的] [月]</code></td><td>15分钟做T赢率回测（扣成本+滑点）</td>
+<td><code>python backtest_15m.py sz159842</code></td><td>逐笔+赢率 JSON</td>
+<td><span class="when m">每月1日</span></td></tr>
+<tr><td><code>plot_15m.py [标的] [天数]</code></td><td>K线+BOLL/KDJ/RSI 四联可视化</td>
+<td><code>python plot_15m.py sz159842 5</code></td><td><code>plot_sz159842_15m.html</code></td>
+<td><span class="when a">想直观看到空间</span></td></tr>
+<tr><td><code>calc_indicators.py [kline] [day|week|15m] [52周低]</code></td><td>通用指标计算器（BOLL/KDJ/RSI/止损锚）</td>
+<td><code>python calc_indicators.py data/sz159842_day.json day 0.944</code></td><td>三法完整读数</td>
+<td><span class="when d">查任意标的状态</span></td></tr>
+</table></div>
+<div class="note">💡 15分钟层回答"今天动不动"——你的两条自动化每天替你在跑，手动跑用于查细节。</div>
+</div>
+
+<div class="card">
+<h2><span class="badge factor">因子</span> 已落地且经 5 年数据验证的因子链</h2>
+<div class="flow">取数(data_fetch) → 指标(indicators: BOLL/KDJ/RSI/MA20/量比)
+     → 信号判定(三法共振/定刃/断流) → 回测验证(backtest) → 报告(report)</div>
+<div class="tbl-scroll"><table style="margin-top:10px">
+<tr><th>因子</th><th>定义</th><th>用途</th><th>5年验证</th></tr>
+<tr><td>BOLL 破下轨</td><td>收盘 &lt; BOLL(20,2) 下轨</td><td>买入因子（与 J&lt;0 共振）</td><td><span class="ok">✅ 隔日做T净利 +9.44%</span></td></tr>
+<tr><td>KDJ 低位金叉</td><td>K 从 &lt;30 区上穿 D</td><td>共振触发因子</td><td><span class="ok">✅</span></td></tr>
+<tr><td>RSI 超买超卖</td><td>RSI(14) &lt;35 回升 / &gt;70 回落</td><td>离场/做T因子</td><td><span class="ok">✅</span></td></tr>
+<tr><td>MA20</td><td>收盘 vs 20日均线</td><td>趋势闸门因子</td><td><span class="ok">✅ 严格闸门5年0信号（过度克制）</span></td></tr>
+<tr><td>干支寅巳申</td><td>买入日地支 = 寅/巳/申</td><td>择时过滤因子（命理）</td><td><span class="ok">✅ 唯一有效命理因子（+2.9pct）</span></td></tr>
+</table></div>
+<div class="note">命理其他因子（甲日/7月/周一）经回测未获支持，已弃用。详见《量化回测报告.html》。</div>
+</div>
+
+<div class="card">
+<h2>⏱ 使用节奏速查（每天/每月/按需）</h2>
+<div class="tbl-scroll"><table>
+<tr><th>频率</th><th>做什么</th><th>工具</th></tr>
+<tr><td><span class="when d">每日</span></td><td>①查干支（寅巳申=不开新仓）②看09:50扫描信号 ③看15:35盘后复盘 → 说"今天三合一"我帮你汇总</td><td>自动化 + 对话</td></tr>
+<tr><td><span class="when m">每月</span></td><td>跑日线回测 + 15分钟赢率回测，更新报告看这个月赚没赚</td>
+<td><code>backtest.py</code> + <code>backtest_15m.py</code> + <code>report.py</code></td></tr>
+<tr><td><span class="when a">按需</span></td><td>想加标的/调参数/看某标的详细状态/验证新想法</td>
+<td><code>data_fetch.py</code> / <code>calc_indicators.py</code> / <code>plot_15m.py</code> / <code>timing_audit.py</code></td></tr>
+</table></div>
+</div>
+
+<div class="foot">免责声明：本清单为个人量化工具索引，不构成投资建议。回测盈利≠实盘盈利，实盘请严格止损并先纸面验证。绝不主动建仓/下单。</div>
+
+</div>
+<script src="assets/site.js"></script>
+    <script>
+    (function(){
+      function sync(){
+        var d = document.body.classList.contains('dark-theme');
+        document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
+      }
+      sync();
+      document.addEventListener('DOMContentLoaded', sync);
+      if (window.MutationObserver) {
+        new MutationObserver(sync).observe(document.body, {attributes:true, attributeFilter:['class']});
+      }
+      if (typeof window.mobileBtn !== 'function') {
+        window.mobileBtn = function(){
+          var m = document.getElementById('mobile-menu');
+          if (m) m.classList.toggle('active');
+        };
+      }
+    })();
+    </script>
+</body>
+</html>

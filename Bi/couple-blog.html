@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<!--
+  Chao & Dao · Station · 夫夫起居录系统原型（Phase 3）
+  设计系统：ChDa 深色 Tech Utility（冷底 + 琥珀强调），沿用 Phase 1/2 设计令牌，原样使用，未自创配色
+  结构：三视图单文件原型（web-prototype + blog 扩展），hash 路由切换
+  生成角色：原型构建师 筑原型（Zhu）· 自包含单文件，无外部图片依赖（字体有系统 fallback）
+  说明：页面内容均为「示例」，与现实人物、事件无关
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chao &amp; Dao · Station · 夫夫起居录原型</title>
+<style>
+  /* ===== 字体（可选网络字体，离线自动回退到系统字体栈） ===== */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  /* ===== 设计令牌（Phase 1 + Phase 2 定稿，原样写入，勿自创配色） ===== */
+  :root {
+    /* 冷底层级 */
+    --bg-base: #0A0E13;
+    --bg-surface: #111722;
+    --bg-elevated: #182030;
+    --bg-inset: #0E1320;
+    /* 文字 */
+    --text-primary: #E6EAF2;
+    --text-secondary: #9AA4B8;
+    --text-muted: #7C879B;
+    /* 琥珀强调 */
+    --accent: #F5A623;
+    --accent-hover: #FFB84D;
+    --accent-strong: #FF8A00; /* 仅强调 / CTA */
+    /* A股：红涨绿跌（本原型不使用） */
+    --up: #E5484D;
+    --down: #2EBB6C;
+    --success: #2EBB6C;
+    --warning: #F5A623;
+    --danger: #E5484D;
+    /* 描边 */
+    --border: #232B3A;
+    --border-strong: #2E384A;
+    --divider: #1C2433;
+
+    /* 排版 */
+    --font-sans: "Inter", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, "Noto Sans Mono CJK SC", monospace;
+
+    /* 间距阶梯 4/8/12/16/24/32/48/64 */
+    --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+    --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
+
+    /* 圆角 */
+    --r-sm: 4px; --r-md: 8px; --r-lg: 12px;
+
+    /* 栅格 */
+    --container: 1200px;
+    --gutter: 24px;
+
+    /* 动效 */
+    --t-hover: 150ms ease-out;
+    --t-signal: 200ms ease-out;
+
+    /* ===== 博客扩展令牌（Phase 2） ===== */
+    --card-cover-h: 180px;
+    --card-cover-bg: linear-gradient(135deg, #182030, #0E1320);
+    --card-cover-grid: linear-gradient(var(--border) 1px, transparent 1px) 0 0 / 20px 20px;
+    --card-cover-glow: inset 0 0 0 1px rgba(245, 166, 35, .35), 0 0 24px rgba(245, 166, 35, .12);
+    --card-excerpt: var(--text-secondary);
+    --card-meta: var(--text-muted);
+
+    --tl-line: 1px solid var(--border);
+    --tl-dot: 10px;
+    --tl-dot-bg: var(--text-secondary);
+    --tl-dot-active: var(--accent);
+    --tl-gap: 24px;
+
+    --chip-bg: rgba(245, 166, 35, .10);
+    --chip-color: var(--text-secondary);
+    --chip-hover: var(--accent);
+    --chip-active-bg: rgba(245, 166, 35, .18);
+    --chip-active-color: var(--accent);
+    --chip-active-border: 1px solid var(--accent);
+    --chip-pad: 4px 10px;
+    --chip-radius: 4px;
+
+    --pg-btn-bg: transparent;
+    --pg-btn-border: 1px solid var(--border);
+    --pg-btn-color: var(--text-secondary);
+    --pg-current-bg: var(--bg-elevated);
+    --pg-current-color: var(--accent);
+    --pg-btn-pad: 6px 12px;
+    --pg-radius: 8px;
+
+    --cm-avatar: 32px;
+    --cm-avatar-bg: rgba(255, 255, 255, .06);
+    --cm-row-alt: var(--bg-surface);
+    --cm-input-bg: var(--bg-inset);
+    --cm-input-border: 1px solid var(--border);
+    --cm-input-radius: 8px;
+    --cm-meta: var(--text-muted);
+
+    --author-chao-bg: rgba(245, 166, 35, .10);
+    --author-chao-color: var(--accent);
+    --author-dao-bg: rgba(255, 255, 255, .06);
+    --author-dao-color: var(--text-secondary);
+    --author-badge-pad: 2px 8px;
+    --author-badge-radius: 4px;
+  }
+
+  /* ===== 基础重置 ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: var(--bg-base);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  ::selection { background: rgba(245, 166, 35, 0.25); color: var(--text-primary); }
+  button { font-family: inherit; }
+
+  /* 细网格底纹，强化极客冷调气质（极弱） */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(var(--divider) 1px, transparent 1px),
+      linear-gradient(90deg, var(--divider) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.16;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== 布局容器 ===== */
+  .container {
+    width: 100%;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--s-5);
+    position: relative;
+    z-index: 1;
+  }
+  .section { padding: var(--s-8) 0; border-top: 1px solid var(--divider); }
+  .section:first-of-type { border-top: none; }
+
+  /* 区块眉标（编号 + 标签，等宽字体技术感） */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin-bottom: var(--s-4);
+  }
+  .eyebrow .idx { color: var(--accent); }
+  .eyebrow .rule { flex: 1; height: 1px; background: var(--divider); }
+
+  .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-4); margin-bottom: var(--s-6); flex-wrap: wrap; }
+  .section-title { font-size: var(--s-6); font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
+  .section-sub { color: var(--text-secondary); margin-top: var(--s-2); max-width: 64ch; font-size: 15px; }
+
+  /* ===== 排版阶梯 ===== */
+  .display { font-size: 44px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; }
+  .h1 { font-size: 32px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; }
+  .h2 { font-size: 24px; font-weight: 600; line-height: 1.3; }
+  .h3 { font-size: 18px; font-weight: 600; line-height: 1.4; }
+  .t-body { font-size: 15px; font-weight: 400; line-height: 1.6; }
+  .t-small { font-size: 13px; font-weight: 400; line-height: 1.5; }
+  .t-micro { font-size: 12px; font-weight: 500; line-height: 1.4; }
+  .mono { font-family: var(--font-mono); }
+
+  /* ===== 按钮 ===== */
+  .btn {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    font-size: 14px; font-weight: 600;
+    padding: 10px 20px; border-radius: var(--r-md);
+    border: 1px solid transparent; cursor: pointer; background: transparent; color: var(--text-primary);
+    transition: transform var(--t-hover), background var(--t-hover), border-color var(--t-hover), box-shadow var(--t-hover);
+    white-space: nowrap;
+  }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn--primary { background: var(--accent); color: #0A0E13; }
+  .btn--primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 20px -8px rgba(245, 166, 35, 0.5); }
+  .btn--secondary { border-color: var(--border-strong); color: var(--text-primary); }
+  .btn--secondary:hover { background: var(--bg-elevated); transform: translateY(-1px); }
+  .btn--ghost { color: var(--text-secondary); }
+  .btn--ghost:hover { color: var(--accent); }
+  .btn--lg { padding: 13px 28px; font-size: 15px; }
+  .btn .arrow { font-family: var(--font-mono); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* ===== 徽章 / 信号 ===== */
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500; line-height: 1.4;
+    background: rgba(245, 166, 35, 0.12); color: var(--accent);
+    border-radius: var(--r-sm); padding: 2px 8px;
+    border: 1px solid transparent;
+    transition: border-color var(--t-signal), box-shadow var(--t-signal), background var(--t-signal);
+  }
+
+  /* ===== 顶部导航 ===== */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(10, 14, 19, 0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--divider);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { font-family: var(--font-mono); font-size: 16px; font-weight: 600; letter-spacing: 0.02em; color: var(--text-primary); }
+  .brand .brand-amp { color: var(--accent); margin: 0 2px; }
+  .nav-links { display: flex; align-items: center; gap: var(--s-2); }
+  .nav-link {
+    font-size: 14px; font-weight: 500; color: var(--text-secondary);
+    padding: 8px 12px; border-radius: var(--r-sm);
+    transition: color var(--t-hover), background var(--t-hover);
+  }
+  .nav-link:hover { color: var(--text-primary); background: var(--bg-elevated); }
+  .nav-link.active { color: var(--accent); }
+
+  /* ===== 视图切换 ===== */
+  .view[hidden] { display: none; }
+
+  /* ===== 视图 A：首页 Hero ===== */
+  .hero { padding: var(--s-8) 0 var(--s-7); }
+  .hero .display { max-width: 18ch; }
+  .hero-en { color: var(--accent); }
+  .hero-tagline {
+    margin-top: var(--s-5); max-width: 56ch;
+    font-size: 17px; line-height: 1.7; color: var(--text-secondary);
+  }
+  .hero-tagline strong { color: var(--text-primary); font-weight: 600; }
+  .hero-actions { margin-top: var(--s-6); display: flex; gap: var(--s-3); flex-wrap: wrap; }
+
+  /* 最新文章网格 */
+  .article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-5); }
+
+  /* ===== 文章卡 ===== */
+  .article-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform var(--t-hover), border-color var(--t-hover), box-shadow var(--t-hover);
+    display: flex; flex-direction: column;
+  }
+  .article-card:hover,
+  .article-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+    box-shadow: 0 10px 30px -16px rgba(0, 0, 0, 0.8);
+    outline: none;
+  }
+  .card-cover {
+    position: relative;
+    height: var(--card-cover-h);
+    background: var(--card-cover-bg);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding: var(--s-3);
+    overflow: hidden;
+    transition: box-shadow var(--t-signal);
+  }
+  .card-cover::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: var(--card-cover-grid);
+    opacity: 0.5; z-index: 0;
+  }
+  .cover-art { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+  .article-card:hover .card-cover,
+  .article-card:focus-visible .card-cover { box-shadow: var(--card-cover-glow); }
+  .card-cover .author-badge { position: relative; z-index: 1; }
+
+  .card-body { padding: var(--s-5); display: flex; flex-direction: column; gap: var(--s-3); flex: 1; }
+  .card-title { font-size: 18px; font-weight: 600; line-height: 1.4; color: var(--text-primary); }
+  .card-excerpt { font-size: 14px; line-height: 1.6; color: var(--card-excerpt); flex: 1; }
+  .card-foot { display: flex; align-items: center; gap: var(--s-2); }
+  .card-meta { font-size: 12px; color: var(--card-meta); }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--s-1); }
+
+  /* 作者徽章（Chao 琥珀 / Dao 中性） */
+  .author-badge {
+    display: inline-flex; align-items: center;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    padding: var(--author-badge-pad); border-radius: var(--author-badge-radius);
+  }
+  .author-chao { background: var(--author-chao-bg); color: var(--author-chao-color); }
+  .author-dao { background: var(--author-dao-bg); color: var(--author-dao-color); }
+
+  /* ===== 时光轴 / 里程碑 ===== */
+  .timeline { position: relative; padding-left: 28px; max-width: 720px; }
+  .timeline::before {
+    content: ""; position: absolute; left: 4px; top: 6px; bottom: 6px;
+    border-left: var(--tl-line);
+  }
+  .timeline-node { position: relative; padding-bottom: var(--tl-gap); }
+  .timeline-node:last-child { padding-bottom: 0; }
+  .tl-dot {
+    position: absolute; left: -29px; top: 3px;
+    width: var(--tl-dot); height: var(--tl-dot); border-radius: 50%;
+    background: var(--tl-dot-bg);
+    box-shadow: 0 0 0 3px var(--bg-base);
+    transition: background var(--t-signal), box-shadow var(--t-signal);
+  }
+  .timeline-node.active .tl-dot {
+    background: var(--tl-dot-active);
+    box-shadow: 0 0 0 3px var(--bg-base), 0 0 0 5px rgba(245, 166, 35, 0.25);
+  }
+  .tl-date { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+  .tl-label { display: block; font-size: 15px; color: var(--text-primary); margin-top: 2px; }
+  .timeline-node.active .tl-label { color: var(--accent); font-weight: 600; }
+
+  /* ===== 首页底部 CTA ===== */
+  .cta-inner { text-align: left; max-width: 60ch; }
+  .cta-inner .section-sub { margin-bottom: var(--s-5); }
+
+  /* ===== 视图 B：文章列表 ===== */
+  .list-head { padding-top: var(--s-7); }
+  .list-title { font-size: 32px; font-weight: 700; letter-spacing: -0.01em; }
+  .list-sub { color: var(--text-secondary); margin-top: var(--s-2); }
+
+  /* 标签筛选 chip */
+  .chip-row { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: var(--s-5) 0; }
+  .chip {
+    font-family: var(--font-mono); font-size: 12px; line-height: 1.4;
+    background: var(--chip-bg); color: var(--chip-color);
+    border: 1px solid transparent; padding: var(--chip-pad); border-radius: var(--chip-radius);
+    cursor: pointer;
+    transition: color var(--t-hover), background var(--t-hover), border-color var(--t-hover);
+  }
+  .chip:hover { color: var(--chip-hover); }
+  .chip.active { background: var(--chip-active-bg); color: var(--chip-active-color); border: var(--chip-active-border); }
+
+  /* 分页器 */
+  .pagination { display: flex; gap: var(--s-2); justify-content: center; margin-top: var(--s-7); flex-wrap: wrap; }
+  .pg-btn {
+    background: var(--pg-btn-bg); border: var(--pg-btn-border); color: var(--pg-btn-color);
+    padding: var(--pg-btn-pad); border-radius: var(--pg-radius); cursor: pointer;
+    font-family: var(--font-mono); font-size: 13px; min-width: 38px;
+    transition: color var(--t-hover), border-color var(--t-hover), background var(--t-hover);
+  }
+  .pg-btn:hover:not(:disabled) { color: var(--accent); border-color: var(--border-strong); }
+  .pg-btn.current { background: var(--pg-current-bg); color: var(--pg-current-color); border-color: var(--border-strong); cursor: default; }
+  .pg-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .empty-state { color: var(--text-muted); padding: var(--s-7) 0; text-align: center; font-family: var(--font-mono); font-size: 13px; }
+
+  /* ===== 视图 C：文章详情 ===== */
+  .post-wrap { max-width: 760px; margin: 0 auto; }
+  .post-back { margin-bottom: var(--s-5); }
+  .post-title { margin-bottom: var(--s-4); }
+  .post-meta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-3); color: var(--text-muted); }
+  .post-meta .mono { font-size: 13px; }
+  .post-body { margin-top: var(--s-6); }
+  .post-body p { font-size: 16px; line-height: 1.78; color: var(--text-secondary); margin-bottom: var(--s-5); }
+  .post-body p:first-letter { /* 克制，不首字下沉 */ }
+  .post-body .lead { color: var(--text-primary); }
+
+  /* 上下篇导航 */
+  .post-nav { display: flex; gap: var(--s-4); margin-top: var(--s-7); padding-top: var(--s-5); border-top: 1px solid var(--divider); }
+  .post-nav a {
+    flex: 1; padding: var(--s-4); border: 1px solid var(--border); border-radius: var(--r-md);
+    transition: border-color var(--t-hover), background var(--t-hover);
+  }
+  .post-nav a:hover { border-color: var(--border-strong); background: var(--bg-elevated); }
+  .post-nav .pn-dir { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px; }
+  .post-nav .pn-title { font-size: 14px; color: var(--text-primary); font-weight: 500; }
+  .post-nav .pn-next { text-align: right; }
+  .post-nav .pn-disabled { opacity: 0.35; pointer-events: none; }
+
+  /* 评论占位 */
+  .comments { margin-top: var(--s-8); }
+  .comment-list { display: flex; flex-direction: column; }
+  .comment-row { display: flex; gap: var(--s-3); padding: var(--s-3); border-radius: var(--r-md); }
+  .comment-row:nth-child(even) { background: var(--cm-row-alt); }
+  .cm-avatar {
+    width: var(--cm-avatar); height: var(--cm-avatar); border-radius: 50%;
+    background: var(--cm-avatar-bg); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 13px; color: var(--text-secondary);
+  }
+  .cm-head { display: flex; align-items: center; gap: var(--s-2); }
+  .cm-name { font-size: 14px; color: var(--text-primary); font-weight: 600; }
+  .cm-meta { font-family: var(--font-mono); font-size: 12px; color: var(--cm-meta); }
+  .comment-row p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-top: 4px; }
+  .cm-input { display: flex; gap: var(--s-3); margin-top: var(--s-4); }
+  .cm-input input {
+    flex: 1; background: var(--cm-input-bg); border: var(--cm-input-border); border-radius: var(--cm-input-radius);
+    padding: 10px 14px; color: var(--text-primary); font-size: 14px; font-family: var(--font-sans);
+  }
+  .cm-input input::placeholder { color: var(--text-muted); }
+  .cm-input input:focus { outline: none; border-color: var(--accent); }
+
+  /* ===== 页脚 ===== */
+  .site-footer { border-top: 1px solid var(--divider); padding: var(--s-6) 0; }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; }
+  .footer-note { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+  .footer-brand { font-family: var(--font-mono); font-size: 13px; color: var(--text-secondary); }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 1024px) {
+    .article-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .display { font-size: 32px; }
+    .h1, .list-title { font-size: 26px; }
+    .container { padding: 0 var(--s-4); }
+    .article-grid { grid-template-columns: 1fr; }
+    .nav-inner { height: 54px; }
+    .brand { font-size: 15px; }
+    .nav-link { padding: 6px 8px; font-size: 13px; }
+    .timeline { padding-left: 22px; }
+    .timeline::before { left: 3px; }
+    .tl-dot { left: -23px; }
+    .post-nav { flex-direction: column; }
+    .post-nav .pn-next { text-align: left; }
+    .cm-input { flex-direction: column; }
+    .cm-input .btn { justify-content: center; }
+  }
+
+  /* ===== 尊重减弱动效偏好 ===== */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+    html { scroll-behavior: auto; }
+    .article-card:hover, .article-card:focus-visible { transform: none; }
+    .btn--primary:hover, .btn--secondary:hover { transform: none; }
+  }
+</style>
+
+<link rel="stylesheet" href="assets/site.css">
+<script>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t="light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="bi-chic.css">
+<script src="/js/script.js"></script>
+</head>
+<body>
+    <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">ChDa&#39;s Station</a></div>
+            <div class="menu navbar-right">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+<input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">ChDa&#39;s Station</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+</div>
+        </div>
+    </nav>
+    </header>
+        <!-- ===== 顶部导航 ===== -->
+  <header class="topbar">
+    <div class="container nav-inner">
+      <a class="brand" href="#/" aria-label="Chao and Dao 首页">Chao<span class="brand-amp">&amp;</span>Dao</a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="#/" class="nav-link" data-view="home">首页</a>
+        <a href="#/list" class="nav-link" data-view="list">文章</a>
+      </nav>
+    
+    <div class="site-chrome"><a class="back-home" href="index.html">‹ 返回主页</a></div>
+  </div>
+  
+  </header>
+
+  <main>
+    <!-- ============ 视图 A：首页 ============ -->
+    <section id="view-home" class="view">
+      <div class="container">
+        <!-- Hero -->
+        <section class="hero">
+          <div class="eyebrow"><span class="idx">01</span><span>OUR STATION</span><span class="rule"></span></div>
+          <h1 class="display">Chao <span class="hero-en">&amp;</span> Dao <span class="hero-en">· Station</span></h1>
+          <p class="hero-tagline">
+            两个人的站点，一份共同维护的日志。<br>
+            <strong>彼此毫无隐瞒</strong>，充分分享与信任，给彼此最大的自由与成长空间。
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn--primary btn--lg" href="#/list">浏览日志 <span class="arrow">→</span></a>
+            <button class="btn btn--secondary btn--lg" id="heroGuestBtn" type="button">留下留言</button>
+          </div>
+        </section>
+
+        <!-- 最新文章 -->
+        <section class="section">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow"><span class="idx">02</span><span>LATEST</span><span class="rule"></span></div>
+              <h2 class="section-title">最新文章</h2>
+              <p class="section-sub">最近写下的几篇。示例数据，点击任意卡片进入详情。</p>
+            </div>
+            <a class="btn btn--ghost" href="#/list">查看全部 <span class="arrow">→</span></a>
+          </div>
+          <div class="article-grid" id="home-latest"><!-- JS 渲染 --></div>
+        </section>
+
+        <!-- 时光轴 / 里程碑 -->
+        <section class="section">
+          <div class="eyebrow"><span class="idx">03</span><span>TIMELINE</span><span class="rule"></span></div>
+          <h2 class="section-title">时光轴 · 里程碑</h2>
+          <p class="section-sub">从相遇到第 100 天。示例数据。</p>
+          <div class="timeline" id="home-timeline" style="margin-top: var(--s-6);"><!-- JS 渲染 --></div>
+        </section>
+
+        <!-- 底部 CTA -->
+        <section class="section cta" id="home-cta">
+          <div class="cta-inner">
+            <div class="eyebrow"><span class="idx">04</span><span>SAY HI</span><span class="rule"></span></div>
+            <h2 class="h2">想在我们的站点留句话？</h2>
+            <p class="section-sub">这里是两个人的共同日志。如果你也是我们故事里的路人，欢迎在任意一篇下面写点什么。</p>
+            <a class="btn btn--secondary" href="#/list">去翻翻日志 <span class="arrow">→</span></a>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ============ 视图 B：文章列表 ============ -->
+    <section id="view-list" class="view" hidden>
+      <div class="container">
+        <section class="list-head">
+          <div class="eyebrow"><span class="idx">//</span><span>ARCHIVE</span><span class="rule"></span></div>
+          <h1 class="list-title">日志归档</h1>
+          <p class="list-sub">所有文章的合集。示例数据，可按标签筛选、分页浏览。</p>
+          <div class="chip-row" id="list-chips" role="tablist" aria-label="标签筛选"><!-- JS 渲染 --></div>
+        </section>
+        <div class="article-grid" id="list-grid"><!-- JS 渲染 --></div>
+        <div class="pagination" id="list-pagination" aria-label="分页"><!-- JS 渲染 --></div>
+      </div>
+    </section>
+
+    <!-- ============ 视图 C：文章详情 ============ -->
+    <article id="view-post" class="view" hidden>
+      <div class="container post-wrap">
+        <header class="post-header">
+          <div class="post-back"><a class="nav-link" href="#/list">← 返回日志</a></div>
+          <h1 class="h1 post-title" id="post-title"></h1>
+          <div class="post-meta" id="post-meta"></div>
+        </header>
+        <div class="post-body" id="post-body"></div>
+        <nav class="post-nav" id="post-nav" aria-label="上下篇导航"></nav>
+
+        <section class="comments">
+          <div class="eyebrow"><span class="idx">·</span><span>COMMENTS · 示例</span><span class="rule"></span></div>
+          <div class="comment-list" id="comment-list">
+            <div class="comment-row">
+              <span class="cm-avatar">D</span>
+              <div>
+                <div class="cm-head"><span class="cm-name">Dao</span><span class="cm-meta">示例 · 2026-04-11</span></div>
+                <p>示例评论：这里记录我们的小日子，读着读着就笑了。继续写呀。</p>
+              </div>
+            </div>
+            <div class="comment-row">
+              <span class="cm-avatar">C</span>
+              <div>
+                <div class="cm-head"><span class="cm-name">Chao</span><span class="cm-meta">示例 · 2026-04-12</span></div>
+                <p>示例评论：第 100 天那篇我也收藏了，下次吵架就翻出来看看。</p>
+              </div>
+            </div>
+            <div class="comment-row">
+              <span class="cm-avatar">?</span>
+              <div>
+                <div class="cm-head"><span class="cm-name">路人甲</span><span class="cm-meta">示例 · 2026-04-13</span></div>
+                <p>示例评论：路过点个赞，祝你们也祝我自己的那一位。</p>
+              </div>
+            </div>
+          </div>
+          <div class="cm-input">
+            <input type="text" placeholder="写下你的留言…（示例）" aria-label="留言输入" />
+            <button class="btn btn--secondary" type="button">发送</button>
+          </div>
+        </section>
+      </div>
+    </article>
+  </main>
+
+  <!-- ===== 页脚 ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span class="footer-brand">Chao &amp; Dao · Station</span>
+      <span class="footer-note">示例数据 · 本页面为原型演示，内容均为占位示例，与现实人物、事件无关。</span>
+    </div>
+  </footer>
+
+<script>
+  /* ============ 数据：文章（示例） ============ */
+  const posts = [
+    {
+      id: 1, title: '我们的第 100 天', author: 'Chao', date: '2026-04-10', readTime: '3 min', tags: ['纪念', '日常'],
+      excerpt: '没有盛大的仪式，只是像往常一样，你煮了咖啡，我浇了绿萝。100 天里最安心的是「毫无保留」成了习惯。',
+      body: [
+        '今天是第 100 天。没有特别盛大的仪式，只是像往常一样，你煮了咖啡，我顺手把阳台的绿萝浇了水。',
+        '回头看这 100 天，最让我安心的不是某个瞬间，而是「毫无保留」这件事慢慢成了习惯。你说今天想学的东西，我说今天写崩的代码，都不必筛选。',
+        '我们约定过：分享是默认项，隐瞒才是需要理由的例外。这 100 天，我们基本守住了。',
+        '下一个 100 天，继续把日常过成可信任的版本。'
+      ]
+    },
+    {
+      id: 2, title: '一起去看的第一次海', author: 'Dao', date: '2026-03-22', readTime: '5 min', tags: ['旅行'],
+      excerpt: '退潮才能走到那块礁石。海风比想象里更安静，我们并排坐着，谁也没怎么说话。',
+      body: [
+        '出门前你查了三遍潮汐表，我说不用那么认真，结果到了才发现你是对的——退潮时才能走到那块礁石。',
+        '海风和想象里一样咸，但比想象里更安静。我们并排坐着，谁也没怎么说话，偶尔指一下远处的船。',
+        '那天我拍了很多照片，但最喜欢的其实是返程高铁上，你靠着车窗睡着了，手机还停在地图页面。',
+        '旅行这件事，和你一起做，重点从来不是去了哪里。'
+      ]
+    },
+    {
+      id: 3, title: '深夜的长谈', author: 'Chao', date: '2026-02-14', readTime: '4 min', tags: ['日常', '纪念'],
+      excerpt: '话题从明天吃什么漂到十年后想住哪座城。这种谈话没有结论，也不需要结论。',
+      body: [
+        '情人节没有出门，点了两份外卖，窝在沙发上聊到很晚。',
+        '话题从「明天吃什么」一路漂到「十年后想住在什么样的城市」，中间还岔去争论猫和狗哪个更省心。',
+        '这种谈话没有结论，也不需要结论。重要的是，我发现自己越来越敢把没想清楚的话直接说出来。',
+        '信任不是一天建成的，但每一个这样的夜晚都在给它加一层。'
+      ]
+    },
+    {
+      id: 4, title: '写给十年后的我们', author: 'Dao', date: '2026-01-01', readTime: '6 min', tags: ['纪念'],
+      excerpt: '希望十年后的我们，还留着每周一段不被手机打扰的时间，只属于彼此。',
+      body: [
+        '新年第一天，写点给未来的话。',
+        '希望十年后的我们，还保留着一个习惯：每周留出一段不被手机打扰的时间，只属于彼此。',
+        '希望那时候我们已经搬去一个有大窗和厨房的地方，你还是会在阳台摆弄植物，我还是会在深夜突然想通某件事然后摇醒你。',
+        '如果中间有过争执、有过沉默，也没关系——只要我们还愿意坐下来把话说开。',
+        '这封信先存着，到时候一起拆。'
+      ]
+    },
+    {
+      id: 5, title: '周末的烟火气', author: 'Chao', date: '2025-12-20', readTime: '3 min', tags: ['日常', '旅行'],
+      excerpt: '周六你教我腌泡菜，周日下雨看老电影，醒来汤还温着。没有安排的周末最踏实。',
+      body: [
+        '这周末哪儿也没去，就在家过了两天。',
+        '周六你教我腌了一罐泡菜，我负责切，你负责尝咸淡，最后以「再放一点点糖」收尾。',
+        '周日下雨，我们窝着看了一部老电影，看到一半都睡着了，醒来发现锅里的汤还温着。',
+        '最喜欢这种没有安排的周末——生活本身的烟火气，比任何计划都让人踏实。'
+      ]
+    },
+    {
+      id: 6, title: '雨天的电影与火锅', author: 'Dao', date: '2025-11-08', readTime: '4 min', tags: ['日常'],
+      excerpt: '下雨的晚上最适合火锅和一部不用动脑的电影。停电后你点起蜡烛，说这样更有氛围。',
+      body: [
+        '下雨的晚上最适合两件事：火锅，和一部不用动脑的电影。',
+        '我们买了满满一桌菜，你调了麻酱我调了油碟，争论了五分钟哪种更合理，最后各吃各的。',
+        '电影看到一半停了电，你点起蜡烛，说这样更有氛围，我嘴上嫌麻烦，其实心里挺喜欢。',
+        '有些普通的晚上，回想起来反而最清楚——因为那时候，我们都在。'
+      ]
+    }
+  ];
+
+  /* ============ 数据：时光轴（示例） ============ */
+  const milestones = [
+    { date: '2024-05-20', label: '相遇', active: false },
+    { date: '2024-08-15', label: '在一起', active: false },
+    { date: '2025-02-14', label: '第一次旅行', active: false },
+    { date: '2025-10-01', label: '搬到一起', active: false },
+    { date: '2026-04-10', label: '第 100 天', active: true }
+  ];
+
+  /* ============ 状态 ============ */
+  const PAGE_SIZE = 4;
+  let activeTag = 'all';
+  let currentPage = 1;
+
+  /* ============ 工具 ============ */
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  function coverArt() {
+    return `<svg class="cover-art" viewBox="0 0 120 80" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <path d="M0 58 Q30 22 60 48 T120 38" fill="none" stroke="rgba(245,166,35,.45)" stroke-width="1.5"/>
+      <path d="M0 70 Q34 44 64 64 T120 56" fill="none" stroke="rgba(245,166,35,.20)" stroke-width="1"/>
+      <circle cx="60" cy="46" r="2.5" fill="rgba(245,166,35,.7)"/>
+    </svg>`;
+  }
+  function authorBadge(author) {
+    const cls = author === 'Chao' ? 'author-chao' : 'author-dao';
+    return `<span class="author-badge ${cls}">${esc(author)}</span>`;
+  }
+  function tagBadges(tags) {
+    return tags.map(t => `<span class="badge">#${esc(t)}</span>`).join('');
+  }
+  function cardHTML(p) {
+    return `<article class="article-card" data-id="${p.id}" tabindex="0" role="button" aria-label="${esc(p.title)}">
+      <div class="card-cover">${coverArt()}${authorBadge(p.author)}</div>
+      <div class="card-body">
+        <h3 class="card-title">${esc(p.title)}</h3>
+        <p class="card-excerpt">${esc(p.excerpt)}</p>
+        <div class="card-foot">
+          <span class="card-meta mono">${esc(p.date)}</span>
+          <span class="card-meta mono">· ${esc(p.readTime)}</span>
+        </div>
+        <div class="card-tags">${tagBadges(p.tags)}</div>
+      </div>
+    </article>`;
+  }
+
+  /* ============ 渲染：首页 ============ */
+  function renderHome() {
+    $('#home-latest').innerHTML = posts.slice(0, 3).map(cardHTML).join('');
+    $('#home-timeline').innerHTML = milestones.map(m => `
+      <div class="timeline-node${m.active ? ' active' : ''}">
+        <span class="tl-dot"></span>
+        <span class="tl-date">${esc(m.date)}</span>
+        <span class="tl-label">${esc(m.label)}</span>
+      </div>`).join('');
+  }
+
+  /* ============ 渲染：列表（筛选 + 分页） ============ */
+  function uniqueTags() {
+    const set = new Set();
+    posts.forEach(p => p.tags.forEach(t => set.add(t)));
+    return ['all', ...Array.from(set)];
+  }
+  function renderChips() {
+    const labels = { all: '全部' };
+    $('#list-chips').innerHTML = uniqueTags().map(t =>
+      `<button class="chip${t === activeTag ? ' active' : ''}" data-tag="${esc(t)}" type="button">${t === 'all' ? '全部' : '#' + esc(t)}</button>`
+    ).join('');
+  }
+  function filteredPosts() {
+    return activeTag === 'all' ? posts : posts.filter(p => p.tags.includes(activeTag));
+  }
+  function renderList() {
+    const items = filteredPosts();
+    const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const pageItems = items.slice(start, start + PAGE_SIZE);
+
+    const grid = $('#list-grid');
+    grid.innerHTML = pageItems.length
+      ? pageItems.map(cardHTML).join('')
+      : `<div class="empty-state">// 该标签下暂无示例文章</div>`;
+
+    // 分页器
+    let btns = `<button class="pg-btn" data-page="prev" type="button" ${currentPage === 1 ? 'disabled' : ''}>‹</button>`;
+    for (let i = 1; i <= totalPages; i++) {
+      btns += `<button class="pg-btn${i === currentPage ? ' current' : ''}" data-page="${i}" type="button">${i}</button>`;
+    }
+    btns += `<button class="pg-btn" data-page="next" type="button" ${currentPage === totalPages ? 'disabled' : ''}>›</button>`;
+    $('#list-pagination').innerHTML = btns;
+  }
+
+  /* ============ 渲染：详情 ============ */
+  function renderPost(id) {
+    const idx = posts.findIndex(p => p.id === id);
+    const post = idx >= 0 ? posts[idx] : posts[0];
+    $('#post-title').textContent = post.title;
+    $('#post-meta').innerHTML =
+      `${authorBadge(post.author)}` +
+      `<span class="mono">${esc(post.date)}</span>` +
+      `<span class="mono">· ${esc(post.readTime)} read</span>`;
+    $('#post-body').innerHTML = post.body.map((para, i) =>
+      `<p${i === 0 ? ' class="lead"' : ''}>${esc(para)}</p>`
+    ).join('');
+
+    const prev = posts[idx - 1];
+    const next = posts[idx + 1];
+    const nav = $('#post-nav');
+    nav.innerHTML =
+      (prev
+        ? `<a class="pn-prev" href="#/post/${prev.id}"><span class="pn-dir">← 上一篇</span><span class="pn-title">${esc(prev.title)}</span></a>`
+        : `<span class="pn-prev pn-disabled"><span class="pn-dir">← 上一篇</span><span class="pn-title">已是第一篇</span></span>`)
+      +
+      (next
+        ? `<a class="pn-next" href="#/post/${next.id}"><span class="pn-dir">下一篇 →</span><span class="pn-title">${esc(next.title)}</span></a>`
+        : `<span class="pn-next pn-disabled"><span class="pn-dir">下一篇 →</span><span class="pn-title">已是最后一篇</span></span>`);
+  }
+
+  /* ============ 路由 ============ */
+  function showView(name) {
+    $('#view-home').hidden = name !== 'home';
+    $('#view-list').hidden = name !== 'list';
+    $('#view-post').hidden = name !== 'post';
+    document.querySelectorAll('.nav-link').forEach(a => {
+      a.classList.toggle('active', a.dataset.view === name || (name === 'post' && a.dataset.view === 'list'));
+    });
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+  function route() {
+    const h = location.hash || '#/';
+    if (h.startsWith('#/post/')) {
+      const id = parseInt(h.slice('#/post/'.length), 10);
+      renderPost(id);
+      showView('post');
+    } else if (h === '#/list') {
+      renderList();
+      showView('list');
+    } else {
+      showView('home');
+    }
+  }
+
+  /* ============ 事件绑定 ============ */
+  // 点击文章卡 / 键盘进入详情
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('.article-card');
+    if (card) { location.hash = '#/post/' + card.dataset.id; return; }
+    const chip = e.target.closest('.chip');
+    if (chip) { activeTag = chip.dataset.tag; currentPage = 1; renderChips(); renderList(); return; }
+    const pg = e.target.closest('.pg-btn');
+    if (pg && !pg.disabled) {
+      const v = pg.dataset.page;
+      const total = Math.max(1, Math.ceil(filteredPosts().length / PAGE_SIZE));
+      if (v === 'prev') currentPage = Math.max(1, currentPage - 1);
+      else if (v === 'next') currentPage = Math.min(total, currentPage + 1);
+      else currentPage = parseInt(v, 10);
+      renderList();
+      $('#view-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if ((e.key === 'Enter' || e.key === ' ')) {
+      const card = e.target.closest('.article-card');
+      if (card) { e.preventDefault(); location.hash = '#/post/' + card.dataset.id; }
+    }
+  });
+  $('#heroGuestBtn').addEventListener('click', () => {
+    $('#home-cta').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  window.addEventListener('hashchange', route);
+
+  /* ============ 初始化 ============ */
+  renderHome();
+  renderChips();
+  route();
+</script>
+<script src="assets/site.js"></script>
+    <script>
+    (function(){
+      function sync(){
+        var d = document.body.classList.contains('dark-theme');
+        document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
+      }
+      sync();
+      document.addEventListener('DOMContentLoaded', sync);
+      if (window.MutationObserver) {
+        new MutationObserver(sync).observe(document.body, {attributes:true, attributeFilter:['class']});
+      }
+      if (typeof window.mobileBtn !== 'function') {
+        window.mobileBtn = function(){
+          var m = document.getElementById('mobile-menu');
+          if (m) m.classList.toggle('active');
+        };
+      }
+    })();
+    </script>
+</body>
+</html>

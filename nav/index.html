@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Chao & Dao">
+
+
+
+
+
+<title>ChDa&#39;s Station</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-02XNZFTVFW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-02XNZFTVFW');
+</script>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">ChDa&#39;s Station</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/gallery">Gallery</a>
+                
+                    <a class="menu-item" href="/nav">Nav</a>
+                
+                    <a class="menu-item" href="/Bi">Bi</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">ChDa&#39;s Station</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/gallery">Gallery</a>
+                
+                    <a class="menu-item" href="/nav">Nav</a>
+                
+                    <a class="menu-item" href="/Bi">Bi</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    <article class="post-wrap page">
+        
+        <h2 class="post-title"></h2>
+        
+        <section class="post-content">
+            <head>
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .secret-stash { display: none; }
+        .secret-stash.revealed { display: block; }
+        .nas-toggle { display:flex; align-items:center; justify-content:space-between; padding:9px 12px; margin-top:8px; border:1px dashed #555; border-radius:9px; color:#ccc; font-size:13px; cursor:pointer; user-select:none; transition:.15s; }
+        .nas-toggle:hover { border-color:#4a90d9; color:#fff; }
+        .nas-caret { transition: transform .2s; display:inline-block; }
+        .nas-toggle[aria-expanded="true"] .nas-caret { transform: rotate(90deg); }
+        .cd-item { display:flex; align-items:center; justify-content:space-between; padding:11px 13px; border:1px solid #3a3a3a; border-radius:10px; background:#222; margin-top:9px; }
+        .cd-info { min-width:0; }
+        .cd-name { font-weight:700; color:#fff; }
+        .cd-date { font-size:12px; color:#999; margin-top:2px; }
+        .cd-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; }
+        .cd-num { font-weight:700; font-size:15px; }
+        /* Nas Docker 解锁后链接网格：与常用推荐等板块一致，满宽 4 列 */
+        #nasBody:not([hidden]) { display:block; }
+        #nasResult {
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:16px;
+            padding:4px 2px 0;
+            margin-top:10px;
+        }
+        #nasResult .nas-link { text-decoration:none; color:inherit; }
+        #nasResult .cd-item { grid-column:1 / -1; margin-top:0; }
+        @media (max-width:900px){ #nasResult { grid-template-columns:repeat(2,1fr); } }
+        @media (max-width:480px){ #nasResult { grid-template-columns:1fr; } }
+    </style>
+</head>
+
+<body>
+        <div class="nav-root" id="container">
+            <section class="main">
+                <div id="mainContent">
+ 		<!-- 常用推荐 + 实用工具 并排（桌面两列，手机堆叠） -->
+                <div class="box-row">
+                <div class="box">
+                    <a href="#" name="often"></a>
+                    <div class="sub-category">
+                        <div><i class="iconfont icon-shequ"></i> 常用推荐 </div>
+                    </div>
+                    <div>
+                        <a target="_blank" href="https://homestudio.quickconnect.cn/">
+                            <div class="item">
+                                <div class="no-logo"> Homestudio </div>
+                            </div>
+                        </a>
+                        <a target="_blank" href="http://www.dgtle.com/">
+                            <div class="item">
+                                <div class="no-logo"> 数字尾巴 </div>
+                            </div>
+                        </a>
+                        <a target="_blank" href="https://www.chiphell.com">
+                            <div class="item">
+                                <div class="no-logo"> Chiphell </div>
+                            </div>
+                        </a>
+                        <a target="_blank" href="https://www.v2ex.com/">
+                            <div class="item">
+                                <div class="no-logo"> V2EX </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!-- 实用工具 -->
+                <div class="box">
+                    <a href="" name="tools"></a>
+                    <div class="sub-category">
+                        <div><i class="iconfont icon-tool"></i> 实用工具 </div>
+                    </div>
+                    <div>
+                        <a target="_blank" href="https://www.yougetsignal.com/tools/open-ports/">
+                            <div class="item">
+                                <div class="no-logo"> 端口查询 </div>
+                            </div>
+                        </a>
+                        <a target="_blank" href="https://ip.skk.moe/">
+                            <div class="item">
+                                <div class="no-logo"> IP 查询 </div>
+                            </div>
+                        </a>
+                        <a target="_blank" href="https://test.ustc.edu.cn/">
+                            <div class="item">
+                                <div class="no-logo"> 中科大测速 </div>
+                            </div>
+                        </a>
+                        <a target="_blank" href="https://next.itellyou.cn/Original/">
+                            <div class="item">
+                                <div class="no-logo"> 操作系统 </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                </div><!-- /.box-row -->
+                <!-- 学无止境 + 娱乐休闲 并排（桌面两列，手机堆叠） -->
+                <div class="box-row">
+                <div class="box">
+                    <a href="#" name="study"></a>
+                    <div class="sub-category">
+                        <div><i class="iconfont icon-xuexi1"></i> 学无止境 </div>
+                    </div>
+                    <div>
+                        <a target="_blank" href="https://www.runoob.com/">
+                            <div class="item">
+                                <div class="no-logo"> 菜鸟教程 </div>
+                            </div>
+                        </a>
+                        <a target="_blank" href="https://www.52pojie.cn/">
+                            <div class="item">
+                                <div class="no-logo"> 吾爱破解 </div>
+                            </div>
+                        </a>
+                        <a target="_blank" href="http://www.goodgupiao.com/">
+                            <div class="item">
+                                <div class="no-logo"> 好股票网 </div>
+                            </div>
+                        </a>
+                        <a target="_blank" href="https://www.tradingview.com/">
+                            <div class="item">
+                                <div class="no-logo"> TradingView </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!-- 娱乐休闲 -->
+                <div class="box">
+                    <a href="" name="operation"></a>
+                    <div class="sub-category">
+                        <div><i class="iconfont icon-yunying"></i> 娱乐休闲 </div>
+                    </div>
+                    <div>
+                        <a target="_blank" href="https://121310.xyz/">
+                            <div class="item">
+                                <div class="no-logo"> VidHub </div>
+                            </div>
+                        </a>
+                        <a target="_blank" href="http://music.2t58.com/">
+                            <div class="item">
+                                <div class="no-logo"> 爱听音乐 </div>
+                            </div>
+                        </a>
+                        <a target="_blank" href="https://inoui.cc/db">
+                            <div class="item">
+                                <div class="no-logo"> 中国国际机场 </div>
+                            </div>
+                        </a>
+                        <a target="_blank" href="https://ctext.org/zhs">
+                            <div class="item">
+                                <div class="no-logo"> 中国哲学书电子化 </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                </div><!-- /.box-row -->
+
+                <!-- Nas Docker：第三大块，点击展开 · 口令解锁（仿 Bi 全部资料页） -->
+                <div class="box-row">
+                <div class="box" style="grid-column:1/-1">
+                    <a href="#" name="nas"></a>
+                    <div class="sub-category">
+                        <div><i class="iconfont icon-tool"></i> Nas Docker 🔒</div>
+                    </div>
+                    <div id="nasToggle" class="nas-toggle" role="button" tabindex="0" aria-expanded="false">
+                        <span class="nt-label">📁 点击展开 Nas Docker（需口令）</span>
+                        <span class="nas-caret">›</span>
+                    </div>
+                    <div id="nasBody" hidden>
+                        <div id="nasResult"></div>
+                    </div>
+                </div>
+                </div><!-- /.box-row -->
+
+                                <!-- 隐秘保险箱：内容已用口令加密（AES-GCM / PBKDF2），源码中仅为密文；
+                     在 Nav 页面按反引号键 ` 弹出口令框，输对才解密显示。 -->
+                <div id="secret-stash" class="secret-stash" data-nosnippet></div>
+
+                            </div>
+        </section>
+    </div>
+
+                <!-- Nas Docker 口令门：可见盒子点击需口令 -->
+                <div id="nas-gate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;">
+                    <div style="background:#1e1e1e;color:#eee;padding:22px 26px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);font-family:sans-serif;min-width:260px;">
+                        <div style="margin-bottom:12px;font-size:14px;">输入口令以解锁 Nas Docker</div>
+                        <input id="nas-pw" type="password" style="padding:8px;width:100%;box-sizing:border-box;border:1px solid #555;border-radius:6px;background:#2a2a2a;color:#eee;" placeholder="password" />
+                        <div style="margin-top:14px;text-align:right;">
+                            <button id="nas-ok" style="padding:7px 16px;border:none;border-radius:6px;background:#4a90d9;color:#fff;cursor:pointer;margin-right:8px;">确定</button>
+                            <button id="nas-cancel" style="padding:7px 16px;border:1px solid #555;border-radius:6px;background:transparent;color:#ccc;cursor:pointer;">取消</button>
+                        </div>
+                    </div>
+                </div>
+                <script>
+(function () {
+    // 两处共用同一解密方案（口令运行时手动输入）
+    var NAS_PARAMS = {"iterations":100000,"salt":"hbPTMTJ8F8qSf8Mq3YCeYQ==","iv":"heqQkD3OGRGiiyaR","ct":"GfUhPN0q0GaY6XeCwUEOpT6aYr+GeA=="};
+    var PARAMS = {"iterations":100000,"salt":"aZp6I17PVgczSed9ohgCjA==","iv":"WSVCb5LTM/4R1OIF","ct":"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"};
+
+    var nasUnlocked = false;
+    var stashRevealed = false;
+
+    var gate = document.getElementById('nas-gate');
+    var pwInput = document.getElementById('nas-pw');
+    var toggle = document.getElementById('nasToggle');
+    var body = document.getElementById('nasBody');
+    var result = document.getElementById('nasResult');
+    var stash = document.getElementById('secret-stash');
+
+    var links = [
+        {t:'Synology Photo', h:'https://192.168.1.110/photo'},
+        {t:'Synology Audio', h:'https://192.168.1.110/audio'},
+        {t:'Books', h:'http://192.168.1.110:8083/'},
+        {t:'Emby', h:'http://192.168.1.110:8096/'},
+        {t:'Navidrome', h:'http://192.168.1.110:4533/'},
+        {t:'Music_Tag_Web', h:'http://192.168.1.110:8002/'},
+        {t:'AriaNg', h:'http://192.168.1.110:8080/'},
+        {t:'DDNS-GO', h:'http://192.168.1.110:9876/'}
+    ];
+
+    function b64ToBytes(b) { return Uint8Array.from(atob(b), function (c) { return c.charCodeAt(0); }); }
+
+    async function decodeParams(P, pw) {
+        var enc = new TextEncoder();
+        var salt = b64ToBytes(P.salt), iv = b64ToBytes(P.iv), ct = b64ToBytes(P.ct);
+        var baseKey = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']);
+        var key = await crypto.subtle.deriveKey({ name:'PBKDF2', salt:salt, iterations:P.iterations, hash:'SHA-256' }, baseKey, { name:'AES-GCM', length:256 }, false, ['decrypt']);
+        var plainBuf = await crypto.subtle.decrypt({ name:'AES-GCM', iv:iv }, key, ct);
+        return new TextDecoder().decode(plainBuf);
+    }
+
+    function showLocked() {
+        result.innerHTML = '<div class="cd-item"><div class="cd-info">'
+            + '<div class="cd-name">🔒 Nas Docker 已加密</div>'
+            + '<div class="cd-date">需输入口令查看</div></div>'
+            + '<div class="cd-right">'
+            + '<div class="cd-num" style="color:#e8943a">锁定</div>'
+            + '<button id="nas-unlock" style="padding:6px 12px;border:none;border-radius:8px;background:#4a90d9;color:#fff;font-size:12px;cursor:pointer;">🔓 输入口令解锁</button>'
+            + '</div></div>';
+        var ub = document.getElementById('nas-unlock');
+        if (ub) { ub.addEventListener('click', openGate); }
+    }
+    function renderNasLinks() {
+        var h = '';
+        links.forEach(function (it) {
+            h += '<a class="nas-link" target="_blank" rel="nofollow noopener" href="' + it.h + '"><div class="item"><div class="no-logo">' + it.t + '</div></div></a>';
+        });
+        result.innerHTML = h;
+    }
+    function openGate() { gate.style.display = 'flex'; setTimeout(function () { pwInput.focus(); }, 50); }
+    function closeGate() { gate.style.display = 'none'; pwInput.value = ''; }
+
+    async function unlockNas(p) {
+        if (!window.crypto || !crypto.subtle) { alert('当前环境不支持解密（需 https 或 localhost）'); return; }
+        try {
+            await decodeParams(NAS_PARAMS, p);   // 验证 Nas 口令
+            nasUnlocked = true;
+            closeGate();
+            renderNasLinks();
+            revealStash(p);                       // 一并解锁隐藏项目
+        } catch (e) { alert('口令错误'); }
+    }
+
+    async function revealStash(p) {
+        if (stashRevealed) return;
+        try {
+            var plain = await decodeParams(PARAMS, p);
+            stash.innerHTML = plain;
+            stash.classList.add('revealed');
+            stashRevealed = true;
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        } catch (e) { /* 隐藏项目口令与 Nas 不一致时静默忽略，不平时显示 */ }
+    }
+
+    function toggleBody() {
+        if (body.hasAttribute('hidden')) {
+            body.removeAttribute('hidden');
+            toggle.setAttribute('aria-expanded', 'true');
+            if (!nasUnlocked) { showLocked(); }
+        } else {
+            body.setAttribute('hidden', '');
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+    }
+
+    toggle.addEventListener('click', toggleBody);
+    toggle.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleBody(); } });
+    document.getElementById('nas-ok').addEventListener('click', function () { unlockNas(pwInput.value); });
+    document.getElementById('nas-cancel').addEventListener('click', closeGate);
+    pwInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') unlockNas(pwInput.value); });
+})();
+</script>
+</body>
+
+        </section>
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© chda.top | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,172 @@
+/* ============ 导航页美化样式（作用域 .nav-root，隔离 Chic 主题） ============ */
+
+.nav-root {
+    --card-bg: #ffffff;
+    --card-border: #e8eaef;
+    --card-shadow: 0 1px 3px rgba(20, 24, 35, .06), 0 6px 18px rgba(20, 24, 35, .05);
+    --card-shadow-hover: 0 8px 24px rgba(79, 124, 255, .18);
+    --text-strong: #1f2430;
+    --text: #2c3340;
+    --muted: #8b93a3;
+    --accent: #4f7cff;
+    --accent-soft: rgba(79, 124, 255, .10);
+    --divider: #eceef3;
+    --desc: #7a8290;
+
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 8px 4px 48px;
+}
+
+.nav-root *,
+.nav-root *::before,
+.nav-root *::after { box-sizing: border-box; }
+
+.nav-root a { text-decoration: none; color: inherit; }
+
+/* 分类区块 */
+.nav-root .main { margin-left: 0; }
+.nav-root #mainContent { max-width: none; margin: 0 auto; }
+
+.nav-root .box {
+    margin: 0 0 30px;
+    padding: 0;
+    background: transparent;
+    overflow: visible;
+}
+
+/* 常用推荐 + 参考文献 并排（桌面两列，手机堆叠） */
+.nav-root .box-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 0 0 30px;
+    align-items: stretch;
+}
+.nav-root .box-row > .box {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+}
+.nav-root .box-row > .box > div:not(.sub-category) {
+    flex: 1;
+    align-content: center;
+}
+@media (max-width: 600px) {
+    .nav-root .box-row { grid-template-columns: 1fr; }
+}
+
+.nav-root .sub-category > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 2px 12px;
+    margin-bottom: 6px;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-strong);
+    letter-spacing: .5px;
+    border-bottom: 1px solid var(--divider);
+}
+.nav-root .sub-category .iconfont {
+    color: var(--accent);
+    font-size: 21px;
+    padding-right: 0;
+}
+
+/* 卡片网格 */
+.nav-root .box > div:not(.sub-category) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 4px 2px 0;
+}
+
+.nav-root .item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    margin: 0;
+    padding: 15px 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    overflow: hidden;
+}
+.nav-root .item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow-hover);
+    border-color: var(--accent);
+}
+
+.nav-root .item .no-logo {
+    color: var(--text);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.nav-root .item .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: auto;
+    position: static;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    padding: 0;
+}
+.nav-root .item .logo img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    flex: 0 0 38px;
+    object-fit: cover;
+    background: var(--accent-soft);
+}
+
+.nav-root .item .desc {
+    color: var(--desc);
+    font-size: 12.5px;
+    line-height: 1.5;
+    padding-top: 8px;
+    height: auto;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* 小屏适配 */
+@media (max-width: 600px) {
+    .nav-root .box > div:not(.sub-category) {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .nav-root .item { padding: 12px 13px; }
+}
+
+/* ============ 暗色模式（跟随 Chic 主题 body.dark-theme） ============ */
+body.dark-theme .nav-root {
+    --card-bg: #23262e;
+    --card-border: #33373f;
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, .35), 0 6px 18px rgba(0, 0, 0, .25);
+    --card-shadow-hover: 0 8px 24px rgba(110, 168, 254, .25);
+    --text-strong: #eef1f6;
+    --text: #d6dae2;
+    --muted: #8a93a3;
+    --accent: #6ea8fe;
+    --accent-soft: rgba(110, 168, 254, .14);
+    --divider: #343842;
+    --desc: #9aa2b1;
+}
+body.dark-theme .nav-root .item:hover { border-color: var(--accent); }

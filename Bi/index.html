@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>大数据信息系统</title>
+<style>
+:root{--bg:#0f1115;--card:#1a1d24;--card2:#22262f;--line:#2a2e38;
+--txt:#e8eaed;--sub:#9aa0aa;--red:#ef4444;--green:#22c55e;
+--orange:#f59e0b;--yellow:#eab308;--blue:#3b82f6;--accent:#f97316}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--txt);font-size:16px;line-height:1.5;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:680px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:20px;font-weight:800;margin-bottom:4px}
+.sub{font-size:12.5px;color:var(--sub);margin-bottom:16px}
+.sec{font-size:13px;font-weight:700;color:var(--sub);margin:18px 0 8px;letter-spacing:.5px}
+a.item{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);
+border-radius:12px;padding:13px 14px;margin-bottom:9px;text-decoration:none;color:var(--txt);
+min-height:48px}
+a.item:active{background:var(--card2);transform:scale(.99)}
+a.item .emoji{font-size:20px;flex:none}
+a.item .t{flex:1}
+a.item .t b{font-size:15px;display:block}
+a.item .t span{font-size:12px;color:var(--sub)}
+a.item .go{color:var(--sub);font-size:14px}
+.star{border-left:4px solid var(--accent)}
+.hot{border-left:4px solid var(--red)}
+.note{font-size:12px;color:var(--sub);margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+/* ===== 养生打卡（迁移自工作台） ===== */
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.card h2{font-size:16px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.health-plan{background:var(--card2);border-radius:12px;padding:14px;margin-bottom:12px}
+.health-plan .hp-branch{font-weight:700;color:var(--accent)}
+.health-plan .hp-plan{font-size:14px;margin:6px 0}
+.health-acts{display:flex;gap:8px;flex-wrap:wrap}
+.act-chip{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:8px 14px;
+  font-size:13px;min-height:44px;display:inline-flex;align-items:center}
+.act-chip.on{background:var(--green);color:#04240f;border-color:var(--green);font-weight:600}
+.act-chip.hot{border-color:var(--red);color:var(--red)}
+.heat-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}
+.heat-cell{aspect-ratio:1/1;border-radius:6px;background:var(--card2);border:1px solid var(--line);
+  font-size:10px;display:flex;align-items:center;justify-content:center;color:var(--sub)}
+.heat-cell.done{background:var(--green);color:#04240f;border-color:var(--green);font-weight:700}
+.heat-cell.part{background:#14532d;color:#86efac}
+.heat-cell.today{outline:2px solid var(--blue);outline-offset:-2px}
+.streak{font-size:13px;color:var(--sub);margin-top:8px}
+.health-sync{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px}
+.mini-btn{display:inline-flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--txt);cursor:pointer;font-family:inherit}
+.mini-btn:hover{border-color:var(--blue)}
+/* 养生打卡左右栏（仿大数据信息系统） */
+.hp-row{display:flex;gap:16px;flex-wrap:wrap}
+.hp-main{flex:2;min-width:220px}
+.hp-side{flex:1;min-width:160px;display:flex;flex-direction:column;align-items:flex-start}
+.hp-side .health-sync{margin:10px 0 0;flex-direction:column;width:100%}
+.hp-side .mini-btn{width:100%;justify-content:center}
+/* 全年节气方案总览（仿大数据信息系统） */
+.year-plan{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:10px}
+.ym{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px}
+.ym.cur{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.ym-head{font-size:13px;font-weight:600;margin-bottom:4px}
+.ym-cur{color:var(--accent);font-size:11px;border:1px solid var(--accent);border-radius:6px;padding:0 6px;margin-left:4px}
+.ym-plan{font-size:12px;color:var(--sub);margin-bottom:6px}
+.ym .act-chip{cursor:default;min-height:34px;padding:6px 10px}
+/* 全年方案折叠 */
+.yd summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.yd summary::-webkit-details-marker{display:none}
+.yd summary h2{margin:0}
+.yd-arrow{color:var(--sub);font-size:14px;transition:transform .2s}
+.yd[open] .yd-arrow{transform:rotate(90deg)}
+/* ===== 全部资料页（加密口令门，与倒数日同源） ===== */
+.mat-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;color:var(--txt);font-size:14px;font-weight:600;cursor:pointer;
+  font-family:inherit;transition:border-color .15s ease;margin-top:18px}
+.mat-toggle:hover{border-color:var(--blue)}
+.mat-toggle .ht-caret{transition:transform .2s ease;color:var(--sub);font-size:13px}
+.mat-toggle[aria-expanded="true"] .ht-caret{transform:rotate(90deg)}
+.mat-body{margin-top:10px}
+.mat-body[hidden]{display:none}
+.cd-item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.cd-item:last-child{border-bottom:none}
+.cd-info .cd-name{font-size:15px;font-weight:600}
+.cd-info .cd-date{font-size:12px;color:var(--sub);margin-top:3px}
+.cd-right{text-align:right}
+.cd-num{font-size:24px;font-weight:700;color:var(--blue);letter-spacing:-1px}
+</style>
+<link rel="stylesheet" href="assets/site.css">
+<script>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t="light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="bi-chic.css">
+<script src="/js/script.js"></script>
+</head>
+<body>
+    <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">ChDa&#39;s Station</a></div>
+            <div class="menu navbar-right">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+<input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">ChDa&#39;s Station</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+</div>
+        </div>
+    </nav>
+    </header>
+        <div class="wrap">
+<div class="card">
+  <h2 style="justify-content:space-between"><span>🌿 养生打卡</span><span id="hpDate" style="font-size:12px;font-weight:400;color:var(--sub)"></span></h2>
+  <div class="health-plan hp-row">
+    <div class="hp-main">
+      <div><span class="hp-branch" id="hpBranch"></span> · <span id="hpMonth"></span></div>
+      <div class="hp-plan" id="hpPlan"></div>
+      <div style="font-size:12px;color:var(--sub);margin:10px 0 4px">当月节气条目</div>
+      <div class="health-acts" id="hpActs"></div>
+    </div>
+    <div class="hp-side">
+      <div style="font-size:12px;color:var(--sub);margin-bottom:4px">每日基础（全年通用）</div>
+      <div class="health-acts" id="hpDaily"></div>
+      <div class="health-sync">
+        <button class="mini-btn" type="button" onclick="exportHealth()">⬇ 导出记录</button>
+        <label class="mini-btn" title="选择之前导出的 JSON，按日期×项目取并集合并，不会覆盖已有打卡">⬆ 导入合并<input type="file" accept="application/json,.json" style="display:none" onchange="importHealth(this.files[0]);this.value=''"></label>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:13px;color:var(--sub);margin-bottom:6px">当月打卡热力（绿=完成≥1项）</div>
+  <div class="heat-grid" id="heatGrid"></div>
+  <div class="streak" id="streak"></div>
+</div>
+<details class="card yd">
+  <summary class="yd-sum"><h2>🗓 全年节气方案 <span style="font-size:12px;font-weight:400;color:var(--sub)">（当前月自动高亮 · 随日期逐年循环）</span></h2><span class="yd-arrow">▸</span></summary>
+  <div class="year-plan" id="yearPlan"></div>
+</details>
+<div class="sec">🧭 其它工具</div>
+<a class="item star" href="fortune.html"><span class="emoji">📅</span><span class="t"><b>今日运程</b></span><span class="go">›</span></a>
+<a class="item hot" href="stock.html"><span class="emoji">📈</span><span class="t"><b>交易计算器</b></span><span class="go">›</span></a>
+<a class="item" href="countdown.html"><span class="emoji">⏳</span><span class="t"><b>倒数日</b></span><span class="go">›</span></a>
+
+<div class="mat-section">
+  <button class="mat-toggle" type="button" aria-expanded="false" aria-controls="materialsBody">
+    <span class="ht-label">📚 全部资料页</span>
+    <span class="ht-caret">▸</span>
+  </button>
+  <div class="mat-body" id="materialsBody" hidden>
+    <div class="card"><div id="materialsResult"></div></div>
+  </div>
+</div>
+<div id="mat-gate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#1e1e1e;color:#eee;padding:22px 26px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);font-family:sans-serif;min-width:260px;">
+    <div style="margin-bottom:12px;font-size:14px;">输入口令以查看全部资料页</div>
+    <input id="mat-pw" type="password" style="padding:8px;width:100%;box-sizing:border-box;border:1px solid #555;border-radius:6px;background:#2a2a2a;color:#eee;" placeholder="password" />
+    <div style="margin-top:14px;text-align:right;">
+      <button id="mat-ok" style="padding:7px 16px;border:none;border-radius:6px;background:#4a90d9;color:#fff;cursor:pointer;margin-right:8px;">确定</button>
+      <button id="mat-cancel" style="padding:7px 16px;border:1px solid #555;border-radius:6px;background:transparent;color:#ccc;cursor:pointer;">取消</button>
+    </div>
+  </div>
+</div>
+
+<div class="note">⚠️ 本页为每日养生打卡，数据与各工具共享本地存储。以上为全部离线页面入口；每个页面右上角均有「返回主页」按钮可回到此页。</div>
+</div>
+<script>
+// ========== 养生打卡（迁移自工作台；主键 wb_renyin_health 保持一致以保留数据）==========
+var PREFIX="wb_renyin_";
+function $(id){ return document.getElementById(id); }
+function lsGet(k,def){ try{ var v=localStorage.getItem(PREFIX+k); return v?JSON.parse(v):def; }catch(e){ return def; } }
+function lsSet(k,v){ try{ localStorage.setItem(PREFIX+k,JSON.stringify(v)); }catch(e){} }
+function pad(n){ return n<10?"0"+n:""+n; }
+function todayStr(){ var d=new Date(); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+function weekdayStr(){ var d=new Date(); var ws=["周日","周一","周二","周三","周四","周五","周六"]; return ws[d.getDay()]; }
+var YANGSHENG=[
+ {m:1,branch:"丑月",plan:"水旺极寒·温阳散寒",acts:["艾叶泡脚","生姜红枣茶","避生冷"]},
+ {m:2,branch:"寅月",plan:"木旺升发·疏泄太过",acts:["按揉太冲","早睡养肝","少怒"]},
+ {m:3,branch:"卯月",plan:"木旺·风盛",acts:["防风保暖","食芽菜","舒畅情志"]},
+ {m:4,branch:"辰月",plan:"土旺·补土健脾",acts:["艾灸足三里","山药薏米","少思虑"]},
+ {m:5,branch:"巳月",plan:"火渐旺·水受克",acts:["补水润燥","午休养心","忌大汗"]},
+ {m:6,branch:"午月",plan:"火旺极·补火亦防亢",acts:["艾灸关元","午时小憩","清心"]},
+ {m:7,branch:"未月",plan:"土旺·湿热",acts:["健脾祛湿","赤小豆薏米","忌肥甘"]},
+ {m:8,branch:"申月",plan:"金旺生水·忌神得令 → 补火补土",acts:["艾灸足三里/关元","山药薏米粥","忌寒凉"]},
+ {m:9,branch:"酉月",plan:"金旺极·水得生",acts:["温补艾灸","避秋燥","润燥"]},
+ {m:10,branch:"戌月",plan:"土旺·补土最佳",acts:["艾灸脾俞","山药芡实","固本"]},
+ {m:11,branch:"亥月",plan:"水旺·藏阳",acts:["艾灸命门","早睡藏精","避寒"]},
+ {m:12,branch:"子月",plan:"水极旺·温阳",acts:["艾灸关元","羊肉温补","忌生冷"]}
+];
+var YANGSHENG_BASE=["姜枣茶","八段锦"]; // 全年通用·每日基础（任何月份都显示）
+function renderHealth(){
+  var d=new Date(), m=d.getMonth()+1, ys=YANGSHENG[m-1];
+  $("hpBranch").textContent=ys.branch;
+  $("hpMonth").textContent=d.getFullYear()+"年"+m+"月";
+  $("hpPlan").textContent="方案："+ys.plan;
+  $("hpDate").textContent=todayStr()+" "+weekdayStr();
+  var hs=lsGet("health",{}), key=todayStr(), rec=hs[key]||{};
+  var acts=$("hpActs"); acts.innerHTML="";
+  ys.acts.forEach(function(a){ var c=document.createElement("button"); c.className="act-chip"+(rec[a]?" on":""); c.textContent=a;
+    c.onclick=function(){ var h2=lsGet("health",{}); var r=h2[key]||{}; r[a]=!r[a]; h2[key]=r; lsSet("health",h2); renderHealth(); }; acts.appendChild(c); });
+  var daily=$("hpDaily"); daily.innerHTML="";
+  YANGSHENG_BASE.forEach(function(a){ var c=document.createElement("button"); c.className="act-chip"+(rec[a]?" on":"")+(a==="姜枣茶"?" hot":""); c.textContent=a;
+    c.onclick=function(){ var h2=lsGet("health",{}); var r=h2[key]||{}; r[a]=!r[a]; h2[key]=r; lsSet("health",h2); renderHealth(); }; daily.appendChild(c); });
+  var allActs=ys.acts.concat(YANGSHENG_BASE);
+  var grid=$("heatGrid"); grid.innerHTML="";
+  var days=new Date(d.getFullYear(),m,0).getDate();
+  var doneDays=0,streak=0,curStreak=0;
+  for(var day=1;day<=days;day++){ var k=d.getFullYear()+"-"+pad(m)+"-"+pad(day); var r=hs[k]||{};
+    var cnt=allActs.filter(function(a){return r[a];}).length;
+    var c=document.createElement("div"); c.className="heat-cell"+(cnt>=allActs.length?" done":cnt>0?" part":"");
+    if(m===d.getMonth()+1&&day===d.getDate()) c.className+=" today";
+    c.textContent=day; grid.appendChild(c);
+    if(cnt>0){ doneDays++; curStreak++; streak=Math.max(streak,curStreak); } else { curStreak=0; } }
+  $("streak").textContent="当月已完成 "+doneDays+"/"+days+" 天 · 当前连续 "+curStreak+" 天 · 最长连续 "+streak+" 天";
+  renderYearPlan();
+}
+
+// ===== 全年节气方案总览（仿大数据信息系统）=====
+function renderYearPlan(){
+  var d=new Date(), curM=d.getMonth()+1;
+  var box=$("yearPlan"); box.innerHTML="";
+  YANGSHENG.forEach(function(ys){
+    var el=document.createElement("div"); el.className="ym"+(ys.m===curM?" cur":"");
+    var head=document.createElement("div"); head.className="ym-head";
+    head.innerHTML="<b>"+ys.m+"月 · "+ys.branch+"</b>"+(ys.m===curM?' <span class="ym-cur">本月</span>':"");
+    var plan=document.createElement("div"); plan.className="ym-plan"; plan.textContent=ys.plan;
+    var acts=document.createElement("div"); acts.className="health-acts";
+    ys.acts.forEach(function(a){ var c=document.createElement("span"); c.className="act-chip"; c.textContent=a; acts.appendChild(c); });
+    el.appendChild(head); el.appendChild(plan); el.appendChild(acts); box.appendChild(el);
+  });
+}
+
+// ===== 养生打卡 导出 / 导入（合并） =====
+function exportHealth(){
+  var data=lsGet("health",{});
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  var url=URL.createObjectURL(blob), a=document.createElement("a");
+  a.href=url; a.download="养生打卡_"+todayStr()+".json";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(url);},800);
+  alert("已导出 "+Object.keys(data).length+" 天打卡记录 → 养生打卡_"+todayStr()+".json");
+}
+function importHealth(file){
+  if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var inc=JSON.parse(e.target.result);
+      if(!inc||typeof inc!=="object"||Array.isArray(inc)) throw 0;
+      var cur=lsGet("health",{}), days=0, hits=0;
+      for(var dt in inc){ if(!Object.prototype.hasOwnProperty.call(inc,dt)) continue; days++;
+        if(!cur[dt]||typeof cur[dt]!=="object") cur[dt]={};
+        for(var act in inc[dt]){ if(!Object.prototype.hasOwnProperty.call(inc[dt],act)) continue;
+          if(!!inc[dt][act]){ cur[dt][act]=true; hits++; } } }
+      lsSet("health",cur); renderHealth();
+      alert("导入合并完成：处理 "+days+" 天，新增/保留勾选 "+hits+" 项（按日期×项目取并集，已有打卡不会被清除）");
+    }catch(err){ alert("导入失败：文件不是有效的养生打卡 JSON"); }
+  };
+  reader.readAsText(file);
+}
+
+renderHealth();
+</script>
+<script src="assets/site.js"></script>
+    <script>
+    (function(){
+      function sync(){
+        var d = document.body.classList.contains('dark-theme');
+        document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
+      }
+      sync();
+      document.addEventListener('DOMContentLoaded', sync);
+      if (window.MutationObserver) {
+        new MutationObserver(sync).observe(document.body, {attributes:true, attributeFilter:['class']});
+      }
+      if (typeof window.mobileBtn !== 'function') {
+        window.mobileBtn = function(){
+          var m = document.getElementById('mobile-menu');
+          if (m) m.classList.toggle('active');
+        };
+      }
+    })();
+    </script>
+<script>
+/* ===== 全部资料页：AES-256-GCM + PBKDF2 加密（与 Nav 隐藏链接、倒数日同一方案）=====
+   源码仅为密文 MATERIALS_PARAMS；区块默认折叠（hidden），点开显示锁定卡，输对 Dedicated 口令后还原并渲染 13 个资料入口 */
+const MATERIALS_PARAMS = {"iterations":100000,"salt":"PIBE2pgwTVv4HROTx39eKQ==","iv":"Jgt8ZUHqcq1vh8uV","ct":"gNqvWgUIDDKWXFM8mjdK4u3NHMIH+vpHrdJsfZEb+UVYJCQc13pYr+v/qjjhHm/TCoaTNRXcaQVCweD40YIiZ2xVSpOp6Rm7/4peFMu8HcwIrbCotJ6XS+vZwi1RlqGaqn5W1zEgS+XggpOtBIgmKbOnkVxiJL8aWJo4v8Vecva5NeW6ytqCHdVDVa3sTTvmApKU6sA9zOw5UL6KgnRqQMSzJqw1QgJeGTaaIgqSCeHrtacZu6CIqrJPw1rQpp9Pj44ZVarKkiBTzPiE6UAbK147UOsxO8XNG0F5cPUMQFPYOSENa+Ls16ne7cdOen2JNJGmpwxXA9zsEy+ctg3cHuClt6peK36wtb39fGHW1tsBHYv4/nrucIQIe1H86xki+C85Nc4M7M2tFaidJkWkf/U9LTfYyeuYO+ZWJ1+86NuC7YUBPvV6/jjdCJd2qJTanUHij9/OaAKHkkV540J2Knqk3OsX0amau5ZJlRY7URVRigJdj1CV19mEI4LA4Awp+CGCk4oPUKkirAaKAGrqVxrQMC891ix/8f7/3VmzIlQVS4d0jTtuGKy7nGf/AUuY/mIUz5jH1O0NEdUMV2haWGtU+KfzqdvdnsCjIigkY4NYD07DZ2SBsb8ZNEKbBIlNTuNXmWtRUeOlSdi91BlCDs+jXy7IaqKa0tcfDT4UZISJ2p08x9BJTKZr2WCbUh34FFK+QPjmsFv6cINSKnVgfLWPU1vBPsunpdXm+8ShzsXwiQma5fTcboLgffSrziuXlVtlJRwcULC3TWatkd4I0VgI3z+e6gKwO91QZVysjOgMkPkkNPNeUJsN9CnyrH1oLzkk/jPUy38X3CI5w4XoFDUHBcYcVGO1FQarka6+Y41y1K/j43ihB6HHNocP2Dm/tP4BKi5eRGUq49KOCB1TcxJUWf31TaNaFY2m+v3Ed1F4DFM7C0zyMMiuZAFudgzSF6+ziVf4MBsQLHqGEah2hufx8HaApDMC754l2XTBSwnnJ/jwuVMiMWJ+De97pFKcXca9ml1Il/mhZWqu9m3gOgxHT8r/I2hkIP9y5/XYthwtfnD70lud4yl/WL+2NP8XoGpwoptWg84PeChRI2NooLdYY+KSai47IdN5QPllEH6Rf1OJBy100GKzI93jaaRqvWeG7S7ahhcdDkfGiolauKYteG3CcgMBaBBZmiCLwZ4zispNpzp0fBGCF4yPHfFp8Z0I0HgZ1Pj6HXuoq2ym/hTIPmCthKeWw3A7wuEcGxXZBXNoOD263qh59I+TygG03xEHo8Mvgi44xJrr/YI29nKg9BaF1tQJ9z98/YL4dZrjppb4/osNYGA9c8RE"};
+let MATERIALS_DECRYPTED = null;
+function b64ToBytes(b){ return Uint8Array.from(atob(b), function(c){ return c.charCodeAt(0); }); }
+async function decryptMaterials(pw){
+  if(!window.crypto || !crypto.subtle){ alert('当前环境不支持解密（需 https 或 localhost 安全上下文）'); return false; }
+  try{
+    const enc = new TextEncoder();
+    const salt = b64ToBytes(MATERIALS_PARAMS.salt);
+    const iv = b64ToBytes(MATERIALS_PARAMS.iv);
+    const ct = b64ToBytes(MATERIALS_PARAMS.ct);
+    const baseKey = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']);
+    const key = await crypto.subtle.deriveKey({ name:'PBKDF2', salt:salt, iterations:MATERIALS_PARAMS.iterations, hash:'SHA-256' }, baseKey, { name:'AES-GCM', length:256 }, false, ['decrypt']);
+    const plainBuf = await crypto.subtle.decrypt({ name:'AES-GCM', iv:iv }, key, ct);
+    MATERIALS_DECRYPTED = JSON.parse(new TextDecoder().decode(plainBuf));
+    return true;
+  }catch(e){ return false; }
+}
+function renderMaterials(arr){
+  let html = '';
+  arr.forEach(function(it){
+    html += '<a class="item" href="'+it.h+'"><span class="emoji">'+it.e+'</span><span class="t"><b>'+it.t+'</b></span><span class="go">›</span></a>';
+  });
+  document.getElementById('materialsResult').innerHTML = html;
+}
+function showMaterialsLocked(){
+  document.getElementById('materialsResult').innerHTML = '<div class="cd-item"><div class="cd-info">'
+    + '<div class="cd-name">🔒 全部资料页已加密</div>'
+    + '<div class="cd-date">需输入口令查看</div></div>'
+    + '<div class="cd-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">'
+    + '<div class="cd-num" style="font-size:15px;color:var(--orange)">锁定</div>'
+    + '<button id="mat-unlock" style="padding:6px 12px;border:none;border-radius:8px;background:var(--blue);color:#fff;font-size:12px;cursor:pointer;">🔓 输入口令解锁</button>'
+    + '</div></div>';
+  const ub = document.getElementById('mat-unlock');
+  if(ub){ ub.addEventListener('click', openMatGate); }
+}
+function openMatGate(){
+  const gate = document.getElementById('mat-gate');
+  const pwInput = document.getElementById('mat-pw');
+  if(!gate) return;
+  gate.style.display = 'flex';
+  setTimeout(function(){ if(pwInput) pwInput.focus(); }, 50);
+}
+(function(){
+  const mt = document.querySelector('.mat-toggle');
+  const mb = document.getElementById('materialsBody');
+  const gate = document.getElementById('mat-gate');
+  const pwInput = document.getElementById('mat-pw');
+  if(!mt || !mb) return;
+  function closeGate(){ if(gate){ gate.style.display='none'; if(pwInput) pwInput.value=''; } }
+  async function doUnlock(){
+    const ok = await decryptMaterials(pwInput ? pwInput.value : '');
+    if(ok){ renderMaterials(MATERIALS_DECRYPTED); closeGate(); }
+    else { alert('口令错误'); }
+  }
+  mt.addEventListener('click', function(){
+    const open = mb.hasAttribute('hidden');
+    if(open){
+      mb.removeAttribute('hidden'); mt.setAttribute('aria-expanded','true');
+      if(MATERIALS_DECRYPTED){ renderMaterials(MATERIALS_DECRYPTED); } else { showMaterialsLocked(); }
+    } else { mb.setAttribute('hidden',''); mt.setAttribute('aria-expanded','false'); }
+  });
+  if(gate){
+    document.getElementById('mat-ok').addEventListener('click', doUnlock);
+    document.getElementById('mat-cancel').addEventListener('click', closeGate);
+    pwInput.addEventListener('keydown', function(e){ if(e.key==='Enter') doUnlock(); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+/* ============================================================
+   全站统一 Chrome + 白天/夜晚主题覆盖
+   注入方式：<link rel="stylesheet" href="assets/site.css"> 置于 </head> 前
+   作用：① 右上角统一工具栏（返回主页 + 日夜切换）
+        ② :root[data-theme="light"] 覆盖三套变量命名，使切换真正翻转
+   变量命名三族（全部在此覆盖）：
+     A. canonical : --bg/--card/--card2/--line/--txt/--sub/--red/--green/--orange/--yellow/--blue/--accent
+     B. chda/couple: --bg-base/--bg-surface/--bg-elevated/--bg-inset/--text-primary/--text-secondary/--text-muted/--accent*/--up/--down/--success/--warning/--danger/--border*/--divider
+     C. content : --bg/--surface/--surface2/--text/--text-muted/--amber*/--teal*/--coral/--red/--border
+   ============================================================ */
+
+/* ---------- 统一工具栏（置于标题行右侧 / 顶部栏右侧，不再悬浮） ---------- */
+.site-chrome{
+  display:inline-flex; gap:8px; align-items:center;
+  margin-left:auto;          /* 推到同一行最右 */
+  flex:0 0 auto;
+}
+.site-chrome a.back-home,
+.site-chrome button.theme-toggle{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:7px 13px; border-radius:999px;
+  font:600 13px/1 -apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  text-decoration:none; white-space:nowrap; cursor:pointer;
+  color:var(--txt);
+  background:var(--card);
+  background:color-mix(in srgb, var(--card) 82%, transparent);
+  border:1px solid var(--line);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+  box-shadow:0 2px 10px rgba(0,0,0,.28);
+  transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.site-chrome a.back-home:hover,
+.site-chrome button.theme-toggle:hover{
+  background:var(--card2);
+  border-color:var(--blue);
+  transform:translateY(-1px);
+}
+.site-chrome button.theme-toggle{ font-family:inherit; }
+.site-chrome .theme-toggle .ico{ font-size:15px; line-height:1; }
+
+/* 标题行：左侧标题（强制左对齐）+ 右侧工具栏 */
+.has-chrome{
+  display:flex !important;
+  justify-content:space-between;
+  align-items:center;
+  text-align:left;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+@media (max-width:600px){
+  .site-chrome a.back-home,
+  .site-chrome button.theme-toggle{ padding:6px 10px; font-size:12px; }
+  .site-chrome{ gap:6px; }
+}
+
+/* ============================================================
+   白天模式：覆盖三族变量（specificity 0,2,0 高于页面 :root 的 0,1,0）
+   ============================================================ */
+:root[data-theme="light"]{
+  /* A. canonical */
+  --bg:#f4f5f7; --card:#ffffff; --card2:#eef0f3; --line:#e2e5ea;
+  --txt:#1b1e24; --sub:#5c636e;
+  --red:#d83a3e; --green:#15803d; --orange:#b45309; --yellow:#a16207;
+  --blue:#2563eb; --accent:#ea580c;
+
+  /* B. chda / couple */
+  --bg-base:#f4f5f7; --bg-surface:#ffffff; --bg-elevated:#f0f2f5; --bg-inset:#e9ecf0;
+  --text-primary:#1b1e24; --text-secondary:#5c636e; --text-muted:#7a828c;
+  --accent:#d98324; --accent-hover:#c2741b; --accent-strong:#b3650f;
+  --up:#d83a3e; --down:#15803d; --success:#15803d; --warning:#b45309; --danger:#d83a3e;
+  --border:#e2e5ea; --border-strong:#cfd4db; --divider:#e8ebef;
+
+  /* C. content */
+  --surface:#ffffff; --surface2:#eef0f3;
+  --text:#1b1e24; --text-muted:#5c636e;
+  --amber:#b45309; --amber-dark:#f7ecd2;
+  --teal:#0f766e; --teal-dark:#d3ebe7;
+  --coral:#c2410c;
+  --border:rgba(0,0,0,.10);
+
+  /* 补齐交易自画像系列页面所用变量（其 :root 定义但未在上方覆盖，导致白天仍是深色） */
+  --panel:#ffffff; --panel2:#eef0f3; --txt2:#5c636e;
+  --gold:#b45309; --purple:#7c3aed;
+
+  /* 今日运程等页面语义变量（白天翻为深语义色，避免亮黄亮绿刺眼） */
+  --warn:#b45309; --warn2:#a16207; --ok:#15803d; --danger:#b91c1c;
+
+  /* 凶日档位（浅色模式：柔和底+深字，靠描边与色相区分） */
+  --yin:#fbdada; --yin-t:#b01818; --shen:#fbe2cc; --shen-t:#b5530a; --si:#f8ecc6; --si-t:#8a6506;
+
+  color-scheme:light;
+}
+
+/* 浅色模式：语义色块（信号框/纪律条/热力格/运程框/金框/结论框）由硬编码深色翻为浅色语义色，
+   并强制深色文字（覆盖下方 .ys-box/.keybox/.concl 的固定浅字 !important） */
+:root[data-theme="light"] .signal-box.ok{ background:#e9f5ec !important; border-color:#b7dcc0 !important; color:#15803d !important; }
+:root[data-theme="light"] .signal-box.info{ background:#e8f0fe !important; border-color:#b9d2f7 !important; color:#1e40af !important; }
+:root[data-theme="light"] .discipline.ok{ background:#e9f5ec !important; border-color:#b7dcc0 !important; color:#15803d !important; }
+:root[data-theme="light"] .heat-cell.part{ background:#e9f5ec !important; color:#15803d !important; }
+:root[data-theme="light"] .ys-box{ background:#e9f5ec !important; border-color:#b7dcc0 !important; color:#15803d !important; }
+:root[data-theme="light"] .keybox{ background:#fbf2dd !important; border-color:#e3c98f !important; color:#8a6506 !important; }
+:root[data-theme="light"] .concl{ background:#e9f5ec !important; border-color:#b7dcc0 !important; color:#15803d !important; }
+
+/* 今日运程：标签/日历凶日档位/节气标签，白天由亮黄亮绿翻为深语义色（浅底深字，柔和可读） */
+:root[data-theme="light"] .tag-red{ background:rgba(220,38,38,.10); color:#b91c1c; }
+:root[data-theme="light"] .tag-yellow{ background:rgba(180,83,9,.12); color:#b45309; }
+:root[data-theme="light"] .tag-green{ background:rgba(21,128,61,.12); color:#15803d; }
+:root[data-theme="light"] .jieqi{ background:rgba(180,83,9,.12); color:#b45309; }
+:root[data-theme="light"] .mini-calendar .yin{ background:#fde2e2; border:1px solid #dc2626; color:#b01818; font-weight:700; }
+:root[data-theme="light"] .mini-calendar .shen{ background:#dbeafe; border:1px solid #2563eb; color:#1d4ed8; font-weight:700; }
+:root[data-theme="light"] .mini-calendar .si{ background:#dcfce7; border:1px solid #16a34a; color:#15803d; font-weight:700; }
+:root[data-theme="light"] .ys-box .ys-sub{ color:#15803d; }
+
+/* 让浏览器原生控件/滚动条也跟随 */
+:root[data-theme="light"] body{ color-scheme:light; }
+:root:not([data-theme="light"]) body{ color-scheme:dark; }
+
+/* 切换瞬时平滑（仅颜色，避免布局抖动） */
+body{ transition:background-color .2s ease, color .2s ease; }
+
+/* ============================================================
+   浅色模式保底：代码块 & 深色高亮框
+   这些块若用 var(--card2) 背景 + 硬编码浅字，浅色模式会变白底浅字看不见；
+   统一强制为两模式都深色（代码块惯例），深色高亮框则固定浅字。
+   ============================================================ */
+code, pre, .flow, .tree{
+  background:#0d1117 !important;
+  color:#cbd5e1 !important;
+  border:1px solid #1f2630 !important;
+}
+/* 深色高亮框：背景为硬编码深色（不随主题翻转），文字须固定浅色，否则浅色模式深底深字 */
+.ys-box, .keybox, .concl{ color:#e6e8ec !important; }

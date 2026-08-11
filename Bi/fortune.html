@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>今日运程</title>
+<style>
+:root{--bg:#0f1115;--card:#1a1d24;--card2:#22262f;--line:#2a2e38;
+--txt:#e8eaed;--sub:#9aa0aa;--red:#ef4444;--green:#22c55e;
+--orange:#f59e0b;--yellow:#eab308;--blue:#3b82f6;--accent:#f97316;--warn:#fcd34d;--warn2:#fde047;--ok:#86efac;--danger:#fca5a5}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--txt);font-size:16px;line-height:1.5;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:680px;margin:0 auto;padding:20px 16px 60px}
+.back{display:inline-block;margin-bottom:16px;color:var(--blue);text-decoration:none;font-size:13px}
+h1{font-size:20px;font-weight:800;margin-bottom:4px}
+.sub{font-size:12.5px;color:var(--sub);margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px}
+.fortune-head{text-align:center;padding:10px 0 16px;border-bottom:1px dashed var(--line);margin-bottom:16px}
+.fortune-head .date{font-size:15px;color:var(--sub)}
+.fortune-head .ganzhi{font-size:28px;font-weight:700;margin:6px 0}
+.fortune-head .jieqi{display:inline-block;background:rgba(245,158,11,.15);color:var(--warn);padding:3px 10px;border-radius:10px;font-size:12px;font-weight:600}
+.section-title{font-size:14px;font-weight:600;margin:18px 0 10px;padding-left:8px;border-left:3px solid var(--blue)}
+.tag{display:inline-block;padding:3px 8px;border-radius:6px;font-size:12px;font-weight:600;margin-right:6px}
+.tag-red{background:rgba(239,68,68,.15);color:var(--danger)}
+.tag-yellow{background:rgba(245,158,11,.15);color:var(--warn)}
+.tag-green{background:rgba(34,197,94,.15);color:var(--ok)}
+.list{list-style:none;padding:0}
+.list li{padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;display:flex;gap:8px}
+.list li:last-child{border-bottom:none}
+.mini-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px;text-align:center;font-size:11px}
+.mini-calendar .d{padding:4px 0;border-radius:4px}
+.mini-calendar .head{color:var(--sub);font-weight:600}
+.mini-calendar .today{background:var(--blue);color:#fff;font-weight:700}
+/* 凶日三档：红/蓝/绿 三原色系（色相最远、区分最强）；格子内另标 寅/申/巳 字，不纯靠颜色 */
+.mini-calendar .yin{background:#dc2626;color:#fff;border:1px solid #f87171;font-weight:700}
+.mini-calendar .shen{background:#2563eb;color:#fff;border:1px solid #60a5fa;font-weight:700}
+.mini-calendar .si{background:#16a34a;color:#fff;border:1px solid #4ade80;font-weight:700}
+.mini-calendar .fz{display:block;font-size:9px;line-height:1.1;margin-top:1px;font-weight:700;opacity:.92}
+.ys-box{background:#12271c;border:1px solid #1d4430;border-radius:10px;padding:10px 12px;margin-bottom:14px}
+.ys-box .ys-sub{font-size:12px;color:var(--ok);margin-bottom:8px;font-weight:600}
+.note{font-size:12px;color:var(--sub);margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+</style>
+<link rel="stylesheet" href="assets/site.css">
+<script>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t="light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="bi-chic.css">
+<script src="/js/script.js"></script>
+</head>
+<body>
+    <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">ChDa&#39;s Station</a></div>
+            <div class="menu navbar-right">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+<input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">ChDa&#39;s Station</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+</div>
+        </div>
+    </nav>
+    </header>
+        <div class="wrap">
+
+<div class="card">
+<div id="fortuneResult"></div>
+</div>
+<div class="note">⚠️ 本页为个人资料查阅入口，不构成投资建议。行情数据以券商实时为准，严格执行止损与仓位纪律。</div>
+<script>
+// ========== 工具函数 ==========
+function $(id){ return document.getElementById(id); }
+function pad(n){ return n<10?'0'+n:n; }
+
+// 干支计算
+const GAN = '甲乙丙丁戊己庚辛壬癸';
+const ZHI = '子丑寅卯辰巳午未申酉戌亥';
+function jdn(y,m,d){
+    if(m<=2){ y-=1; m+=12; }
+    const A = Math.floor(y/100);
+    const B = 2 - A + Math.floor(A/4);
+    return Math.floor(365.25*(y+4716)) + Math.floor(30.6001*(m+1)) + d + B - 1524;
+}
+function ganzhi(y,m,d){
+    const n = (jdn(y,m,d) + 49) % 60;
+    return { gz: GAN[n%10]+ZHI[n%12], n: n, gan: GAN[n%10], zhi: ZHI[n%12] };
+}
+
+// 月令（节气月）边界表：任何年份通用（±1天误差可接受）
+const MONTH_BOUND = [
+    {mm:1, dd:6,  branch:'丑月', jieqi:'小寒'},
+    {mm:2, dd:4,  branch:'寅月', jieqi:'立春'},
+    {mm:3, dd:6,  branch:'卯月', jieqi:'惊蛰'},
+    {mm:4, dd:5,  branch:'辰月', jieqi:'清明'},
+    {mm:5, dd:6,  branch:'巳月', jieqi:'立夏'},
+    {mm:6, dd:6,  branch:'午月', jieqi:'芒种'},
+    {mm:7, dd:7,  branch:'未月', jieqi:'小暑'},
+    {mm:8, dd:7,  branch:'申月', jieqi:'立秋'},
+    {mm:9, dd:8,  branch:'酉月', jieqi:'白露'},
+    {mm:10,dd:8,  branch:'戌月', jieqi:'寒露'},
+    {mm:11,dd:7,  branch:'亥月', jieqi:'立冬'},
+    {mm:12,dd:7,  branch:'子月', jieqi:'大雪'}
+];
+function getMonthInfo(y,m,d){
+    let info = MONTH_BOUND[MONTH_BOUND.length-1];
+    for(let i=0;i<MONTH_BOUND.length;i++){
+        if(m>MONTH_BOUND[i].mm || (m===MONTH_BOUND[i].mm && d>=MONTH_BOUND[i].dd)) info = MONTH_BOUND[i];
+    }
+    return info;
+}
+// 凶日判定（按地支，任何年份通用）：寅降级 / 申降档 / 巳预热
+function fierceByZhi(zhi){
+    if(zhi==='寅') return '寅日';
+    if(zhi==='申') return '申日';
+    if(zhi==='巳') return '巳日';
+    return '';
+}
+const ZHI_FIERCE = { '寅':'yin', '申':'shen', '巳':'si' };
+
+// 当月养生（按节气月 · 壬水命局 喜火土木 / 忌金水）
+const YANGSHENG = {
+    '寅月':{s:'春木萌动，水尚寒',   p:['疏肝理气，少酸多甘，晨起拉伸','夜卧早起防春困，情志舒展','可温和艾灸足三里，忌大汗伤阳']},
+    '卯月':{s:'肝木最旺',           p:['养肝为主，戒怒，踏青舒气','多食青蔬芽菜，少油腻','保证睡眠，目得血而能视']},
+    '辰月':{s:'湿土当令，脾易受困', p:['健脾祛湿：山药薏米粥常备','少生冷甜腻，防湿气内停','午后散步利湿，衣物防潮']},
+    '巳月':{s:'火气渐升，喜神得令', p:['养心为先，午时小憩','忌大汗耗阴，适量补水','精神佳但防心火过旺易怒']},
+    '午月':{s:'火最旺，命局所喜',   p:['养心安神，午觉必睡','忌贪凉饮冷过度','顺势规划，能量充足']},
+    '未月':{s:'暑湿燥土，脾胃承压', p:['健脾化湿，饮食清淡','防暑补水，避开烈日','绿豆冬瓜利湿，莫贪冰']},
+    '申月':{s:'金旺生水，忌神得令', p:['补火为要：艾灸关元/足三里','健脾土：山药薏米，忌寒凉生冷','早睡养肺，整体降档保守']},
+    '酉月':{s:'金最旺，凉燥渐起',   p:['润肺防燥，温饮忌冷','仍避寒凉，适当温补','早睡收敛神气']},
+    '戌月':{s:'燥土渐寒，阳气收敛', p:['温补脾肾，艾灸命门','添衣防感冒，避夜寒','少辛增酸，润燥']},
+    '亥月':{s:'水旺为忌，冬藏伊始', p:['补肾藏精，防寒保暖','少房事，温水足浴','温养为主，勿耗散']},
+    '子月':{s:'水最旺，一阳初生',   p:['养藏为本，早睡晚起','冬至前后温补，避寒就温','静心少虑，护阳气']},
+    '丑月':{s:'寒湿地冻，隆冬',     p:['补肾阳，食温热（姜枣羊肉）','避寒湿，护关节','少动多藏，养精蓄锐']}
+};
+
+// ========== 今日运程 ==========
+function renderFortune(){
+    const now = new Date();
+    const y=now.getFullYear(), m=now.getMonth()+1, d=now.getDate();
+    const gd = ganzhi(y,m,d);
+    const mi = getMonthInfo(y,m,d);
+    const zm = mi.branch;
+    const jq = mi.jieqi;
+    const fierce = fierceByZhi(gd.zhi);
+
+    let statusTag = '<span class="tag tag-green">平日可操作</span>';
+    let statusText = '非申/寅/巳凶日档，可正常看盘。';
+    if(fierce === '寅日'){ statusTag = '<span class="tag tag-red">寅日 · 降级观察</span>'; statusText = '寅冲寿元星根，降级为观察日，复盘但不冲动出手。'; }
+    else if(fierce === '申日'){ statusTag = '<span class="tag tag-yellow">申日 · 降档不主动</span>'; statusText = '申冲太岁引动，仓位降低，不主动进攻。'; }
+    else if(fierce === '巳日'){ statusTag = '<span class="tag tag-yellow">巳日 · 预热观望</span>'; statusText = '巳参与三刑，预热观望，不急于动手。'; }
+
+    // 三刑年判定：年支为申 → 寅巳申三刑年（如2028戊申年）
+    const yearBranch = ZHI[(y-4)%12];
+    const isSanXingNian = (yearBranch === '申');
+    const SANXING_MONTH = {
+        '寅月': { lvl:'🔴',   desc:'三刑引动·冲寿元星根·按月档降级观察',  posLimit:'8%' },
+        '巳月': { lvl:'⚠️',   desc:'三刑参与·预热观望·不急于动手',        posLimit:'8%' },
+        '申月': { lvl:'🔴🔴🔴', desc:'三刑峰值·冲太岁·降档不主动',        posLimit:'8%' }
+    };
+    let monthWarn = '';
+    if (isSanXingNian && SANXING_MONTH[zm]) {
+        const sx = SANXING_MONTH[zm];
+        monthWarn = '<p style="margin-top:10px;color:var(--danger);background:rgba(239,68,68,.1);padding:8px 10px;border-radius:8px;font-size:13px">'+sx.lvl+' <strong>'+y+'年为三刑年（申年）</strong>，当前'+zm+'属三刑月（'+sx.desc+'），仓位 ≤'+sx.posLimit+'。</p>';
+    } else if (zm === '申月') {
+        monthWarn = '<p style="margin-top:10px;color:var(--warn);background:rgba(245,158,11,.1);padding:8px 10px;border-radius:8px;font-size:13px">⚠️ 当前在<strong>申月</strong>（申金生水，为命局忌神月），整体宜降档保守，仓位维持 ≤5%。</p>';
+    }
+
+    // 当月凶日日历（任意月份自动计算，按地支判定）
+    const firstDow = new Date(y, m-1, 1).getDay();
+    const WD = ['日','一','二','三','四','五','六'];
+    let calHtml = '<div class="mini-calendar">';
+    for(let h=0;h<7;h++) calHtml += '<div class="head">'+WD[h]+'</div>';
+    for(let i=0;i<firstDow;i++) calHtml += '<div class="d"></div>';
+    const dim = new Date(y, m, 0).getDate();
+    for(let i=1;i<=dim;i++){
+        const z = ganzhi(y,m,i).zhi;
+        let c = 'd';
+        if(i===d) c += ' today';
+        else if(ZHI_FIERCE[z]) c += ' '+ZHI_FIERCE[z];
+        if(ZHI_FIERCE[z] && i!==d){
+            calHtml += '<div class="'+c+'">'+i+'<span class="fz">'+z+'</span></div>';
+        } else {
+            calHtml += '<div class="'+c+'">'+i+'</div>';
+        }
+    }
+    calHtml += '</div>';
+    const legend = '<div style="margin-top:8px;font-size:12px;color:var(--sub);text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><span style="background:#dc2626;color:#fff;padding:2px 8px;border-radius:5px;font-weight:600">● 寅 降级（最凶）</span><span style="background:#2563eb;color:#fff;padding:2px 8px;border-radius:5px;font-weight:600">● 申 降档</span><span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:5px;font-weight:600">● 巳 预热</span></div>';
+
+    const html = `
+        <div class="fortune-head">
+            <div class="date">${y}年${pad(m)}月${pad(d)}日</div>
+            <div class="ganzhi">${gd.gz}日</div>
+            <div class="jieqi">${jq ? '当前月令：'+zm+'（'+jq+'起）' : ''}</div>
+        </div>
+
+        <div style="margin-bottom:14px">${statusTag}<span style="font-size:13px;color:var(--sub)">${statusText}</span></div>
+        ${monthWarn}
+
+        <div class="section-title">📌 持仓纪律速查</div>
+        <ul class="list">
+            <li><span>🔴</span><div><strong>159842 券商ETF：</strong>成本 1.0545，铁律止损锚 <strong>1.00</strong>，反弹 1.05–1.06 减仓，止盈 1.21/1.26。</div></li>
+            <li><span>⚠️</span><div><strong>仓位红线：</strong>159842 占比超 90%，任何反弹优先降仓回笼现金。</div></li>
+            <li><span>🚫</span><div><strong>申月基调：</strong>忌神月，不主动开新仓，只做持仓风控。</div></li>
+        </ul>
+
+        <div class="section-title">📅 ${y}年${m}月 凶日日历</div>
+        ${calHtml}
+        ${legend}
+
+        <div class="section-title">🌿 当月养生 · ${zm}</div>
+        <div class="ys-box">
+            <div class="ys-sub">${YANGSHENG[zm].s} · 壬水命 喜火土木 / 忌金水</div>
+            <ul class="list">
+                ${YANGSHENG[zm].p.map(t=>'<li><span>🌱</span><div>'+t+'</div></li>').join('')}
+            </ul>
+        </div>
+
+        <div class="section-title">💡 今日提醒</div>
+        <ul class="list">
+            <li><span>1️⃣</span><div>先查日档：非寅/申/巳日才可正常操作。</div></li>
+            <li><span>2️⃣</span><div>再看月档：${isSanXingNian && SANXING_MONTH[zm] ? zm+'为三刑月，仓位≤8%' : zm==='申月'?'申月降档，仓位≤5%' : '当月无特殊月档' }。</div></li>
+            <li><span>3️⃣</span><div>最后看个股：用「个股实时诊断」页过一遍实时资金流。</div></li>
+        </ul>
+    `;
+    $('fortuneResult').innerHTML = html;
+}
+
+// 初始化
+renderFortune();
+</script>
+</div>
+<script src="assets/site.js"></script>
+    <script>
+    (function(){
+      function sync(){
+        var d = document.body.classList.contains('dark-theme');
+        document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
+      }
+      sync();
+      document.addEventListener('DOMContentLoaded', sync);
+      if (window.MutationObserver) {
+        new MutationObserver(sync).observe(document.body, {attributes:true, attributeFilter:['class']});
+      }
+      if (typeof window.mobileBtn !== 'function') {
+        window.mobileBtn = function(){
+          var m = document.getElementById('mobile-menu');
+          if (m) m.classList.toggle('active');
+        };
+      }
+    })();
+    </script>
+</body>
+</html>

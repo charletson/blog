@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<!--
+  ChDa 投资管理系统 v1.0.0 · 品牌落地页原型
+  设计系统：Binance 风冷底 + 琥珀强调 · A股「红涨绿跌」
+  结构模板：web-prototype（5 区块：Hero / 核心能力 / 方法论 / 风控体系 / 信任·CTA）
+  生成角色：原型构建师 筑原型（Zhu）· 自包含单文件，无外部依赖（字体有系统 fallback）
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ChDa 投资管理系统 v1.0.0 · 个人投资的逆向资金流决策终端</title>
+<style>
+  /* ===== 字体（可选网络字体，离线自动回退到系统字体栈） ===== */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  /* ===== 设计令牌（Phase 2 定稿，勿自创配色） ===== */
+  :root {
+    /* 冷底层级 */
+    --bg-base: #0A0E13;
+    --bg-surface: #111722;
+    --bg-elevated: #182030;
+    --bg-inset: #0E1320;
+    /* 文字 */
+    --text-primary: #E6EAF2;
+    --text-secondary: #9AA4B8;
+    --text-muted: #7C879B;
+    /* 琥珀强调 */
+    --accent: #F5A623;
+    --accent-hover: #FFB84D;
+    --accent-strong: #FF8A00;
+    /* A股：红涨绿跌 */
+    --up: #E5484D;
+    --down: #2EBB6C;
+    --success: #2EBB6C;
+    --warning: #F5A623;
+    --danger: #E5484D;
+    /* 描边 */
+    --border: #232B3A;
+    --border-strong: #2E384A;
+    --divider: #1C2433;
+
+    /* 排版 */
+    --font-sans: "Inter", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, "Noto Sans Mono CJK SC", monospace;
+
+    /* 间距阶梯 */
+    --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+    --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
+
+    /* 圆角 */
+    --r-sm: 4px; --r-md: 8px; --r-lg: 12px;
+
+    /* 栅格 */
+    --container: 1200px;
+    --gutter: 24px;
+
+    /* 动效 */
+    --t-hover: 150ms ease-out;
+    --t-signal: 200ms ease-out;
+  }
+
+  /* ===== 基础重置 ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: var(--bg-base);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  ::selection { background: rgba(245, 166, 35, 0.25); color: var(--text-primary); }
+
+  /* 细网格底纹，强化交易终端气质（极弱） */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(var(--divider) 1px, transparent 1px),
+      linear-gradient(90deg, var(--divider) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== 布局容器 ===== */
+  .container {
+    width: 100%;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--s-5);
+    position: relative;
+    z-index: 1;
+  }
+  .section { padding: var(--s-8) 0; border-top: 1px solid var(--divider); position: relative; z-index: 1; }
+  .section:first-of-type { border-top: none; }
+
+  /* 区块眉标（编号 + 标签，等宽字体技术感） */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin-bottom: var(--s-4);
+  }
+  .eyebrow .idx { color: var(--accent); }
+  .eyebrow .rule { flex: 1; height: 1px; background: var(--divider); }
+
+  .section-title { font-size: 24px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
+  .section-sub { color: var(--text-secondary); margin-top: var(--s-3); max-width: 64ch; font-size: 15px; }
+
+  /* ===== 按钮 ===== */
+  .btn {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    font-family: var(--font-sans); font-size: 14px; font-weight: 600;
+    padding: 10px 20px; border-radius: var(--r-md);
+    border: 1px solid transparent; cursor: pointer;
+    transition: transform var(--t-hover), background var(--t-hover), border-color var(--t-hover), box-shadow var(--t-hover);
+    white-space: nowrap;
+  }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn--primary { background: var(--accent); color: #0A0E13; }
+  .btn--primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 20px -8px rgba(245,166,35,0.5); }
+  .btn--secondary { background: transparent; border-color: var(--border-strong); color: var(--text-primary); }
+  .btn--secondary:hover { background: var(--bg-elevated); transform: translateY(-1px); }
+  .btn--lg { padding: 13px 28px; font-size: 15px; }
+  .btn .arrow { font-family: var(--font-mono); }
+
+  /* ===== 卡片 / 面板 ===== */
+  .card { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--r-md); padding: 20px; }
+  .panel { background: var(--bg-inset); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-5); }
+  .panel-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-4); }
+  .panel-title { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; font-family: var(--font-mono); }
+
+  /* ===== 徽章 / 信号 ===== */
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500; line-height: 1.4;
+    background: rgba(245, 166, 35, 0.12); color: var(--accent);
+    border-radius: var(--r-sm); padding: 2px 8px;
+    border: 1px solid transparent;
+    transition: border-color var(--t-signal), box-shadow var(--t-signal), background var(--t-signal);
+  }
+  .badge--up { background: rgba(229, 72, 77, 0.12); color: var(--up); }
+  .badge--down { background: rgba(46, 187, 108, 0.12); color: var(--down); }
+  .badge--muted { background: rgba(94, 102, 120, 0.14); color: var(--text-secondary); }
+  .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  /* 信号行：可点击高亮（轻交互） */
+  .signal-row {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--s-4);
+    padding: var(--s-3); border-radius: var(--r-sm);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: border-color var(--t-signal), background var(--t-signal), box-shadow var(--t-signal);
+  }
+  .signal-row:hover, .signal-row.is-active {
+    border-color: var(--accent);
+    background: rgba(245, 166, 35, 0.06);
+    box-shadow: 0 0 0 1px rgba(245, 166, 35, 0.35), 0 0 18px -6px rgba(245, 166, 35, 0.45);
+  }
+  .signal-row .code { font-family: var(--font-mono); font-size: 13px; color: var(--text-primary); }
+  .signal-row .name { color: var(--text-secondary); font-size: 13px; }
+
+  /* 涨跌色 */
+  .up { color: var(--up); }
+  .down { color: var(--down); }
+  .accent { color: var(--accent); }
+  .mono { font-family: var(--font-mono); }
+  .muted { color: var(--text-muted); }
+  .sec { color: var(--text-secondary); }
+
+  /* ===== 顶栏导航 ===== */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(10, 14, 19, 0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    transition: border-color var(--t-hover), box-shadow var(--t-hover);
+  }
+  .topbar.scrolled { box-shadow: 0 8px 30px -20px rgba(0,0,0,0.9); border-bottom-color: var(--border-strong); }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: var(--s-5); }
+  .brand { display: flex; align-items: center; gap: var(--s-3); }
+  .brand .logo {
+    width: 30px; height: 30px; border-radius: var(--r-sm);
+    background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+    display: grid; place-items: center;
+    font-family: var(--font-mono); font-weight: 700; color: #0A0E13; font-size: 15px;
+  }
+  .brand .name { font-weight: 700; letter-spacing: 0.02em; font-size: 16px; }
+  .brand .ver {
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+    border: 1px solid var(--border); border-radius: var(--r-sm); padding: 1px 6px; margin-left: 2px;
+  }
+  .nav-links { display: flex; align-items: center; gap: var(--s-6); }
+  .nav-links a { font-size: 14px; color: var(--text-secondary); transition: color var(--t-hover); }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-cta { display: flex; align-items: center; gap: var(--s-3); }
+
+  /* ===== HERO ===== */
+  .hero { padding: var(--s-8) 0 var(--s-7); }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: var(--s-7); align-items: center; }
+  .hero-eyebrow {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); display: inline-flex; align-items: center; gap: var(--s-2); margin-bottom: var(--s-5);
+  }
+  .hero-eyebrow .live { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 rgba(245,166,35,0.6); animation: pulse 2.2s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(245,166,35,0.55);} 70% { box-shadow: 0 0 0 8px rgba(245,166,35,0);} 100% { box-shadow: 0 0 0 0 rgba(245,166,35,0);} }
+  .hero h1 {
+    font-size: 44px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em;
+    margin-bottom: var(--s-5);
+  }
+  .hero h1 .accent { color: var(--accent); }
+  .hero .lead { font-size: 16px; color: var(--text-secondary); max-width: 52ch; margin-bottom: var(--s-6); }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-bottom: var(--s-6); }
+  .hero-contact { display: flex; align-items: center; gap: var(--s-5); font-size: 13px; color: var(--text-secondary); flex-wrap: wrap; }
+  .hero-contact .ci { display: inline-flex; align-items: center; gap: var(--s-2); }
+  .hero-contact .ci svg { width: 15px; height: 15px; stroke: var(--text-muted); }
+  .hero-contact a:hover { color: var(--accent); }
+
+  /* HERO 右侧：终端看板示意（CSS/SVG） */
+  .terminal { background: var(--bg-inset); border: 1px solid var(--border-strong); border-radius: var(--r-lg); overflow: hidden; }
+  .terminal-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--divider);
+    font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary);
+  }
+  .terminal-bar .dots { display: flex; gap: 6px; }
+  .terminal-bar .dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); }
+  .terminal-bar .status { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); }
+  .terminal-bar .status .live { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2.2s infinite; }
+  .terminal-body { padding: var(--s-3) var(--s-4) var(--s-4); }
+  .wl-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: var(--s-3); padding: var(--s-2) 0; border-bottom: 1px solid var(--divider); }
+  .wl-row:last-child { border-bottom: none; }
+  .wl-row .tk { font-family: var(--font-mono); font-size: 13px; color: var(--text-primary); }
+  .wl-row .nm { font-size: 12px; color: var(--text-muted); }
+  .wl-row .chg { font-family: var(--font-mono); font-size: 13px; text-align: right; min-width: 56px; }
+  .wl-row .spark { width: 54px; height: 22px; }
+  .terminal-foot { display: flex; align-items: center; justify-content: space-between; padding: var(--s-3) var(--s-4); border-top: 1px solid var(--divider); background: var(--bg-surface); }
+  .terminal-foot .lbl { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; }
+
+  /* ===== 核心能力 ===== */
+  .cap-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gutter); margin-top: var(--s-6); }
+  .cap-watch { grid-column: span 5; }
+  .cap-flow { grid-column: span 4; }
+  .cap-board { grid-column: span 3; }
+
+  /* 数据表（多标的跟踪） */
+  .dtable { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .dtable thead th {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-secondary); text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border);
+  }
+  .dtable thead th.num { text-align: right; }
+  .dtable tbody tr { height: 32px; border-bottom: 1px solid var(--divider); }
+  .dtable tbody tr:nth-child(even) { background: var(--bg-surface); }
+  .dtable td { padding: 8px 12px; }
+  .dtable .code { font-family: var(--font-mono); color: var(--text-primary); }
+  .dtable .name { color: var(--text-secondary); }
+  .dtable .chg { font-family: var(--font-mono); text-align: right; }
+  .dtable .tag { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+  .table-note { margin-top: var(--s-3); font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+
+  /* 资金流信号列表 */
+  .flow-list { display: flex; flex-direction: column; gap: var(--s-2); }
+  .flow-stat { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--s-3); }
+  .flow-stat .big { font-family: var(--font-mono); font-size: 22px; font-weight: 600; color: var(--accent); }
+  .flow-stat .sub { font-size: 12px; color: var(--text-muted); }
+
+  /* 数据看板示意（SVG 面积图） */
+  .board-figure { width: 100%; height: auto; display: block; }
+  .board-legend { display: flex; gap: var(--s-4); margin-top: var(--s-3); font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
+  .board-legend i { display: inline-block; width: 10px; height: 2px; vertical-align: middle; margin-right: 5px; }
+
+  /* ===== 方法论 ===== */
+  .method-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gutter); margin-top: var(--s-6); }
+  .flow-block { grid-column: span 12; }
+  .sanfa-block { grid-column: span 8; }
+  .verify-block { grid-column: span 4; }
+
+  /* 壬寅流程（先选出 → 再二次筛选） */
+  .flow-diagram { display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; gap: var(--s-4); }
+  .flow-step { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--r-md); padding: var(--s-5); }
+  .flow-step .step-no { font-family: var(--font-mono); font-size: 12px; color: var(--accent); letter-spacing: 0.1em; }
+  .flow-step h3 { font-size: 18px; font-weight: 600; margin: var(--s-2) 0; }
+  .flow-step p { font-size: 13px; color: var(--text-secondary); }
+  .flow-step .formula { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin-top: var(--s-3); padding: var(--s-2) var(--s-3); background: var(--bg-inset); border-radius: var(--r-sm); border: 1px solid var(--divider); }
+  .flow-arrow { display: grid; place-items: center; color: var(--border-strong); }
+  .flow-arrow svg { width: 32px; height: 32px; }
+
+  /* 三法框架 */
+  .sanfa-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); margin-top: var(--s-4); }
+  .sanfa-card { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--r-md); padding: var(--s-5); }
+  .sanfa-card .glyph { font-family: var(--font-mono); font-size: 13px; color: var(--accent); letter-spacing: 0.1em; }
+  .sanfa-card h4 { font-size: 16px; font-weight: 600; margin: var(--s-2) 0 var(--s-3); }
+  .sanfa-card p { font-size: 13px; color: var(--text-secondary); }
+  .sanfa-card .fig { margin-top: var(--s-4); width: 100%; height: 96px; display: block; }
+
+  /* 多维验证（RSI + 周线KDJ） */
+  .verify-list { display: flex; flex-direction: column; gap: var(--s-3); margin-top: var(--s-4); }
+  .verify-item { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--r-md); padding: var(--s-4); }
+  .verify-item .v-head { display: flex; align-items: center; justify-content: space-between; }
+  .verify-item .v-name { font-family: var(--font-mono); font-size: 13px; font-weight: 600; }
+  .verify-item .v-val { font-family: var(--font-mono); font-size: 18px; }
+  .verify-item .v-desc { font-size: 12px; color: var(--text-muted); margin-top: var(--s-2); }
+
+  /* ===== 风控体系 ===== */
+  .risk-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gutter); margin-top: var(--s-6); }
+  .risk-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: var(--s-6); position: relative; overflow: hidden; }
+  .risk-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border-strong); transition: background var(--t-hover); }
+  .risk-card:hover::before { background: var(--accent); }
+  .risk-card .rk { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); letter-spacing: 0.1em; }
+  .risk-card .big { font-family: var(--font-mono); font-size: 30px; font-weight: 600; color: var(--text-primary); margin: var(--s-3) 0 var(--s-2); letter-spacing: -0.02em; }
+  .risk-card .big .unit { font-size: 16px; color: var(--text-secondary); }
+  .risk-card h4 { font-size: 16px; font-weight: 600; margin-bottom: var(--s-2); }
+  .risk-card p { font-size: 13px; color: var(--text-secondary); }
+  .risk-card .gauge { margin-top: var(--s-4); height: 6px; background: var(--bg-inset); border-radius: 999px; overflow: hidden; }
+  .risk-card .gauge i { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+
+  /* ===== 信任 / CTA ===== */
+  .cta { text-align: center; padding: var(--s-8) 0; }
+  .cta h2 { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+  .cta h2 .accent { color: var(--accent); }
+  .cta p { color: var(--text-secondary); margin: var(--s-4) auto var(--s-6); max-width: 56ch; font-size: 15px; }
+  .cta-actions { display: flex; gap: var(--s-3); justify-content: center; flex-wrap: wrap; margin-bottom: var(--s-7); }
+  .cta-contact { display: inline-flex; gap: var(--s-6); align-items: center; justify-content: center; padding: var(--s-4) var(--s-6); border: 1px solid var(--border); border-radius: var(--r-md); background: var(--bg-surface); flex-wrap: wrap; }
+  .cta-contact .ci { display: inline-flex; align-items: center; gap: var(--s-2); font-size: 13px; color: var(--text-secondary); font-family: var(--font-mono); }
+  .cta-contact .ci svg { width: 16px; height: 16px; stroke: var(--accent); }
+  .cta-contact a:hover { color: var(--accent); }
+
+  /* ===== 页脚 ===== */
+  .footer { border-top: 1px solid var(--divider); padding: var(--s-6) 0; }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; }
+  .footer .brand .name { font-size: 14px; }
+  .footer .note { font-size: 12px; color: var(--text-muted); max-width: 64ch; line-height: 1.5; }
+  .footer .copy { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+
+  /* ===== 响应式（桌面优先，≤768px 单列可读） ===== */
+  @media (max-width: 980px) {
+    .hero-grid { grid-template-columns: 1fr; gap: var(--s-6); }
+    .cap-watch, .cap-flow, .cap-board { grid-column: span 12; }
+    .sanfa-block, .verify-block { grid-column: span 12; }
+  }
+  @media (max-width: 768px) {
+    :root { --s-8: 48px; --s-7: 36px; }
+    .nav-links { display: none; }
+    .hero h1 { font-size: 32px; }
+    .cta h2 { font-size: 24px; }
+    .flow-diagram { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); padding: var(--s-2) 0; }
+    .risk-grid { grid-template-columns: 1fr; }
+    .sanfa-grid { grid-template-columns: 1fr; }
+    .dtable-wrap { overflow-x: auto; }
+    .dtable { min-width: 420px; }
+  }
+  @media (max-width: 480px) {
+    .container { padding: 0 var(--s-4); }
+    .hero-actions .btn, .cta-actions .btn { flex: 1 1 100%; justify-content: center; }
+  }
+
+  /* ===== 尊重 prefers-reduced-motion ===== */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<link rel="stylesheet" href="assets/site.css">
+<script>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t="light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="bi-chic.css">
+<script src="/js/script.js"></script>
+</head>
+<body>
+    <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">ChDa&#39;s Station</a></div>
+            <div class="menu navbar-right">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+<input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">ChDa&#39;s Station</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+</div>
+        </div>
+    </nav>
+    </header>
+        <!-- ============ 顶栏导航 ============ -->
+<header class="topbar" id="topbar">
+  <div class="container nav">
+    <a class="brand" href="#top" aria-label="ChDa 投资管理系统">
+      <span class="logo">Ch</span>
+      <span class="name">ChDa</span>
+      <span class="ver">v1.0.0</span>
+    </a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#capabilities">核心能力</a>
+      <a href="#method">方法论</a>
+      <a href="#risk">风控体系</a>
+      <a href="#contact">联系</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn--primary" href="#contact">下载 v1.0.0</a>
+    </div>
+  
+    <div class="site-chrome"><a class="back-home" href="index.html">‹ 返回主页</a></div>
+  </div>
+  
+</header>
+
+<main id="top">
+
+  <!-- ============ 1. HERO ============ -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="hero-eyebrow"><span class="live"></span>个人投资 · 逆向资金流决策终端</span>
+        <h1>个人投资的<br><span class="accent">逆向资金流</span>决策终端</h1>
+        <p class="lead">ChDa 投资管理系统，一款面向个人投资者的桌面终端。以「逆向资金流」为核心，融合壬寅交易系统与三法框架，把多标的跟踪、资金流信号与风控纪律，收束进一个冷静、克制、数据密集的界面。</p>
+        <div class="hero-actions">
+          <a class="btn btn--primary btn--lg" href="#contact">下载 v1.0.0 <span class="arrow">↓</span></a>
+          <a class="btn btn--secondary btn--lg" href="#method">查看方法论</a>
+        </div>
+        <div class="hero-contact">
+          <span class="ci">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            GitHub
+          </span>
+          <span class="ci">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+            邮箱
+          </span>
+          <span class="ci">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            微信
+          </span>
+        </div>
+      </div>
+
+      <!-- 终端看板示意（纯 SVG/CSS，无网络资源） -->
+      <aside class="terminal" aria-label="终端看板示意">
+        <div class="terminal-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>CHDA · 自选监控</span>
+          <span class="status"><span class="live"></span>实时</span>
+        </div>
+        <div class="terminal-body">
+          <div class="wl-row">
+            <div><div class="tk">600611</div><div class="nm">大众交通</div></div>
+            <svg class="spark" viewBox="0 0 54 22" preserveAspectRatio="none"><polyline points="0,18 9,15 18,16 27,10 36,11 45,5 54,3" fill="none" stroke="var(--up)" stroke-width="1.5"/></svg>
+            <div class="chg up">+3.42%</div>
+          </div>
+          <div class="wl-row">
+            <div><div class="tk">159842</div><div class="nm">券商ETF</div></div>
+            <svg class="spark" viewBox="0 0 54 22" preserveAspectRatio="none"><polyline points="0,12 9,13 18,11 27,12 36,10 45,9 54,8" fill="none" stroke="var(--up)" stroke-width="1.5"/></svg>
+            <div class="chg up">+1.18%</div>
+          </div>
+          <div class="wl-row">
+            <div><div class="tk">600776</div><div class="nm">东方通信</div></div>
+            <svg class="spark" viewBox="0 0 54 22" preserveAspectRatio="none"><polyline points="0,8 9,10 18,9 27,13 36,14 45,16 54,17" fill="none" stroke="var(--down)" stroke-width="1.5"/></svg>
+            <div class="chg down">-0.76%</div>
+          </div>
+          <div class="wl-row">
+            <div><div class="tk">000528</div><div class="nm">柳工</div></div>
+            <svg class="spark" viewBox="0 0 54 22" preserveAspectRatio="none"><polyline points="0,17 9,14 18,15 27,11 36,9 45,7 54,4" fill="none" stroke="var(--up)" stroke-width="1.5"/></svg>
+            <div class="chg up">+2.05%</div>
+          </div>
+          <div class="wl-row">
+            <div><div class="tk">300437</div><div class="nm">清水源</div></div>
+            <svg class="spark" viewBox="0 0 54 22" preserveAspectRatio="none"><polyline points="0,11 9,10 18,12 27,9 36,10 45,8 54,9" fill="none" stroke="var(--up)" stroke-width="1.5"/></svg>
+            <div class="chg up">+0.94%</div>
+          </div>
+        </div>
+        <div class="terminal-foot">
+          <span class="lbl">信号池 · 6 标的</span>
+          <span class="badge badge--up"><span class="dot"></span>三滤命中 2</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ 2. 核心能力 ============ -->
+  <section class="section" id="capabilities">
+    <div class="container">
+      <div class="eyebrow"><span class="idx">01</span> 核心能力 <span class="rule"></span> CORE</div>
+      <h2 class="section-title">多标的跟踪 · 资金流信号 · 数据看板</h2>
+      <p class="section-sub">把分散的盘面信息收束到一处：跟踪多只标的的实时涨跌，捕捉逆向资金流信号，并以看板式面板呈现仓位与信号概览。以下均为示例数据。</p>
+
+      <div class="cap-grid">
+        <!-- 多标的跟踪（数据表） -->
+        <div class="card cap-watch">
+          <div class="panel-head">
+            <span class="panel-title">自选跟踪 · 示例</span>
+            <span class="badge badge--muted">示例数据</span>
+          </div>
+          <div class="dtable-wrap">
+            <table class="dtable">
+              <thead>
+                <tr><th>代码</th><th>名称</th><th class="num">涨跌幅</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="code">600611</td><td class="name">大众交通</td><td class="chg up">+3.42%</td></tr>
+                <tr><td class="code">159842</td><td class="name">券商ETF</td><td class="chg up">+1.18%</td></tr>
+                <tr><td class="code">600776</td><td class="name">东方通信</td><td class="chg down">-0.76%</td></tr>
+                <tr><td class="code">000528</td><td class="name">柳工</td><td class="chg up">+2.05%</td></tr>
+                <tr><td class="code">300123</td><td class="name">亚光科技(ST)</td><td class="chg down">-4.81%</td></tr>
+                <tr><td class="code">300437</td><td class="name">清水源</td><td class="chg up">+0.94%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-note">// 红涨绿跌 · A股惯例 · 数据每日收盘更新</p>
+        </div>
+
+        <!-- 资金流信号 -->
+        <div class="card cap-flow">
+          <div class="panel-head">
+            <span class="panel-title">资金流信号</span>
+            <span class="badge"><span class="dot"></span>逆向</span>
+          </div>
+          <div class="flow-stat">
+            <span class="big">+1.84亿</span>
+            <span class="sub">板块主力净流入 · 示例</span>
+          </div>
+          <div class="flow-list">
+            <div class="signal-row" tabindex="0" role="button" aria-pressed="false">
+              <div><div class="code">600611 大众交通</div><div class="name">战略三滤命中 · 初选池</div></div>
+              <span class="badge badge--up">三滤·初选</span>
+            </div>
+            <div class="signal-row" tabindex="0" role="button" aria-pressed="false">
+              <div><div class="code">000528 柳工</div><div class="name">战术回踩确认 · 加仓区</div></div>
+              <span class="badge">回踩·确认</span>
+            </div>
+            <div class="signal-row" tabindex="0" role="button" aria-pressed="false">
+              <div><div class="code">159842 券商ETF</div><div class="name">资金净流入 · 观水信号</div></div>
+              <span class="badge badge--down">资金·流入</span>
+            </div>
+            <div class="signal-row" tabindex="0" role="button" aria-pressed="false">
+              <div><div class="code">300123 亚光科技(ST)</div><div class="name">风险警示 · 控仓观望</div></div>
+              <span class="badge badge--muted">警示·观望</span>
+            </div>
+          </div>
+          <p class="table-note">// 点击信号行查看高亮</p>
+        </div>
+
+        <!-- 数据看板示意（SVG 面积图） -->
+        <div class="card cap-board">
+          <div class="panel-head">
+            <span class="panel-title">净值看板</span>
+            <span class="badge badge--muted">示例</span>
+          </div>
+          <svg class="board-figure" viewBox="0 0 240 120" preserveAspectRatio="none" aria-label="净值曲线示意">
+            <defs>
+              <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="rgba(245,166,35,0.28)"/>
+                <stop offset="100%" stop-color="rgba(245,166,35,0)"/>
+              </linearGradient>
+            </defs>
+            <line x1="0" y1="30" x2="240" y2="30" stroke="var(--divider)" stroke-width="1"/>
+            <line x1="0" y1="70" x2="240" y2="70" stroke="var(--divider)" stroke-width="1"/>
+            <path d="M0,95 L30,88 L60,92 L90,70 L120,76 L150,52 L180,58 L210,34 L240,40 L240,120 L0,120 Z" fill="url(#areaFill)"/>
+            <polyline points="0,95 30,88 60,92 90,70 120,76 150,52 180,58 210,34 240,40" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="210" cy="34" r="3" fill="var(--accent-strong)"/>
+          </svg>
+          <div class="board-legend">
+            <span><i style="background:var(--accent)"></i>组合净值</span>
+            <span><i style="background:var(--divider)"></i>基准线</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. 方法论 ============ -->
+  <section class="section" id="method">
+    <div class="container">
+      <div class="eyebrow"><span class="idx">02</span> 方法论 · 壬寅交易系统 <span class="rule"></span> METHOD</div>
+      <h2 class="section-title">先选出，再二次筛选</h2>
+      <p class="section-sub">壬寅交易系统以通达信自研公式驱动：战略三滤建立初选池，战术回踩等待布林带回踩中轨/支撑做二次确认。配合三法框架与 RSI、周线 KDJ 多周期验证，把「逆向资金流」落到可执行信号。</p>
+
+      <div class="method-grid">
+        <!-- 壬寅流程 -->
+        <div class="flow-block">
+          <div class="flow-diagram">
+            <div class="flow-step">
+              <div class="step-no">FORMULA · 1</div>
+              <h3>战略三滤 · 初选池</h3>
+              <p>以量价关系与资金流方向做第一层筛选，剔除弱势与失水标的，建立候选初选池。</p>
+              <div class="formula">IF 量能↑ AND 资金流&gt;0 AND 趋势过滤 → 入池</div>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </div>
+            <div class="flow-step">
+              <div class="step-no">FORMULA · 2</div>
+              <h3>战术回踩 · 二次筛选</h3>
+              <p>在初选池内等待价格回踩布林带中轨或关键支撑，确认后再触发建仓信号，过滤假突破。</p>
+              <div class="formula">IF 入池 AND 回踩中轨/支撑 → 触发信号</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 三法框架 -->
+        <div class="sanfa-block">
+          <div class="panel-head" style="margin-top:8px">
+            <span class="panel-title">三法框架 · 观水 / 定刃 / 断流</span>
+          </div>
+          <div class="sanfa-grid">
+            <div class="sanfa-card">
+              <div class="glyph">观水</div>
+              <h4>量能与资金流方向</h4>
+              <p>辨水之来去：观察成交量与主力资金流方向，确认逆向水流是否成立。</p>
+              <svg class="fig" viewBox="0 0 120 96" preserveAspectRatio="none" aria-label="观水：资金流方向示意">
+                <line x1="10" y1="48" x2="110" y2="48" stroke="var(--divider)" stroke-width="1"/>
+                <polyline points="14,70 34,62 54,66 74,40 94,30 110,22" fill="none" stroke="var(--accent)" stroke-width="2"/>
+                <polygon points="110,22 102,24 106,30" fill="var(--accent)"/>
+                <text x="14" y="90" fill="var(--text-muted)" font-size="9" font-family="monospace">FLOW IN</text>
+              </svg>
+            </div>
+            <div class="sanfa-card">
+              <div class="glyph">定刃</div>
+              <h4>布林带 · 支撑阻力</h4>
+              <p>定刃之所向：以布林带上下轨与中轨界定支撑阻力，价格回踩中轨即刃锋所向。</p>
+              <svg class="fig" viewBox="0 0 120 96" preserveAspectRatio="none" aria-label="定刃：布林带示意">
+                <path d="M8,30 Q40,18 60,30 T112,30" fill="none" stroke="var(--border-strong)" stroke-width="1.5"/>
+                <path d="M8,66 Q40,78 60,66 T112,66" fill="none" stroke="var(--border-strong)" stroke-width="1.5"/>
+                <path d="M8,48 Q40,48 60,48 T112,48" fill="none" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="4 4"/>
+                <polyline points="10,72 30,60 50,64 70,46 90,52 110,40" fill="none" stroke="var(--accent)" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="sanfa-card">
+              <div class="glyph">断流</div>
+              <h4>信号确认与离场</h4>
+              <p>断流而定取舍：信号确认后建仓，资金流转弱或触发止损即断流离场，不恋战。</p>
+              <svg class="fig" viewBox="0 0 120 96" preserveAspectRatio="none" aria-label="断流：离场示意">
+                <polyline points="10,40 30,34 50,38 70,30 90,58 110,72" fill="none" stroke="var(--accent)" stroke-width="2"/>
+                <circle cx="70" cy="30" r="3" fill="var(--accent-strong)"/>
+                <line x1="90" y1="40" x2="110" y2="78" stroke="var(--up)" stroke-width="1.5" stroke-dasharray="3 3"/>
+                <text x="78" y="90" fill="var(--up)" font-size="9" font-family="monospace">EXIT</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- 多维验证 -->
+        <div class="verify-block">
+          <div class="panel-head" style="margin-top:8px">
+            <span class="panel-title">多维验证</span>
+          </div>
+          <div class="verify-list">
+            <div class="verify-item">
+              <div class="v-head">
+                <span class="v-name">RSI(14)</span>
+                <span class="v-val up">62.4</span>
+              </div>
+              <div class="v-desc">未超买，处于强势区 · 示例</div>
+            </div>
+            <div class="verify-item">
+              <div class="v-head">
+                <span class="v-name">周线 KDJ</span>
+                <span class="v-val accent">金叉</span>
+              </div>
+              <div class="v-desc">周线级别共振，确认信号 · 示例</div>
+            </div>
+            <div class="verify-item">
+              <div class="v-head">
+                <span class="v-name">共振状态</span>
+                <span class="v-val" style="color:var(--success)"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M20 6 9 17l-5-5"/></svg>多周期</span>
+              </div>
+              <div class="v-desc">日线信号 + 周线过滤同向 · 示例</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. 风控体系 ============ -->
+  <section class="section" id="risk">
+    <div class="container">
+      <div class="eyebrow"><span class="idx">03</span> 风控体系 <span class="rule"></span> RISK DISCIPLINE</div>
+      <h2 class="section-title">克制，是逆向者的护城河</h2>
+      <p class="section-sub">仓位有上限、止损有强制、冲动有闸门。风控不是束缚，而是让「逆向资金流」策略得以长期存活的前提。</p>
+
+      <div class="risk-grid">
+        <div class="risk-card">
+          <div class="rk">POSITION</div>
+          <div class="big">≤5<span class="unit">%</span></div>
+          <h4>单只仓位上限</h4>
+          <p>任一标的仓位不超过总资金的 5%，以分散替代集中，避免单一黑天鹅击穿账户。</p>
+          <div class="gauge"><i style="width:5%"></i></div>
+        </div>
+        <div class="risk-card">
+          <div class="rk">STOP LOSS</div>
+          <div class="big">强制</div>
+          <h4>强制止损</h4>
+          <p>触发即执行，不侃价、不拖延、不摊平。纪律由系统约束，而非由情绪决定。</p>
+          <div class="gauge"><i style="width:100%; background:var(--up)"></i></div>
+        </div>
+        <div class="risk-card">
+          <div class="rk">丙午 · 流年</div>
+          <div class="big">防冲动</div>
+          <h4>丙午流年防冲动</h4>
+          <p>逆向纪律：信号未触发前，严禁提前建仓。宁可错过，不可做错；水未至，刃不出。</p>
+          <div class="gauge"><i style="width:38%; background:var(--text-muted)"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. 信任 / CTA ============ -->
+  <section class="section cta" id="contact">
+    <div class="container">
+      <div class="eyebrow" style="justify-content:center"><span class="idx">04</span> 开始使用 <span class="rule"></span> GET STARTED</div>
+      <h2>把<span class="accent">逆向资金流</span>，装进你的桌面</h2>
+      <p>ChDa 投资管理系统 v1.0.0 · 独立开发，持续迭代。下载即用，无需账号；所有信号与看板均运行在你的本地终端。</p>
+      <div class="cta-actions">
+        <a class="btn btn--primary btn--lg" href="#contact">下载 v1.0.0 <span class="arrow">↓</span></a>
+        <a class="btn btn--secondary btn--lg" href="#method">阅读方法论</a>
+      </div>
+      <div class="cta-contact">
+        <span class="ci">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          <a href="#contact">GitHub 仓库</a>
+        </span>
+        <span class="ci">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+          <a href="#contact">邮箱联系</a>
+        </span>
+        <span class="ci">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <a href="#contact">微信沟通</a>
+        </span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ 页脚 ============ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="brand">
+      <span class="logo">Ch</span>
+      <span class="name">ChDa 投资管理系统</span>
+      <span class="ver">v1.0.0</span>
+    </div>
+    <p class="note">独立开发作品。本页所示标的代码、涨跌幅、资金流与指标数值均为<strong>示例数据</strong>，仅用于界面与逻辑示意，不构成任何投资建议。市场有风险，投资需谨慎。</p>
+    <span class="copy">© 2026 ChDa · MIT</span>
+  </div>
+</footer>
+
+<script>
+  /* 顶栏滚动强化（轻交互，尊重 reduced-motion） */
+  (function () {
+    var topbar = document.getElementById('topbar');
+    var onScroll = function () {
+      if (window.scrollY > 8) topbar.classList.add('scrolled');
+      else topbar.classList.remove('scrolled');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    /* 信号行：点击/回车切换高亮（信号高亮 200ms 由 CSS 控制） */
+    var rows = document.querySelectorAll('.signal-row');
+    rows.forEach(function (row) {
+      var toggle = function () {
+        var active = row.classList.toggle('is-active');
+        row.setAttribute('aria-pressed', active ? 'true' : 'false');
+      };
+      row.addEventListener('click', toggle);
+      row.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+  })();
+</script>
+
+<script src="assets/site.js"></script>
+    <script>
+    (function(){
+      function sync(){
+        var d = document.body.classList.contains('dark-theme');
+        document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
+      }
+      sync();
+      document.addEventListener('DOMContentLoaded', sync);
+      if (window.MutationObserver) {
+        new MutationObserver(sync).observe(document.body, {attributes:true, attributeFilter:['class']});
+      }
+      if (typeof window.mobileBtn !== 'function') {
+        window.mobileBtn = function(){
+          var m = document.getElementById('mobile-menu');
+          if (m) m.classList.toggle('active');
+        };
+      }
+    })();
+    </script>
+</body>
+</html>

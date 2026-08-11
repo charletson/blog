@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>倒数日</title>
+<style>
+:root{--bg:#0f1115;--card:#1a1d24;--card2:#22262f;--line:#2a2e38;
+--txt:#e8eaed;--sub:#9aa0aa;--red:#ef4444;--green:#22c55e;
+--orange:#f59e0b;--yellow:#eab308;--blue:#3b82f6;--accent:#f97316}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--txt);font-size:16px;line-height:1.5;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:680px;margin:0 auto;padding:20px 16px 60px}
+.back{display:inline-block;margin-bottom:16px;color:var(--blue);text-decoration:none;font-size:13px}
+h1{font-size:20px;font-weight:800;margin-bottom:4px}
+.sub{font-size:12.5px;color:var(--sub);margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px}
+.cd-item{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.cd-item:last-child{border-bottom:none}
+.cd-info .cd-name{font-size:15px;font-weight:600}
+.cd-info .cd-date{font-size:12px;color:var(--sub);margin-top:3px}
+.cd-right{text-align:right}
+.cd-num{font-size:30px;font-weight:700;color:var(--blue);letter-spacing:-1px}
+.cd-num .unit{font-size:14px;font-weight:500;color:var(--sub);margin-left:2px}
+.cd-label{font-size:11px;color:var(--sub);margin-top:3px}
+.note{font-size:12px;color:var(--sub);margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.history{margin-top:14px}
+.history-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;color:var(--txt);font-size:14px;font-weight:600;cursor:pointer;
+  font-family:inherit;transition:border-color .15s ease}
+.history-toggle:hover{border-color:var(--blue)}
+.history-toggle .ht-caret{transition:transform .2s ease;color:var(--sub);font-size:13px}
+.history-toggle[aria-expanded="true"] .ht-caret{transform:rotate(90deg)}
+.history-body{margin-top:10px}
+.history-body[hidden]{display:none}
+</style>
+<link rel="stylesheet" href="assets/site.css">
+<script>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t="light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="bi-chic.css">
+<script src="/js/script.js"></script>
+</head>
+<body>
+    <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">ChDa&#39;s Station</a></div>
+            <div class="menu navbar-right">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+<input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">ChDa&#39;s Station</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+</div>
+        </div>
+    </nav>
+    </header>
+        <div class="wrap">
+<a class="back" href="index.html">‹ 返回主页</a>
+<h1>倒数日</h1>
+
+<div class="card">
+<div id="countdownResult"></div>
+</div>
+<div class="note">⚠️ 本页为个人资料查阅，时光刻度仅供记录，不构成任何建议。</div>
+<div class="history">
+  <button class="history-toggle" type="button" aria-expanded="true" aria-controls="historyBody">
+    <span class="ht-label">📜 历史事件（已加密 · 点击展开输口令）</span>
+    <span class="ht-caret">▸</span>
+  </button>
+  <div class="history-body" id="historyBody">
+    <div class="card">
+      <div id="historyResult"></div>
+    </div>
+  </div>
+</div>
+<div id="hist-gate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#1e1e1e;color:#eee;padding:22px 26px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);font-family:sans-serif;min-width:260px;">
+    <div style="margin-bottom:12px;font-size:14px;">输入口令以查看历史事件</div>
+    <input id="hist-pw" type="password" style="padding:8px;width:100%;box-sizing:border-box;border:1px solid #555;border-radius:6px;background:#2a2a2a;color:#eee;" placeholder="password" />
+    <div style="margin-top:14px;text-align:right;">
+      <button id="hist-ok" style="padding:7px 16px;border:none;border-radius:6px;background:#4a90d9;color:#fff;cursor:pointer;margin-right:8px;">确定</button>
+      <button id="hist-cancel" style="padding:7px 16px;border:1px solid #555;border-radius:6px;background:transparent;color:#ccc;cursor:pointer;">取消</button>
+    </div>
+  </div>
+</div>
+<script>
+function $(id){ return document.getElementById(id); }
+const COUNTDOWN_ITEMS = [
+    {name:'执子之手', date:'2012-04-21'},
+    {name:'手机号入网许可', date:'2015-09-11'},
+    {name:'静思悟道者', date:'2020-09-18'}
+];
+function renderCountdown(){
+    const now = new Date();
+    const ty=now.getFullYear(), tm=now.getMonth()+1, td=now.getDate();
+    const today = new Date(ty, tm-1, td);
+    let html = '';
+    COUNTDOWN_ITEMS.forEach(function(it){
+        const p = it.date.split('-');
+        const target = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+        const diff = Math.round((today - target) / 86400000);
+        let num, label;
+        if(diff > 0){ num = diff; label = '已过去'; }
+        else if(diff < 0){ num = -diff; label = '还剩'; }
+        else { num = 0; label = '就是今天'; }
+        html += '<div class="cd-item"><div class="cd-info"><div class="cd-name">'+it.name+'</div>'
+              + '<div class="cd-date">'+it.date+'</div></div>'
+              + '<div class="cd-right"><div class="cd-num">'+num+'<span class="unit">天</span></div>'
+              + '<div class="cd-label">'+label+'</div></div></div>';
+    });
+    $('countdownResult').innerHTML = html;
+}
+renderCountdown();
+
+/* ===== 历史事件：已用 AES-256-GCM + PBKDF2 加密（与 Nav 隐藏链接同一方案）=====
+   源码仅为密文 HISTORY_PARAMS；不隐藏——区块始终可见，输对 Dedicated 口令后还原并渲染。
+   原事件字段：name=事件名，date=起始日，date2=结束日（区间事件）；长辈离世置前，其后工作事件按时间先后 */
+const HISTORY_PARAMS = {"iterations":100000,"salt":"ak+we8h8Iq3374LaDt6eDw==","iv":"/inu8nYhDQ0lte4L","ct":"oOJG8ON+KsiWLZT4kZj2McUQIuzXmNp+7RQIBw81AyFxvqD2X5J1B5llN3wrfBCldfA7l9QaO0kUrzcRlxO+MbRzESsCkliK/S0N5TDVW12NhsRWWgjbEYNDyt9fiQB1hsOCAHlrkjjTXZ0HxlXY3uLJAmNXIM0QFqxklgW7gT7jOjWJyyg60ceVixkrkmZMVHSgONvIYXxwg7yP/vkuveRTphAtuf78pHP+yrfGPlko+Qukr9gRtzDDIyUjHtYblMbn3QZWCgb3sCKFTt1xBY2yVwg8GctYOrs5HMKkqjgbh2bgMaG5xCl/VCTtjhNlrlwemmdoQ6qh/ZTX7lCeUmXWM51X+np5FB1iy8TTu2qNrIZtup+HECG9EZxCv9LWeUZfwa6/dmp7rATnZeWsDgVH7/3eriz8VjESG3ZUCD51Wv1nX8KoIC1ifbl14yOsciXD4IS0yHiGQsSzdyHNVBcyKfPvnU2gaq+Qp5b3QIEL8H+7T7DQnDieDoOGIHke/XdXknlm1b1sjvUMpf07rc0vpRVaB6I1NKIHb1/CWokwgCYV5WR5jLx9DElQlOcHn2AfJqHnnHvyo39cI2cNdg/pNNN2IbXPQ1NUXk9tdrCeWM1X8mylhCRfRF7Wf/hE0bP2Vbd52C8eiekCO1vaEqV1Pp8/ABssN+zyb2/ZJMKFBe3nWyxXRAKrKEr8Nl3YV8VTfYa3HEMFyRZH3ei50oQojqjXgFwoxz57Wx5tsxDIPlnu8B7cmSFZWRDocwecRtaPJDYXWHvaikT0p8Fvi+JJDCGa/jqGT0G0WSsPq7G3zxB7eyovcDDlrjjuR4yl/xZFYabY1DrDWPDt+3KpS9UNm/dfidS/5UZUGKTc+PbnTGwZeB7ZE+QH5BxwfT2KxI6+XnnFFsQ51sV60nDVjRoBewXxOF5oHeROXTqEmSeeWuVr4pIaV/t5nt1/CWEcrS+GGgJXr09qIFeWqTYfDAN2q/eQDKeSNIEjkFGmgtqevrYynTlVTU9Uy0uK07jrdDZKUjiwlChp6wxdeIiORH/KKVDy3A=="};
+
+let HISTORY_DECRYPTED = null; // 解密后的事件数组；null = 尚未解锁
+
+function b64ToBytes(b){ return Uint8Array.from(atob(b), function(c){ return c.charCodeAt(0); }); }
+
+async function decryptHistory(pw){
+    if(!window.crypto || !crypto.subtle){
+        alert('当前环境不支持解密（需 https 或 localhost 安全上下文）');
+        return false;
+    }
+    try{
+        const enc = new TextEncoder();
+        const salt = b64ToBytes(HISTORY_PARAMS.salt);
+        const iv = b64ToBytes(HISTORY_PARAMS.iv);
+        const ct = b64ToBytes(HISTORY_PARAMS.ct);
+        const baseKey = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']);
+        const key = await crypto.subtle.deriveKey(
+            { name:'PBKDF2', salt:salt, iterations:HISTORY_PARAMS.iterations, hash:'SHA-256' },
+            baseKey, { name:'AES-GCM', length:256 }, false, ['decrypt']
+        );
+        const plainBuf = await crypto.subtle.decrypt({ name:'AES-GCM', iv:iv }, key, ct);
+        HISTORY_DECRYPTED = JSON.parse(new TextDecoder().decode(plainBuf));
+        return true;
+    }catch(e){
+        return false;
+    }
+}
+
+function renderHistory(events){
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    let html = '';
+    events.forEach(function(it){
+        const p = it.date.split('-');
+        const target = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+        const diff = Math.round((today - target) / 86400000);
+        const yrs = Math.floor(diff / 365.25);
+        let dateLine = it.date;
+        let rightNum, rightLabel;
+        if(it.date2){
+            /* 区间事件：只显示区间天数（在岗/使用等），不显示距今天数 */
+            const q = it.date2.split('-');
+            const end = new Date(parseInt(q[0]), parseInt(q[1])-1, parseInt(q[2]));
+            const span = Math.round((end - target) / 86400000);
+            dateLine = it.date+' ~ '+it.date2;
+            rightNum = span+'<span class="unit">天</span>';
+            rightLabel = it.tag || '在岗';
+        } else {
+            /* 单日事件：显示距今天数 */
+            rightNum = diff+'<span class="unit">天前</span>';
+            rightLabel = '约 '+yrs+' 年前';
+        }
+        html += '<div class="cd-item"><div class="cd-info"><div class="cd-name">'+it.name+'</div>'
+              + '<div class="cd-date">'+dateLine+'</div></div>'
+              + '<div class="cd-right"><div class="cd-num">'+rightNum+'</div>'
+              + '<div class="cd-label">'+rightLabel+'</div></div></div>';
+    });
+    $('historyResult').innerHTML = html;
+}
+
+function showHistoryLocked(){
+    $('historyResult').innerHTML = '<div class="cd-item"><div class="cd-info">'
+        + '<div class="cd-name">🔒 历史事件已加密</div>'
+        + '<div class="cd-date">需输入口令查看</div></div>'
+        + '<div class="cd-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">'
+        + '<div class="cd-num" style="font-size:15px;color:var(--orange)">锁定</div>'
+        + '<button id="hist-unlock" style="padding:6px 12px;border:none;border-radius:8px;background:var(--blue);color:#fff;font-size:12px;cursor:pointer;">🔓 输入口令解锁</button>'
+        + '</div></div>';
+    const ub = $('hist-unlock');
+    if(ub){ ub.addEventListener('click', openHistGate); }
+}
+showHistoryLocked();
+
+/* 折叠开关 + 口令门（仅加密、不隐藏：区块始终可见，展开后输对口令还原） */
+function openHistGate(){
+    const gate = $('hist-gate');
+    const pwInput = $('hist-pw');
+    if(!gate) return;
+    gate.style.display = 'flex';
+    setTimeout(function(){ if(pwInput) pwInput.focus(); }, 50);
+}
+(function(){
+    const ht = document.querySelector('.history-toggle');
+    const hb = $('historyBody');
+    const gate = $('hist-gate');
+    const pwInput = $('hist-pw');
+    if(!ht || !hb) return;
+    function closeGate(){ if(gate){ gate.style.display='none'; if(pwInput) pwInput.value=''; } }
+    async function doUnlock(){
+        const ok = await decryptHistory(pwInput ? pwInput.value : '');
+        if(ok){ renderHistory(HISTORY_DECRYPTED); closeGate(); }
+        else { alert('口令错误'); }
+    }
+    ht.addEventListener('click', function(){
+        const open = hb.hasAttribute('hidden');
+        if(open){ hb.removeAttribute('hidden'); ht.setAttribute('aria-expanded','true'); }
+        else { hb.setAttribute('hidden',''); ht.setAttribute('aria-expanded','false'); }
+    });
+    if(gate){
+        document.getElementById('hist-ok').addEventListener('click', doUnlock);
+        document.getElementById('hist-cancel').addEventListener('click', closeGate);
+        pwInput.addEventListener('keydown', function(e){ if(e.key==='Enter') doUnlock(); });
+    }
+})();
+</script>
+</div>
+<script src="assets/site.js"></script>
+    <script>
+    (function(){
+      function sync(){
+        var d = document.body.classList.contains('dark-theme');
+        document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
+      }
+      sync();
+      document.addEventListener('DOMContentLoaded', sync);
+      if (window.MutationObserver) {
+        new MutationObserver(sync).observe(document.body, {attributes:true, attributeFilter:['class']});
+      }
+      if (typeof window.mobileBtn !== 'function') {
+        window.mobileBtn = function(){
+          var m = document.getElementById('mobile-menu');
+          if (m) m.classList.toggle('active');
+        };
+      }
+    })();
+    </script>
+</body>
+</html>

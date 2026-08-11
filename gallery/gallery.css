@@ -1,0 +1,121 @@
+/* ============================================================
+   gallery.css — Cloud Gallery 自动轮动幻灯片（scope: .cloud-gallery）
+   无第三方依赖；与博客 Chic 页面共用导航栏/页脚。
+   ============================================================ */
+
+.cloud-gallery {
+  position: relative;
+  width: 100%;
+  max-width: 920px;
+  margin: 26px auto 30px;
+  aspect-ratio: 16 / 10;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0c0d10;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, .18);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cg-track { position: absolute; inset: 0; }
+
+.cg-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .9s ease;
+  will-change: opacity;
+}
+.cg-slide.is-active { opacity: 1; z-index: 1; }
+
+.cg-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.02);
+  transition: transform 6.5s ease;
+}
+/* Ken Burns：当前幻灯片缓慢推近 */
+.cg-slide.is-active img { transform: scale(1.10); }
+
+/* 左右翻页按钮（悬停显现） */
+.cg-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(20, 20, 22, .42);
+  color: #fff;
+  font-size: 26px;
+  line-height: 46px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .25s, background .25s, transform .15s;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  z-index: 3;
+}
+.cg-prev { left: 14px; }
+.cg-next { right: 14px; }
+.cloud-gallery:hover .cg-nav { opacity: 1; }
+.cg-nav:hover { background: rgba(239, 57, 130, .92); } /* Chic 主题粉 */
+.cg-nav:active { transform: translateY(-50%) scale(.92); }
+
+/* 计数器（左上） */
+.cg-caption {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  z-index: 3;
+  color: #fff;
+  font-size: 12.5px;
+  letter-spacing: .12em;
+  background: rgba(20, 20, 22, .40);
+  padding: 5px 13px;
+  border-radius: 999px;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.cg-caption .cg-total { opacity: .7; }
+
+/* 底部圆点指示器 */
+.cg-dots {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 16px;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+}
+.cg-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .45);
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+.cg-dot:hover { background: rgba(255, 255, 255, .8); }
+.cg-dot.is-active { background: #ef3982; transform: scale(1.3); }
+
+/* 暂停提示 */
+.cloud-gallery.is-paused .cg-caption::after { content: "  ⏸"; opacity: .8; }
+
+/* 移动端适配 */
+@media (max-width: 600px) {
+  .cloud-gallery {
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+    margin: 18px auto 22px;
+  }
+  .cg-nav { width: 38px; height: 38px; font-size: 22px; line-height: 38px; }
+  .cg-caption { font-size: 11.5px; padding: 4px 10px; }
+}

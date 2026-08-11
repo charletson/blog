@@ -1,0 +1,53 @@
+/* ===========================================================
+   bi-chic.css — 让 /Bi 子系统与博客 Chic 主题视觉一致
+   仅通过重定义系统的 CSS 变量来换肤，不改动任何组件结构。
+   =========================================================== */
+
+/* 1) 浅色（与博客 Chic 默认一致） */
+:root,
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --card: #ffffff;
+  --card2: #f6f7f9;
+  --line: #e8eaed;
+  --txt: #161209;
+  --sub: #6b7280;
+  --accent: #2d96bd;
+  --red: #ef4444;   /* A股 涨 */
+  --green: #16a34a; /* A股 跌 */
+  --orange: #f59e0b;
+  --yellow: #eab308;
+  --blue: #3b82f6;
+}
+
+/* 2) 深色（与博客 Chic 深色模式一致） */
+:root[data-theme="dark"] {
+  --bg: #292a2d;
+  --card: #2f3133;
+  --card2: #37393c;
+  --line: #3a3d40;
+  --txt: #dcdee0;
+  --sub: #9aa0aa;
+  --accent: #4db6e0;
+  --red: #f87171;
+  --green: #4ade80;
+  --orange: #fbbf24;
+  --yellow: #fde047;
+  --blue: #60a5fa;
+}
+
+/* 3) 让页面底色/文字强制跟随调色板（系统自带 html,body 规则无 !important） */
+html, body {
+  background: var(--bg) !important;
+  color: var(--txt) !important;
+}
+
+/* 3b) 统一内容容器：与 Bi 首页完全一致（680px 居中舒适栏） */
+.wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 20px 16px 60px;
+}
+
+/* 4) (已移除独立返回条 — 导航/返回由 Chic 导航栏提供) */
+

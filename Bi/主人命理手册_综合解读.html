@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>主人命理手册 · 综合解读</title>
+<style>
+  :root{
+    --bg:#0d1117; --card:#161b22; --card2:#1c2330; --line:#2d333b;
+    --txt:#e6edf3; --sub:#8b949e; --amber:#f5a623; --amber-dim:#633806;
+    --gold:#d4af37; --gold-soft:#e8c96a; --blue:#58a6ff; --green:#2ebb6c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--txt);font-family:"Microsoft YaHei",-apple-system,sans-serif;line-height:1.7;padding:30px 16px;}
+  .wrap{max-width:980px;margin:0 auto;}
+  h1{font-size:24px;margin-bottom:6px;letter-spacing:1px;}
+  .sub{color:var(--sub);font-size:13px;margin-bottom:26px;}
+  .sub b{color:var(--amber);}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:20px;}
+  .panel h2{font-size:17px;margin-bottom:14px;padding-left:12px;border-left:3px solid var(--amber);}
+  svg{display:block;margin:0 auto;max-width:600px;width:100%;height:auto;}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px;}
+  .rcard{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+  .rcard .zhi{font-size:13px;color:var(--amber);font-weight:500;}
+  .rcard .name{font-size:15px;font-weight:500;margin:2px 0;}
+  .rcard .plain{font-size:12px;color:var(--sub);}
+  .rcard.hl{border-color:var(--amber);}
+  .keybox{background:#1a1206;border:1px solid #5c4510;border-radius:12px;padding:14px 18px;margin:12px 0;}
+  .keybox .k{color:var(--amber);font-weight:500;}
+  .note{font-size:12px;color:var(--sub);border-top:1px solid var(--line);margin-top:14px;padding-top:12px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;}
+  th{background:var(--card2);color:var(--sub);font-weight:500;white-space:nowrap;}
+  .ok{color:var(--green);font-weight:500;}
+  .no{color:#e5484d;font-weight:500;}
+  .poem{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0 4px;line-height:2;color:var(--gold-soft);font-size:15px;text-align:center;letter-spacing:1px;}
+  .weightline{display:flex;align-items:baseline;gap:10px;margin:8px 0 4px;}
+  .weightline .big{font-size:36px;font-weight:500;color:var(--gold);}
+  .weightline .unit{color:var(--sub);font-size:14px;}
+  .tag{display:inline-block;background:rgba(212,175,55,.12);color:var(--gold-soft);border:1px solid rgba(212,175,55,.3);border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;}
+  .dl{font-size:13px;}
+  .dl tr td{padding:6px 10px;border-bottom:1px dashed var(--line);}
+  .dl table{width:100%;border-collapse:collapse;margin-top:6px;}
+  @media(max-width:640px){.grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+
+<link rel="stylesheet" href="assets/site.css">
+<script>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t="light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="bi-chic.css">
+<script src="/js/script.js"></script>
+</head>
+<body>
+    <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">ChDa&#39;s Station</a></div>
+            <div class="menu navbar-right">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+<input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">ChDa&#39;s Station</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                    <a class="menu-item" href="/archives">Posts</a>
+
+                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/gallery">Gallery</a>
+
+                    <a class="menu-item" href="/nav">Nav</a>
+
+                    <a class="menu-item" href="/Bi">Bi</a>
+</div>
+        </div>
+    </nav>
+    </header>
+        <div class="wrap">
+  <div class="panel">
+
+    <h2>一、八字分阶段解命与健康提醒</h2>
+    <div class="keybox">
+      <div class="k">你的命局</div>
+      <div>四柱 <b>丙寅 庚子 壬子 壬寅</b>（男·南宁真太阳时）。真太阳时校准：北京时间 05:26 出生 → 南宁时差约 46.8 分钟 + 真太阳时平差 → <b>寅时</b>。<br><br>
+      日主壬水（阳水，如江河大海），<b>格局为「阳刃格」</b>——月支、日支双刃当令（子水为壬水帝旺之地），日主极强。<b>水旺、五行缺土</b>。<b>寅卯空亡</b>。<br><br>
+      <b>大运</b>：甲辰（31–41 / 2018–2028）→ 乙巳（41–51）。<br><br>
+      喜用神：<b>木（泄水）、火（调候生财）、土（制水筑堤）</b>；忌神：<b>金（生水）、水（助劫）</b>。<br><br>
+      气质属「食神模式」（慢火炖汤）——内敛、爱钻研、沉得住气，靠才华（食神）细水长流地变现。</div>
+    </div>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">四柱逐柱解读</h3>
+    <table>
+      <tr><th>柱</th><th>干支</th><th>十神</th><th>白话含义</th></tr>
+      <tr><td>年柱</td><td>丙寅</td><td>偏财坐食神</td><td>祖上/早年底色：财星透出、食神生财——早年身边有资源与机会，但食神主"细水长流"，需慢慢经营。</td></tr>
+      <tr><td>月柱</td><td>庚子</td><td>偏印坐劫财</td><td>父母/环境：偏印主钻研、非主流路子（研究命理/交易正合此象）；劫财旺主同辈助力但易破耗，合作留一分心。</td></tr>
+      <tr><td>日柱</td><td>壬子</td><td>日主坐劫财</td><td>自身/配偶：壬水坐子水，身强之象——主观、独立、不吃亏；配偶宫劫财，感情里各自独立、需多沟通。</td></tr>
+      <tr><td>时柱</td><td>壬寅</td><td>比肩坐食神</td><td>晚年/子女：比肩帮身、食神吐秀——中晚年食神发力、才华变现，是"大器晚成"的时柱依据。</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">分阶段解命</h3>
+    <table>
+      <tr><th>早年（40岁前）</th><td><b>运蹇事难谋</b>：做事易碰壁、怀才不遇；钱财攒不住（群劫夺财），易因请客、借钱、冲动投资而流失；易因朋友同事合伙而破财；感情主观性强、争执时固执。此阶段是积累期，本事在身、不急于亮。</td></tr>
+      <tr><th>中年（40–50岁）</th><td><b>渐有财源如水流</b>：运势逐步打开，阳刃格最喜中年走火土大运来制刃暖局——能力与平台真正结合，是黄金启动期。</td></tr>
+      <tr><th>晚年（50岁后）</th><td><b>名利一齐收</b>：先苦后甜、大器晚成，把前半生的积累转化为后半生的收成。</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">事业与财务原则</h3>
+    <table>
+      <tr><th>路径</th><td>靠专业技能（寅木食神）变现，走<b>木火通明</b>路线：教育、设计、技术、文化传媒、策划咨询、内容创作、餐饮（火）等。</td></tr>
+      <tr><th>避免</th><td>金融投机、水产物流等金水行业、工厂流水线、纯体力岗——水旺忌金水，投机最易"群劫夺财"。</td></tr>
+      <tr><th>财务铁律</th><td>收入到账当天即划出 <b>30%–40%</b> 做定期/实物/不动产，交信任家人保管（物理隔离）；不为他人担保；把消费转化为资产。</td></tr>
+      <tr><th>合伙</th><td>白纸黑字写清权责，不做口头约定；宁可让利给大平台，不和小兄弟分利；把"竞争"变"竞赛"，用公开指标说话。</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">婚姻相处建议</h3>
+    <table>
+      <tr><th>引入"木"</th><td>每周一起散步、爬山、短途旅行（木主运动疏通），或共同学习新技能。</td></tr>
+      <tr><th>文字沟通</th><td>争执时先离开现场、用文字沟通（水主智，文字比语言更理性）。</td></tr>
+      <tr><th>示弱法则</th><td>把指责换成"我需要你的帮助"——示弱是壬水最强的武器。</td></tr>
+      <tr><th>家庭规则</th><td>吵架不过夜、轮流做决定。</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">改名参考（洲 → 靖）</h3>
+    <div class="keybox" style="background:var(--card2);border-color:var(--line)">
+      <div class="k" style="color:var(--amber)">为什么方向合理</div>
+      <div style="font-size:13px">
+        「<b>洲</b>」含<b>水旁</b>——对水旺忌金的命局，等于<b>火上浇油、加重水势</b>。<br>
+        「<b>靖</b>」含<b>立</b>（木）与<b>青</b>（木火通明之象）——对应命局<b>喜木（泄水）、喜火（调候）</b>的用神取向。<br>
+        <b>结论：方向为有利调整</b>，符合"喜木火、忌金水"的命局需求。改名仅作命理参考，实际改名还需综合数理、家人意见与实际使用习惯。
+      </div>
+    </div>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">健康提醒（水旺克火 · 水多木漂）</h3>
+    <table>
+      <tr><th>心脑血管</th><td>水克火，先天心阳不足、血液粘稠度易偏高，遇冷血管收缩剧烈——<b>首要防线</b>，防血压波动、头晕心悸。</td></tr>
+      <tr><th>肾与泌尿</th><td>双刃子水，肾气过盛却不固：腰膝酸软、夜尿频繁、耳鸣——口渴再喝、小口温饮，晚 9 点后少喝水。</td></tr>
+      <tr><th>肝胆筋骨</th><td>寅木被双子水浸泡：晨起手指僵硬、偏头痛、胆囊问题；南宁湿热易痛风（尿酸）、湿疹——少吃海鲜+啤酒。</td></tr>
+      <tr><th>脾胃</th><td>缺土水旺土溃：饭后易腹胀、反酸、大便不成形（寒湿困脾）——山药、薏米、茯苓常备。</td></tr>
+      <tr><th>长期调养</th><td>穴位：内关（护心）+ 足三里（健脾）+ 太冲（疏肝）；运动只做八段锦、瑜伽、散步（忌举重冲刺）；每日晨服 3 片醋泡生姜升阳气；每年冬至前后主动体检心脑血管指标。</td></tr>
+      <tr><th>心态</th><td>贪、怕、冲动是阳气最大的内耗，稳即养生。</td></tr>
+      <tr><th>申月特别（8月）</th><td>补火补土抗申金：艾灸关元/足三里 + 山药薏米；驿马逢冲，出行提早不掐点。</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">经络穴位养生（白话找法 · 按命局喜忌）</h3>
+    <table>
+      <tr><th>穴位</th><th>经络</th><th>白话找法</th><th>作用</th><th>操作</th></tr>
+      <tr><td>足三里</td><td>胃经</td><td>膝盖外侧凹陷（外膝眼）向下约<b>四指宽</b>、胫骨外一横指处</td><td>健脾和胃、补气血（命局缺土→养脾胃第一穴）</td><td>艾灸为主，每周 2–3 次</td></tr>
+      <tr><td>内关</td><td>心包经</td><td>手腕横纹向上约<b>三指宽</b>，两筋之间</td><td>护心、宁神（命局水克火→护心要穴）</td><td>按揉，心慌/紧张时按压</td></tr>
+      <tr><td>太冲</td><td>肝经</td><td>足背第一、二脚趾骨结合部<b>前方凹陷处</b></td><td>疏肝解郁、平肝火（水多木漂→疏肝要穴）</td><td>按揉，生气/郁结时重点按</td></tr>
+      <tr><td>关元</td><td>任脉</td><td>肚脐正下方约<b>四指宽</b></td><td>补肾阳、培元固本（喜火→补火要穴）</td><td>艾灸，申月补火重点</td></tr>
+      <tr><td>命门</td><td>督脉</td><td>后腰正中、<b>与肚脐相对</b>处</td><td>温补肾阳、壮腰</td><td>艾灸，秋冬温补重点</td></tr>
+      <tr><td>涌泉</td><td>肾经</td><td>脚底前 1/3 凹陷（蜷足时足心最凹处）</td><td>引火归元、安神助眠</td><td>睡前按揉或温水足浴</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">十二节气月养生（按月 · 壬水命局 喜火土木 / 忌金水）</h3>
+    <table>
+      <tr><th>节气月</th><th>时节特点</th><th>养生重点</th></tr>
+      <tr><td>寅月（2月）</td><td>春木萌动，水尚寒</td><td>疏肝理气，少酸多甘，晨起拉伸；夜卧早起防春困，情志舒展；可温和艾灸足三里，忌大汗伤阳</td></tr>
+      <tr><td>卯月（3月）</td><td>肝木最旺</td><td>养肝为主，戒怒，踏青舒气；多食青蔬芽菜，少油腻；保证睡眠，目得血而能视</td></tr>
+      <tr><td>辰月（4月）</td><td>湿土当令，脾易受困</td><td>健脾祛湿：山药薏米粥常备；少生冷甜腻，防湿气内停；午后散步利湿，衣物防潮</td></tr>
+      <tr><td>巳月（5月）</td><td>火气渐升，喜神得令</td><td>养心为先，午时小憩；忌大汗耗阴，适量补水；精神佳但防心火过旺易怒</td></tr>
+      <tr><td>午月（6月）</td><td>火最旺，命局所喜</td><td>养心安神，午觉必睡；忌贪凉饮冷过度；顺势规划，能量充足</td></tr>
+      <tr><td>未月（7月）</td><td>暑湿燥土，脾胃承压</td><td>健脾化湿，饮食清淡；防暑补水，避开烈日；绿豆冬瓜利湿，莫贪冰</td></tr>
+      <tr><td>申月（8月）</td><td>金旺生水，忌神得令</td><td>补火为要：艾灸关元/足三里；健脾土：山药薏米，忌寒凉生冷；早睡养肺，整体降档保守</td></tr>
+      <tr><td>酉月（9月）</td><td>金最旺，凉燥渐起</td><td>润肺防燥，温饮忌冷；仍避寒凉，适当温补；早睡收敛神气</td></tr>
+      <tr><td>戌月（10月）</td><td>燥土渐寒，阳气收敛</td><td>温补脾肾，艾灸命门；添衣防感冒，避夜寒；少辛增酸，润燥</td></tr>
+      <tr><td>亥月（11月）</td><td>水旺为忌，冬藏伊始</td><td>补肾藏精，防寒保暖；少房事，温水足浴；温养为主，勿耗散</td></tr>
+      <tr><td>子月（12月）</td><td>水最旺，一阳初生</td><td>养藏为本，早睡晚起；冬至前后温补，避寒就温；静心少虑，护阳气</td></tr>
+      <tr><td>丑月（1月）</td><td>寒湿地冻，隆冬</td><td>补肾阳，食温热（姜枣羊肉）；避寒湿，护关节；少动多藏，养精蓄锐</td></tr>
+    </table>
+    <div class="note">命理推演与养生为个人经验参考，均非医学建议；称骨口径差异见第五板块说明。</div>
+  </div>
+<div class="panel">
+
+    <h2>二、紫微命盘十二宫</h2>
+    <svg viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>紫微命盘十二宫</title>
+      <desc>命宫在亥，十二宫逆排分布</desc>
+      <defs>
+        <radialGradient id="bgc" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#1c2330"/>
+          <stop offset="100%" stop-color="#10151d"/>
+        </radialGradient>
+      </defs>
+      <circle cx="320" cy="330" r="252" fill="url(#bgc)" stroke="#2d333b" stroke-width="1"/>
+      <circle cx="320" cy="330" r="252" fill="none" stroke="#2d333b" stroke-width="1"/>
+      <circle cx="320" cy="330" r="172" fill="none" stroke="#2d333b" stroke-width="0.5"/>
+      <text x="320" y="296" text-anchor="middle" style="font:500 15px sans-serif;fill:#f5a623">命主四柱</text>
+      <text x="320" y="322" text-anchor="middle" style="font:500 14px sans-serif;fill:#e6edf3">丙寅 庚子 壬子 壬寅</text>
+      <text x="320" y="346" text-anchor="middle" style="font:400 13px sans-serif;fill:#8b949e">命宫 · 己亥</text>
+      <text x="320" y="368" text-anchor="middle" style="font:400 12px sans-serif;fill:#8b949e">身宫 · 卯（官禄）</text>
+      <g>
+        <rect x="284.0" y="101.0" width="72" height="58" rx="10" fill="#1c2330" stroke="#2d333b" stroke-width="0.5"/>
+        <text x="320.0" y="124.0" text-anchor="middle" style="font:500 16px sans-serif;fill:#e6edf3">午</text>
+        <text x="320.0" y="144.0" text-anchor="middle" style="font:400 12px sans-serif;fill:#8b949e">疾厄</text>
+      </g>
+      <g>
+        <rect x="384.0" y="127.8" width="72" height="58" rx="10" fill="#1c2330" stroke="#2d333b" stroke-width="0.5"/>
+        <text x="420.0" y="150.8" text-anchor="middle" style="font:500 16px sans-serif;fill:#e6edf3">未</text>
+        <text x="420.0" y="170.8" text-anchor="middle" style="font:400 12px sans-serif;fill:#8b949e">财帛</text>
+      </g>
+      <g>
+        <rect x="457.2" y="201.0" width="72" height="58" rx="10" fill="#1c2330" stroke="#2d333b" stroke-width="0.5"/>
+        <text x="493.2" y="224.0" text-anchor="middle" style="font:500 16px sans-serif;fill:#e6edf3">申</text>
+        <text x="493.2" y="244.0" text-anchor="middle" style="font:400 12px sans-serif;fill:#8b949e">子女</text>
+      </g>
+      <g>
+        <rect x="484.0" y="301.0" width="72" height="58" rx="10" fill="#1c2330" stroke="#2d333b" stroke-width="0.5"/>
+        <text x="520.0" y="324.0" text-anchor="middle" style="font:500 16px sans-serif;fill:#e6edf3">酉</text>
+        <text x="520.0" y="344.0" text-anchor="middle" style="font:400 12px sans-serif;fill:#8b949e">夫妻</text>
+      </g>
+      <g>
+        <rect x="457.2" y="401.0" width="72" height="58" rx="10" fill="#1c2330" stroke="#2d333b" stroke-width="0.5"/>
+        <text x="493.2" y="424.0" text-anchor="middle" style="font:500 16px sans-serif;fill:#e6edf3">戌</text>
+        <text x="493.2" y="444.0" text-anchor="middle" style="font:400 12px sans-serif;fill:#8b949e">兄弟</text>
+      </g>
+      <g>
+        <rect x="384.0" y="474.2" width="72" height="58" rx="10" fill="#633806" stroke="#f5a623" stroke-width="1.2"/>
+        <text x="420.0" y="497.2" text-anchor="middle" style="font:500 16px sans-serif;fill:#f5a623">亥</text>
+        <text x="420.0" y="517.2" text-anchor="middle" style="font:400 12px sans-serif;fill:#f5a623">命宫</text>
+      </g>
+      <g>
+        <rect x="284.0" y="501.0" width="72" height="58" rx="10" fill="#1c2330" stroke="#2d333b" stroke-width="0.5"/>
+        <text x="320.0" y="524.0" text-anchor="middle" style="font:500 16px sans-serif;fill:#e6edf3">子</text>
+        <text x="320.0" y="544.0" text-anchor="middle" style="font:400 12px sans-serif;fill:#8b949e">父母</text>
+      </g>
+      <g>
+        <rect x="184.0" y="474.2" width="72" height="58" rx="10" fill="#1c2330" stroke="#2d333b" stroke-width="0.5"/>
+        <text x="220.0" y="497.2" text-anchor="middle" style="font:500 16px sans-serif;fill:#e6edf3">丑</text>
+        <text x="220.0" y="517.2" text-anchor="middle" style="font:400 12px sans-serif;fill:#8b949e">福德</text>
+      </g>
+      <g>
+        <rect x="110.8" y="401.0" width="72" height="58" rx="10" fill="#1c2330" stroke="#2d333b" stroke-width="0.5"/>
+        <text x="146.8" y="424.0" text-anchor="middle" style="font:500 16px sans-serif;fill:#e6edf3">寅</text>
+        <text x="146.8" y="444.0" text-anchor="middle" style="font:400 12px sans-serif;fill:#8b949e">田宅</text>
+      </g>
+      <g>
+        <rect x="84.0" y="301.0" width="72" height="58" rx="10" fill="#1c2330" stroke="#2d333b" stroke-width="0.5"/>
+        <text x="120.0" y="324.0" text-anchor="middle" style="font:500 16px sans-serif;fill:#e6edf3">卯</text>
+        <text x="120.0" y="344.0" text-anchor="middle" style="font:400 12px sans-serif;fill:#8b949e">官禄</text>
+      </g>
+      <g>
+        <rect x="110.8" y="201.0" width="72" height="58" rx="10" fill="#1c2330" stroke="#2d333b" stroke-width="0.5"/>
+        <text x="146.8" y="224.0" text-anchor="middle" style="font:500 16px sans-serif;fill:#e6edf3">辰</text>
+        <text x="146.8" y="244.0" text-anchor="middle" style="font:400 12px sans-serif;fill:#8b949e">交友</text>
+      </g>
+      <g>
+        <rect x="184.0" y="127.8" width="72" height="58" rx="10" fill="#1c2330" stroke="#2d333b" stroke-width="0.5"/>
+        <text x="220.0" y="150.8" text-anchor="middle" style="font:500 16px sans-serif;fill:#e6edf3">巳</text>
+        <text x="220.0" y="170.8" text-anchor="middle" style="font:400 12px sans-serif;fill:#8b949e">迁移</text>
+      </g>
+    </svg>
+    <h3 style="font-size:14px;margin:20px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">实盘排盘对照（测测数据）</h3>
+    <div style="text-align:center">
+      <img src="zixing_pan.jpg" alt="紫微星盘（圆形）" style="display:block;max-width:560px;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;margin:8px auto 6px;">
+      <div class="note" style="margin-top:0">↑ 圆形星盘：十二宫位、五行属性（金木水火土）、星曜连线、五行关系网（红/绿/蓝线）</div>
+    </div>
+    <div style="text-align:center">
+      <img src="ziwei_li.jpg" alt="紫微历方格详图" style="display:block;max-width:560px;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;margin:14px auto 6px;">
+      <div class="note" style="margin-top:0">↑ 紫微历方格详图：<b>阳男木三局</b> · 北京时间 1987.1.3 4:35 · 丙寅年腊月初四<b>日</b>寅时 · 命主<b>巨门</b> 身主<b>天梁</b> · 子年斗君<b>卯</b> 流年斗君<b>酉</b> · 四化颜色 禄&gt;权&gt;科&gt;忌</div>
+    </div>
+    <div class="note">琥珀色 = 命宫（你自己）。盘面按传统方位：午上子下；十二宫自命宫起逆排（亥命→戌兄弟→酉夫妻→申子女→未财帛→午疾厄→巳迁移→辰交友→卯官禄→寅田宅→丑福德→子父母）。</div>
+  </div>
+<div class="panel">
+
+    <h2>三、十二宫白话解释</h2>
+    <div class="grid">
+      <div class="rcard hl"><div class="zhi">亥 · 命宫</div><div class="name">你自己</div><div class="plain">性格底色、人生基调。亥属水 → 与八字壬水偏旺互相印证：内敛、灵活、能沉住气。</div></div>
+      <div class="rcard"><div class="zhi">戌 · 兄弟</div><div class="name">手足平辈</div><div class="plain">兄弟姐妹、同辈朋友缘。</div></div>
+      <div class="rcard"><div class="zhi">酉 · 夫妻</div><div class="name">婚姻伴侣</div><div class="plain">感情与婚姻的状态。</div></div>
+      <div class="rcard"><div class="zhi">申 · 子女</div><div class="name">孩子晚辈</div><div class="plain">子女缘、与晚辈的关系。</div></div>
+      <div class="rcard"><div class="zhi">未 · 财帛</div><div class="name">钱财</div><div class="plain">赚钱方式、理财能力。</div></div>
+      <div class="rcard"><div class="zhi">午 · 疾厄</div><div class="name">健康</div><div class="plain">体质、健康课题。</div></div>
+      <div class="rcard"><div class="zhi">巳 · 迁移</div><div class="name">外出发展</div><div class="plain">出远门、换环境的运。</div></div>
+      <div class="rcard"><div class="zhi">辰 · 交友</div><div class="name">合作对象</div><div class="plain">下属、合伙、人际协作。</div></div>
+      <div class="rcard"><div class="zhi">卯 · 官禄</div><div class="name">事业</div><div class="plain">工作、事业、名声。<b style="color:#f5a623">身宫在此 → 一生重心在事业</b></div></div>
+      <div class="rcard"><div class="zhi">寅 · 田宅</div><div class="name">家宅</div><div class="plain">房子、不动产。</div></div>
+      <div class="rcard"><div class="zhi">丑 · 福德</div><div class="name">精神世界</div><div class="plain">内心享受、精神生活。</div></div>
+      <div class="rcard"><div class="zhi">子 · 父母</div><div class="name">父母长辈</div><div class="plain">与父母、长辈的关系。</div></div>
+    </div>
+  </div>
+<div class="panel">
+
+    <h2>四、这张盘告诉你什么</h2>
+    <div class="keybox">
+      <div class="k">命宫亥（水）</div>
+      <div>水主流动、灵活、深沉。与你八字「壬水偏旺」互相印证——气质内敛，遇事能沉住气，适合慢节奏、深度钻研的路子（和你的食神模式一致）。</div>
+    </div>
+    <div class="keybox">
+      <div class="k">身宫卯 · 官禄 → 一生重心在事业</div>
+      <div>身宫代表"后天最看重的领域"落在事业宫，说明你人生的主战场在事业/工作——这也解释了为什么你对交易系统、命理研究如此投入。</div>
+    </div>
+    <div class="keybox">
+      <div class="k">田宅在寅 · 子女在申</div>
+      <div>你的家宅宫在寅、子女宫在申。逢申年（流年命宫落子女宫）、寅月（与家宅宫相冲）时，家宅和"变动"会是容易被引动的主题，宜静不宜动。</div>
+    </div>
+  </div>
+<div class="panel">
+
+    <h2>五、称骨解读（3两3钱）</h2>
+    <div class="weightline"><span class="big">3两3钱</span><span class="unit">（约 165 克）</span><span class="tag">格局：中上</span><span class="tag">福气指数约 75%</span></div>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--gold);color:var(--gold-soft);">称重明细</h3>
+    <table>
+      <tr><th>年柱 · 丙寅</th><td>丙寅虎年（按农历年，虽公历 1987 仍属丙寅）— <b>6 钱</b></td></tr>
+      <tr><th>月柱 · 庚子</th><td>农历十二月（腊月）— <b>5 钱</b><br><span style="color:var(--sub);font-size:12px">〔月柱庚子=节气子月=十一月；若按节气月取则为 9 钱，见下方口径说明〕</span></td></tr>
+      <tr><th>日柱 · 壬子</th><td>农历十二月初四 — <b>1 两 5 钱</b></td></tr>
+      <tr><th>时柱 · 壬寅</th><td>寅时（3–5 点）— <b>7 钱</b></td></tr>
+      <tr><th>合计</th><td><b style="color:var(--gold)">3 两 3 钱</b>（6 + 5 + 15 + 7 = 33 钱）</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--gold);color:var(--gold-soft);">称骨歌</h3>
+    <div class="poem">早年作事事难成，百计徒劳枉费心；<br>半世自如流水去，后来运到始得金。</div>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--gold);color:var(--gold-soft);">男命解读</h3>
+    <table>
+      <tr><th>早年</th><td>多谋少成、百计徒劳；半生如水流去，看似平淡劳碌</td></tr>
+      <tr><th>中年</th><td>运渐开，轻财蓄势，大运交来声名可望、万事更新</td></tr>
+      <tr><th>晚年</th><td>衣食丰足、名利可建，得黄金之应</td></tr>
+      <tr><th>心性</th><td>性巧心灵、口快无心、恩中招怨、骨肉少援、志在四方</td></tr>
+      <tr><th>寿元 / 财</th><td>约 83 岁 · 偏财运 · 适婚 30–40 岁</td></tr>
+    </table>
+    <div class="keybox">
+      <div class="k">与八字合参</div>
+      <div>壬水身强、喜火土。称骨"中年后转旺"的走势，正与火旺大运/流年（火土应期）吻合——称骨与八字在"前半生磨、后半生发"上高度一致。</div>
+    </div>
+    <div class="keybox" style="background:var(--card2);border-color:var(--line)">
+      <div class="k" style="color:var(--gold-soft)">口径说明（重要）</div>
+      <div style="font-size:12.5px;color:var(--sub)">
+        本断按<b style="color:var(--text)">传统农历月</b>（腊月初四所落之十二月 = 5 钱）计算，得 <b style="color:var(--gold)">3 两 3 钱</b>。<br>
+        若按<b style="color:var(--text)">八字月柱庚子直接取节气子月</b>（十一月 = 9 钱），则为 <b style="color:var(--gold)">3 两 7 钱</b>，批语为「此命般般事不成、弟兄少力自孤行；虽然祖业须微有，来的明时去的暗」，作参考。<br>
+        另有一种常见口径（部分排盘工具）按「丙寅年 6 钱 + 腊月 5 钱 + 初四 1两5钱 + 寅时 6 钱」取<b style="color:var(--gold)">3 两 2 钱</b>，批语为「早年运蹇事难谋，渐有财源如水流；到得中年衣食旺，那时名利一齐收」——三阶段走向（早年蹇→中年衣食旺）与 3 两 3 钱一致，仅重量与措辞不同。<br>
+        口径差异仅来自"月/时柱重量取法"不同，日柱不变；三份批语共同指向<b>大器晚成、中年转旺</b>。
+      </div>
+    </div>
+    <div class="keybox" style="background:var(--card2);border-color:var(--line)">
+      <div class="k" style="color:var(--gold-soft)">推算依据</div>
+      <div style="font-size:12.5px;color:var(--sub)">
+        由八字四柱反推公历生日为 <b style="color:var(--text)">1987-01-03 寅时</b>（在庚子节气月 1986-12-07～1987-01-05 内唯一壬子日），对应农历丙寅年腊月初四。算法复算验证日柱壬子 ✓，与「丙寅 庚子 壬子 壬寅」完全一致。
+      </div>
+    </div>
+  </div>
+<div class="panel">
+
+    <h2>六、住宅方位调理（昌泰尊府）</h2>
+    <img src="户型图_1.jpg" alt="昌泰尊府户型全方位调理图" style="display:block;max-width:100%;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;margin:8px 0 14px;">
+    <table>
+      <tr><th>方位</th><th>卦</th><th>命局</th><th>布局/动作</th></tr>
+      <tr><td>西北</td><td>乾·缺角</td><td class="no">金(忌)</td><td>红+黄艾草包(床头靠北)+室外镜煞木火化煞(红灯+仙人掌+木葫芦)</td></tr>
+      <tr><td>北</td><td>坎</td><td class="no">水(忌)</td><td>厨房，火制水转化</td></tr>
+      <tr><td>东北</td><td>艮</td><td class="ok">土(喜)</td><td>餐厅，宜</td></tr>
+      <tr><td>东</td><td>震</td><td class="ok">木(喜)</td><td>餐厅，宜</td></tr>
+      <tr><td>东南</td><td>巽</td><td class="ok">木(喜)</td><td>阳台鱼缸(水生木)+绿植强化</td></tr>
+      <tr><td>南</td><td>离</td><td class="ok">火(喜)</td><td>红灯常亮</td></tr>
+      <tr><td>西南</td><td>坤</td><td class="ok">土(喜)</td><td>主卧，宜静</td></tr>
+      <tr><td>西</td><td>兑</td><td class="no">金(忌)</td><td>卧室，人气住转化</td></tr>
+    </table>
+    <div class="note">命局喜火/土/木，忌金/水；方位调理是该喜忌的空间应用。</div>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">有利方位与风水小物</h3>
+    <table>
+      <tr><th>有利方位</th><td>日常朝南（火）或朝东（木）发展；办公居家坐北朝南。</td></tr>
+      <tr><th>南宁地利</th><td>南宁属南方火地，对水旺命局是天然加持——自动化解一部分水旺寒气。</td></tr>
+      <tr><th>风水小物</th><td>正南方放红色台灯（常亮）或紫水晶洞；正东方养四盆绿植（发财树、富贵竹）；西北角保持整洁放金属摆件；正西放圆形鱼缸（用水泄劫财火土之气）。</td></tr>
+    </table>
+  </div>
+<div class="panel">
+
+    <h2>七、ETF 五行匹配与选标方向</h2>
+    <div class="keybox">
+      <div class="k">个人偏好映射</div>
+      <div>按命局喜火/土/木、忌金/水的取向，给不同五行属性的板块方向排匹配度——火系最适合做T赚偏财，金系最差应远离。</div>
+    </div>
+    <table>
+      <tr><th>五行属性</th><th>代表方向</th><th>匹配</th><th>用途</th></tr>
+      <tr><td>火系</td><td>白酒/消费</td><td class="ok">✅✅✅ 最佳</td><td>做T 主力（全天候）</td></tr>
+      <tr><td>纯火</td><td>电力</td><td class="ok">✅✅✅</td><td>申月中线底仓</td></tr>
+      <tr><td>金水</td><td>券商</td><td>⚠️ 中等</td><td>做T 分仓</td></tr>
+      <tr><td>均衡</td><td>宽基</td><td>⚠️ 偏弱</td><td>三法底仓</td></tr>
+      <tr><td>火土</td><td>煤炭</td><td class="ok">✅✅✅</td><td>午月限定做T</td></tr>
+      <tr><td>金系</td><td>半导体</td><td class="no">❌ 最差</td><td>远离</td></tr>
+    </table>
+    <div class="keybox" style="background:var(--card2);border-color:var(--line)">
+      <div class="k" style="color:var(--amber)">口诀</div>
+      <div style="font-size:13px">"火系做T赚偏财，金系底仓守正财，金水太重劫财来"</div>
+    </div>
+    <div class="note">五行→板块为传统命理文化参考（文化性类比），非硬性选股结论；实际买卖仍以量价纪律为准。</div>
+  </div>
+<div class="panel">
+
+    <h2>八、交易三法（中线波段 · 壬寅版）</h2>
+    <div class="keybox">
+      <div class="k">三法总纲</div>
+      <div>先过<b>三滤</b>（在不在场、拿多久、仓位），再过<b>定量信号层</b>（观水/定刃/断流）找买卖点；<b>三滤不过，一律不动手</b>。战略（三滤）决定方向，战术（定量）决定时机。</div>
+    </div>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">核心参数</h3>
+    <table>
+      <tr><th>持有周期</th><td>6–12 周</td></tr>
+      <tr><th>卖出信号</th><td>连续两根阴线</td></tr>
+      <tr><th>止盈目标</th><td>20%</td></tr>
+      <tr><th>大盘过滤</th><td>月线 MA20（重长期趋势）</td></tr>
+      <tr><th>调仓频率</th><td>每季度（2/5/8/11 月系统回顾）</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">三滤法骨架（必须全过才动手）</h3>
+    <table>
+      <tr><th>① 大盘趋势过滤</th><td>月线 MA20 之上才做多；之下观望不入场。</td></tr>
+      <tr><th>② 标的趋势过滤</th><td>日线 MA20 上方。</td></tr>
+      <tr><th>③ 信号确认过滤</th><td>成交量验证 + 定量信号层（观水/定刃/断流）。</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">定量信号层（观水 / 定刃 / 断流）</h3>
+    <table>
+      <tr><th>观水</th><td>底部放量（单日量 > 前 20 日均量 1.5×）；放量后缩量回调才是入场前提。</td></tr>
+      <tr><th>定刃</th><td>收盘跌破 BOLL 下轨 且 KDJ-J < 0 → 买入信号；站上中轨 → 可加仓；触上轨 且 RSI > 70 → 离场。</td></tr>
+      <tr><th>断流</th><td>止损锚 = 放量阳线开盘价（收盘跌破则次日开盘离场）；盈利 > 15% 后首根中阴线全离场；单票仓位 ≤ 总资金 5%。</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">决策流程</h3>
+    <div class="keybox" style="background:var(--card2);border-color:var(--line);font-family:monospace;font-size:13px;line-height:1.9">
+      月线 MA20 之上？ ──否──▶ 观望，不入场<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ 是<br>
+      日线 MA20 上方？ ──否──▶ 观望<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ 是<br>
+      量验证 + 定刃买入信号（破下轨 + J&lt;0）？ ──否──▶ 持有/等待<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ 是<br>
+      &nbsp;&nbsp;→ 入场；持有 6–12 周；连续两根阴线 或 止盈 20% 离场
+    </div>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">15 分钟战术层（做T精确切入 · 只做价差不新开仓）</h3>
+    <div class="keybox" style="background:var(--card2);border-color:var(--line)">
+      <div class="k" style="color:var(--amber)">闸门：先过战略，才轮到 15 分钟</div>
+      <div style="font-size:13px">
+        月线 MA20 向上 ＋ 日线 MA20 向上 ＋ 量验证<b>全过</b> → 才允许用 15 分钟找买卖点；任一不过 → 15 分钟信号一律忽略。<br><br>
+        <b>入场三法共振（全过才出手）</b>：<br>
+        ① <b>观水</b>：价格回踩 BOLL(20,2) 中轨，且中轨走平或上行 → 买区；不追上轨外的尖。<br>
+        ② <b>定刃</b>：KDJ(9,3,3) 的 K 从 &lt;30 区金叉 D → 触发；K&gt;80 过热，只卖不加。<br>
+        ③ <b>断流</b>：RSI(14) 从 &lt;35 回升突破 40，且价格无顶背离 → 确认动能恢复。<br>
+        三者<b>同时满足</b>才出手；单一信号不买（天然过滤毛刺）。<br><br>
+        <b>出场/止损</b>：15 分钟放量阳线开盘价跌破 → 离场；15 分钟收盘跌破中轨 且 KDJ 死叉 → 减仓；连续两根 15 分钟阴线 ＋ 破中轨 → 先撤。日线铁律（盈利&gt;15% 首根中阴线全离场等）依然有效，谁先到谁说了算。
+      </div>
+    </div>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">仓位护栏（防手痒）</h3>
+    <table>
+      <tr><th>单票仓位</th><td>≤ 总资金 5%（三刑月 ≤ 3%）</td></tr>
+      <tr><th>15 分钟切片</th><td>只做 T / 降成本，不增加净敞口；单切片 ≤ 总仓 1/3</td></tr>
+      <tr><th>新开仓</th><td>一律走日线信号，不许用 15 分钟新开</td></tr>
+      <tr><th>频率枷锁</th><td>每小时最多 1 次操作、单日 ≤ 2 次切片；非交易时段不预演下单</td></tr>
+      <tr><th>钝化期</th><td>KDJ 钝化（金叉死叉都 0 次）＝系统的克制保护，应空仓不操作，绝不强行放宽抢跑</td></tr>
+    </table>
+    <div class="note">三法为中线波段纪律框架；15 分钟层仅为已持仓降成本工具，不独立决策。不构成投资建议。</div>
+
+  </div>
+<div class="panel">
+
+    <h2>九、做T系统（日内 · 短波段）</h2>
+    <div class="keybox">
+      <div class="k">定位</div>
+      <div>三法管中线（6–12 周），做T 管短线（2–5 天）——适合震荡市在持仓标的上做价差、降成本；趋势市少做T，让利润跑。</div>
+    </div>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">核心参数</h3>
+    <table>
+      <tr><th>频率</th><td>每周 1 次（最多 2 次）</td></tr>
+      <tr><th>持有</th><td>2–5 天</td></tr>
+      <tr><th>目标利润</th><td>3–5%</td></tr>
+      <tr><th>止损</th><td>-2% 即走，不犹豫</td></tr>
+      <tr><th>入场时间</th><td>10:30 之后</td></tr>
+      <tr><th>仓位</th><td>副仓 1/3</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">入场四条件（全过才入）</h3>
+    <table>
+      <tr><th>① 趋势</th><td>日线 MA20 上方</td></tr>
+      <tr><th>② 振幅</th><td>振幅 &gt; 5%（ETF 做T 门槛）</td></tr>
+      <tr><th>③ 获利盘</th><td>40–70%</td></tr>
+      <tr><th>④ 干支日</th><td>核心日（甲 / 午）</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">入场信号（15 分钟级）</h3>
+    <table>
+      <tr><th>15min MACD 金叉</th><td>辅助确认（非主信号）</td></tr>
+      <tr><th>日线回踩支撑</th><td>MA20 / 前低</td></tr>
+      <tr><th>缩量</th><td>量缩至 5 日均量 0.7 倍以下</td></tr>
+      <tr><th>时间确认</th><td>10:30 后确认入场</td></tr>
+      <tr><th>精确入场</th><td>以三法共振为准：观水回中轨 ＋ 定刃 KDJ 低位金叉 ＋ 断流 RSI 回升（见第八板块）</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">离场规则</h3>
+    <table>
+      <tr><th>止盈</th><td>3–5% 达标即走</td></tr>
+      <tr><th>止损</th><td>-2% 即走，不犹豫</td></tr>
+      <tr><th>时间止损</th><td>5 天未达标，周五收盘前走</td></tr>
+      <tr><th>错过比做错好</th><td>金叉未确认不入场</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">做T 选标四层筛框架</h3>
+    <table>
+      <tr><th>第一层 五行方向</th><td>火/土系优先（筛方向）</td></tr>
+      <tr><th>第二层 市场动能</th><td>成交 &gt;1 亿 + 振幅 &gt;3% + 有热度（筛势）</td></tr>
+      <tr><th>第三层 技术信号</th><td>15min KDJ + BOLL 金叉（筛时机）</td></tr>
+      <tr><th>第四层 干支日档</th><td>甲 / 午 核心日（筛胆气）</td></tr>
+    </table>
+    <div class="keybox" style="background:var(--card2);border-color:var(--line)">
+      <div class="k" style="color:var(--amber)">铁律</div>
+      <div style="font-size:13px">四层全过才入场。<b>只过第一层 → 不入场 → 等势来</b>——五行对得上 ≠ 能靠势赚钱。</div>
+    </div>
+    <div class="note">做T 为短线纪律，与三法中线并用时以更紧的规则为准。不构成投资建议。</div>
+  </div>
+<div class="panel">
+
+    <h2>十、干支日档与月令纪律（择时 · 心态层）</h2>
+    <div class="keybox">
+      <div class="k">口诀</div>
+      <div><b>"甲/午主动，寅降级观察，戌/辰守住"</b> —— 先算今日干支（按南宁真太阳时），对表判档：核心日才主动开仓/做决定；降级/缓冲日只观察打磨；稳定日守住不贪。</div>
+    </div>
+    <table>
+      <tr><th>档位</th><th>干支</th><th>操作</th></tr>
+      <tr><td>核心日 · 主动</td><td>甲（食神透干）</td><td>写复盘输出，不空想</td></tr>
+      <tr><td>核心日 · 主动</td><td>午（财星透发）</td><td>开仓执行做决定，不犹豫</td></tr>
+      <tr><td>降级日</td><td>寅（申月被冲）</td><td>降级为观察日，复盘不冲动</td></tr>
+      <tr><td>辅助日 · 缓冲</td><td>乙（伤官）</td><td>打磨细节，不公开输出</td></tr>
+      <tr><td>辅助日 · 缓冲</td><td>卯（肝气）</td><td>整理归档休息，不做重大决策</td></tr>
+      <tr><td>辅助日 · 缓冲</td><td>巳（火气初生）</td><td>预热观望，不急于动手</td></tr>
+      <tr><td>稳定日 · 守</td><td>戌（燥土制水）</td><td>守住仓位，不贪不躁</td></tr>
+      <tr><td>稳定日 · 守</td><td>辰（水库收水）</td><td>降低仓位，不加仓不借钱</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">干支月与行业季节规律</h3>
+    <table>
+      <tr><th>干支月</th><th>五行</th><th>对应行业</th><th>判断</th></tr>
+      <tr><td>寅月（2月）</td><td>木旺</td><td>中药/农业</td><td>木系爆发</td></tr>
+      <tr><td>午月（6月）</td><td>火最旺</td><td>煤炭/电力/白酒</td><td>🔥 火系最佳做T月</td></tr>
+      <tr><td>未月（7月）</td><td>土旺泄火</td><td>煤炭退潮/地产</td><td>火系退·土系可</td></tr>
+      <tr><td>申月（8月）</td><td>金旺</td><td>券商/半导体</td><td>❌ 不利，寅日降级</td></tr>
+      <tr><td>酉月（9月）</td><td>金旺</td><td>券商延续</td><td>❌ 不利</td></tr>
+      <tr><td>戌月（10月）</td><td>燥土</td><td>地产/基建/煤炭</td><td>✅ 土系补缺月</td></tr>
+      <tr><td>子月（12月）</td><td>水最旺</td><td>—</td><td>❌ 劫财最旺月</td></tr>
+    </table>
+    <div class="keybox" style="background:var(--card2);border-color:var(--line)">
+      <div class="k" style="color:var(--amber)">口诀</div>
+      <div style="font-size:13px">"五行是方向，干支月定季节，势来了才上车"</div>
+    </div>
+    <div class="note">【择时·心态层】只管宜忌与情绪纪律，不替代交易决策。</div>
+  </div>
+<div class="panel">
+
+    <h2>十一、执行流程与每日复盘模板</h2>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">做T 六步流程</h3>
+    <table>
+      <tr><th>① 周日选股</th><td>四层筛框架筛选</td></tr>
+      <tr><th>② 周一至周三观察</th><td>15min 信号未确认不动</td></tr>
+      <tr><th>③ 入场</th><td>核心日（甲/午）+ 15min 金叉 + 日线支撑 + 缩量</td></tr>
+      <tr><th>④ 持有</th><td>2–5 天，不频繁看盘</td></tr>
+      <tr><th>⑤ 离场</th><td>3–5% 止盈</td></tr>
+      <tr><th>⑥ 止损</th><td>-2% 即走</td></tr>
+    </table>
+    <div class="keybox" style="background:var(--card2);border-color:var(--line)">
+      <div class="k" style="color:var(--amber)">口诀</div>
+      <div style="font-size:13px">"选一次、等一次、做一次、走一次"</div>
+    </div>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">每日复盘模板（健康 / 思想 / 交易 一体）</h3>
+    <table>
+      <tr><th>① 干支档位</th><td>今天干支？属于哪档？（核心/辅助/稳定）</td></tr>
+      <tr><th>② 大盘位置</th><td>大盘月线 MA20 位置？上证在线上/线下？</td></tr>
+      <tr><th>③ 持仓信号</th><td>持仓标的技术信号？（15min KDJ+BOLL）</td></tr>
+      <tr><th>④ 执行检查</th><td>是否触发买卖信号？执行了吗？为什么？</td></tr>
+      <tr><th>⑤ 情绪检查</th><td><b>贪了吗？怕了吗？冲动了吗？</b>（思想维度）</td></tr>
+      <tr><th>⑥ 身体状态</th><td>身体状态 / 养生执行？（艾灸/食疗，健康维度）</td></tr>
+      <tr><th>⑦ 明日计划</th><td>等待信号 / 准备入场 / 持仓持有</td></tr>
+    </table>
+  </div>
+<div class="panel">
+
+    <h2>十二、交易纪律要点 · 风控铁律</h2>
+    <table>
+      <tr><th>项目</th><th>规则</th></tr>
+      <tr><td>仓位</td><td>常态单票 ≤5%；三刑月（寅/巳/申月）≤3%</td></tr>
+      <tr><td>寅日</td><td>寿元星根被冲 → 空仓只观，坚决不操作</td></tr>
+      <tr><td>申日</td><td>冲太岁引动 → 降档不主动</td></tr>
+      <tr><td>巳日</td><td>三刑参与 → 只看不动</td></tr>
+      <tr><td>三刑月</td><td>寅月/巳月/申月内凶日一律空仓只观，从严执行</td></tr>
+    </table>
+    <h3 style="font-size:14px;margin:14px 0 6px;padding-left:10px;border-left:3px solid var(--amber);color:var(--amber);">风控铁律（断流规则）</h3>
+    <table>
+      <tr><th>仓位上限</th><td>总仓位上限 10%；丙午年（2026）压至 5%；三刑月 ≤3%</td></tr>
+      <tr><th>止损</th><td>跌破放量阳线开盘价（或 -2% 硬止损），不犹豫</td></tr>
+      <tr><th>做T频率</th><td>每周不超过 2 次</td></tr>
+      <tr><th>强制储蓄隔离</th><td>收入到账即划 <b>30%–40%</b> 锁死（对冲"群劫夺财"）</td></tr>
+      <tr><th>缺土断流</th><td>土系缺失 → 必须严格风控，不心存侥幸</td></tr>
+      <tr><th>偏财月（双丙）</th><td>赚了就收，不追大利润</td></tr>
+    </table>
+    <div class="note">日档按当日干支判定（算法自动计算）；此表为通用纪律，不针对任何具体标的。</div>
+  </div>
+<div class="panel">
+
+    <h2>十三、核心口诀汇总</h2>
+    <table>
+      <tr><th>三法系统</th><td>慢火炖汤，6–12 周，两根阴线走，月线 MA20 过滤</td></tr>
+      <tr><th>做T 系统</th><td>选一次、等一次、做一次、走一次，每周 1 次 3–5%</td></tr>
+      <tr><th>干支日档</th><td>甲/午主动，寅降级观察，戌/辰守住</td></tr>
+      <tr><th>四层筛</th><td>五行方向 → 市场动能 → 技术信号 → 干支日档</td></tr>
+      <tr><th>干支月</th><td>五行是方向，干支月定季节，势来了才上车</td></tr>
+      <tr><th>ETF 五行</th><td>火系做T赚偏财，金系底仓守正财，金水太重劫财来</td></tr>
+      <tr><th>风控</th><td>缺土断流：仓位上限 10%，丙午年压至 5%，止损=跌破放量阳线开盘价</td></tr>
+      <tr><th>做T 心态</th><td>赚了就收，不贪小锅，错过比做错好</td></tr>
+    </table>
+  </div>
+<div class="panel">
+
+    <h2>十四、说明</h2>
+    <div class="note" style="border:none;margin-top:0;padding-top:0;font-size:13px;color:var(--sub)">
+      本手册由四部分资料整合：紫微命盘解读 / 紫微排盘核对 / 称骨 / 壬寅个人系统（renyin-life-system · 命理·养生·交易）。<br>
+      紫微宫位层按《紫微斗数全书》安星诀推算（命宫 = 寅宫起正月顺数生月，该宫起子时逆数生时 → 亥宫）；主星/辅星层建议以专业排盘软件核对。<br>
+      称骨为粗粒度命理参考；干支日档按公历日期自动换算。<br>
+      命理内容为传统文化参考，不构成投资、健康或人生决策依据。
+    </div>
+  </div>
+</div>
+<script src="assets/site.js"></script>
+    <script>
+    (function(){
+      function sync(){
+        var d = document.body.classList.contains('dark-theme');
+        document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
+      }
+      sync();
+      document.addEventListener('DOMContentLoaded', sync);
+      if (window.MutationObserver) {
+        new MutationObserver(sync).observe(document.body, {attributes:true, attributeFilter:['class']});
+      }
+      if (typeof window.mobileBtn !== 'function') {
+        window.mobileBtn = function(){
+          var m = document.getElementById('mobile-menu');
+          if (m) m.classList.toggle('active');
+        };
+      }
+    })();
+    </script>
+</body>
+</html>
