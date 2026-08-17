@@ -414,9 +414,9 @@
     .article-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 768px) {
-    .display { font-size: 32px; }
-    .h1, .list-title { font-size: 26px; }
-    .container { padding: 0 var(--s-4); }
+    .display { font-size: 28px; }
+    .h1, .list-title { font-size: 22px; }
+    .container { padding: 0 16px; }
     .article-grid { grid-template-columns: 1fr; }
     .nav-inner { height: 54px; }
     .brand { font-size: 15px; }
@@ -424,10 +424,38 @@
     .timeline { padding-left: 22px; }
     .timeline::before { left: 3px; }
     .tl-dot { left: -23px; }
-    .post-nav { flex-direction: column; }
+    .post-nav { flex-direction: column; gap: 12px; }
     .post-nav .pn-next { text-align: left; }
     .cm-input { flex-direction: column; }
     .cm-input .btn { justify-content: center; }
+  }
+
+  /* ===== 响应式补强：小窗口 / iframe 防截断 ===== */
+  img, svg, video, canvas { max-width: 100%; height: auto; }
+  .container, .article-grid, .section-head, .hero-actions, .post-nav, .cm-input, .timeline { min-width: 0; }
+  .display, .h1, .h2, .card-title, .card-excerpt, .post-title, .hero-tagline, .section-sub, .cta-inner .section-sub { overflow-wrap: anywhere; word-break: break-word; }
+
+  @media (max-width: 640px) {
+    .container { padding: 0 14px; }
+    .hero { padding: 40px 0 32px; }
+    .section { padding: 40px 0; }
+    .display { font-size: 24px; }
+    .h1, .list-title { font-size: 20px; }
+    .section-title { font-size: 22px; }
+    .hero-tagline { font-size: 15px; }
+    .card-cover { height: 150px; }
+    .card-body { padding: 16px; }
+    .hero-actions .btn, .cta-actions .btn { flex: 1 1 100%; justify-content: center; }
+    .section-head .btn.btn--ghost { flex: 1 1 100%; text-align: center; justify-content: center; }
+    .footer-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .footer-brand, .footer-note { max-width: 100%; }
+  }
+  @media (max-width: 480px) {
+    .container { padding: 0 10px; }
+    .display { font-size: 22px; }
+    .section-head { gap: 12px; }
+    .timeline { padding-left: 18px; }
+    .tl-dot { left: -19px; width: 8px; height: 8px; }
   }
 
   /* ===== 尊重减弱动效偏好 ===== */

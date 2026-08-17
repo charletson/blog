@@ -5,41 +5,681 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>今日运程</title>
 <style>
-:root{--bg:#0f1115;--card:#1a1d24;--card2:#22262f;--line:#2a2e38;
---txt:#e8eaed;--sub:#9aa0aa;--red:#ef4444;--green:#22c55e;
---orange:#f59e0b;--yellow:#eab308;--blue:#3b82f6;--accent:#f97316;--warn:#fcd34d;--warn2:#fde047;--ok:#86efac;--danger:#fca5a5}
+:root{
+  --bg:var(--bg-page);--card:var(--bg-card);--card2:var(--bg-panel);--line:var(--border-default);
+  --txt:var(--text-primary);--sub:var(--text-muted);
+  --red:var(--primary-orange);--green:var(--support-wood);
+  --orange:var(--primary-orange);--yellow:var(--primary-gold);--blue:var(--primary-gold);--accent:var(--primary-orange);
+  --warn:var(--primary-gold-light);--warn2:var(--primary-orange);--ok:var(--support-wood);--danger:var(--primary-orange)
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--txt);font-size:16px;line-height:1.5;
 font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
 .wrap{max-width:680px;margin:0 auto;padding:20px 16px 60px}
-.back{display:inline-block;margin-bottom:16px;color:var(--blue);text-decoration:none;font-size:13px}
+.back{display:inline-block;margin-bottom:16px;color:var(--primary-orange);text-decoration:none;font-size:13px}
 h1{font-size:20px;font-weight:800;margin-bottom:4px}
 .sub{font-size:12.5px;color:var(--sub);margin-bottom:18px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px}
 .fortune-head{text-align:center;padding:10px 0 16px;border-bottom:1px dashed var(--line);margin-bottom:16px}
 .fortune-head .date{font-size:15px;color:var(--sub)}
 .fortune-head .ganzhi{font-size:28px;font-weight:700;margin:6px 0}
-.fortune-head .jieqi{display:inline-block;background:rgba(245,158,11,.15);color:var(--warn);padding:3px 10px;border-radius:10px;font-size:12px;font-weight:600}
-.section-title{font-size:14px;font-weight:600;margin:18px 0 10px;padding-left:8px;border-left:3px solid var(--blue)}
+.fortune-head .jieqi{display:inline-block;background:var(--gold-soft);color:var(--primary-gold);padding:3px 10px;border-radius:10px;font-size:12px;font-weight:600}
+.section-title{font-size:14px;font-weight:600;margin:18px 0 10px;padding-left:8px;border-left:3px solid var(--primary-gold)}
 .tag{display:inline-block;padding:3px 8px;border-radius:6px;font-size:12px;font-weight:600;margin-right:6px}
-.tag-red{background:rgba(239,68,68,.15);color:var(--danger)}
-.tag-yellow{background:rgba(245,158,11,.15);color:var(--warn)}
-.tag-green{background:rgba(34,197,94,.15);color:var(--ok)}
+.tag-red{background:var(--data-soft);color:var(--primary-orange)}
+.tag-yellow{background:var(--gold-soft);color:var(--primary-gold)}
+.tag-green{background:var(--teal-dark);color:var(--support-wood)}
 .list{list-style:none;padding:0}
 .list li{padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;display:flex;gap:8px}
 .list li:last-child{border-bottom:none}
 .mini-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px;text-align:center;font-size:11px}
 .mini-calendar .d{padding:4px 0;border-radius:4px}
 .mini-calendar .head{color:var(--sub);font-weight:600}
-.mini-calendar .today{background:var(--blue);color:#fff;font-weight:700}
-/* 凶日三档：红/蓝/绿 三原色系（色相最远、区分最强）；格子内另标 寅/申/巳 字，不纯靠颜色 */
-.mini-calendar .yin{background:#dc2626;color:#fff;border:1px solid #f87171;font-weight:700}
-.mini-calendar .shen{background:#2563eb;color:#fff;border:1px solid #60a5fa;font-weight:700}
-.mini-calendar .si{background:#16a34a;color:#fff;border:1px solid #4ade80;font-weight:700}
-.mini-calendar .fz{display:block;font-size:9px;line-height:1.1;margin-top:1px;font-weight:700;opacity:.92}
-.ys-box{background:#12271c;border:1px solid #1d4430;border-radius:10px;padding:10px 12px;margin-bottom:14px}
-.ys-box .ys-sub{font-size:12px;color:var(--ok);margin-bottom:8px;font-weight:600}
+.mini-calendar .today{box-shadow:0 0 0 2px var(--text-primary);font-weight:800}
+.mini-calendar .yin{background:var(--red);color:#2c241a;border:1px solid var(--red);font-weight:700}
+.mini-calendar .shen{background:var(--primary-gold);color:#2c241a;border:1px solid var(--primary-gold);font-weight:700}
+.mini-calendar .si{background:var(--support-wood);color:#2c241a;border:1px solid var(--support-wood);font-weight:700}
+.ys-box{background:var(--bg-panel);border:1px solid var(--support-wood);border-radius:10px;padding:10px 12px;margin-bottom:14px}
+.ys-box .ys-sub{font-size:12px;color:var(--support-wood);margin-bottom:8px;font-weight:600}
 .note{font-size:12px;color:var(--sub);margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+</style>
+<style id="jingchao-theme">
+/* 配色权威源：木火暖金配色规范.json v1.0（命局壬水喜木火土·忌金水）
+   本块由该规范编译生成（工具脚本/gen_theme.js），覆盖 site.css 全部颜色变量 → 全站统一暖金·土火调。
+   修改规范后请重新生成，勿手改此处。红/绿仅保留 A股「涨红跌绿」金融语义。 */
+:root{ /* 独立打开默认 = 浅色 */
+  --bg-page:#f7f2e9;
+  --bg-card:#fefcf8;
+  --bg-panel:#faf6ef;
+  --primary-gold:#b8941d;
+  --primary-gold-light:#d4b84a;
+  --primary-orange:#d98324;
+  --support-wood:#6b8c5c;
+  --support-wood-light:#8ba87a;
+  --text-primary:#2c241a;
+  --text-secondary:#5a4e3e;
+  --text-muted:#8a7a66;
+  --border-default:#e6ddd0;
+  --border-light:#f0e8de;
+  --bg:#f7f2e9;
+  --bg-base:#f7f2e9;
+  --bg-surface:#fefcf8;
+  --bg-elevated:#faf6ef;
+  --bg-inset:#faf6ef;
+  --card:#fefcf8;
+  --card2:#faf6ef;
+  --panel:#fefcf8;
+  --panel-2:#faf6ef;
+  --panel2:#faf6ef;
+  --surface:#fefcf8;
+  --surface2:#faf6ef;
+  --line:#e6ddd0;
+  --border:#e6ddd0;
+  --divider:#e6ddd0;
+  --border-strong:#d8cfbd;
+  --txt:#2c241a;
+  --ink:#2c241a;
+  --text:#2c241a;
+  --sub:#5a4e3e;
+  --txt2:#5a4e3e;
+  --muted:#8a7a66;
+  --gold:#b8941d;
+  --gold-2:#d4b84a;
+  --yellow:#b8941d;
+  --accent:#b8941d;
+  --amber:#b8941d;
+  --warning:#d4b84a;
+  --gold-soft:#f3e6bf;
+  --data:#d98324;
+  --orange:#d98324;
+  --coral:#d98324;
+  --accent-strong:#d98324;
+  --t-signal:#d98324;
+  --data-soft:#fbeede;
+  --green:#6b8c5c;
+  --teal:#6b8c5c;
+  --teal-dark:#eef2e8;
+  --amber-dark:#fbeede;
+  --red:#c0392b;
+  --up:#c0392b;
+  --danger:#c0392b;
+  --down:#1f8a4c;
+  --success:#1f8a4c;
+  --accent-hover:#d4b84a;
+  --purple:#d4b84a;
+  --blue:#b8941d;
+  --warn:#d4b84a;
+  --warn2:#d98324;
+  --ok:#6b8c5c;
+  --t-hover:#f3e6bf;
+  --tl-dot:#b8941d;
+  --tl-dot-bg:#fefcf8;
+  --tl-dot-active:#d98324;
+  --tl-line:#e6ddd0;
+  --cm-avatar:#b8941d;
+  --cm-avatar-bg:#faf6ef;
+  --cm-row-alt:#faf6ef;
+  --cm-meta:#8a7a66;
+  --cm-input-bg:#fefcf8;
+  --cm-input-border:#e6ddd0;
+  --pg-current-color:#2c241a;
+  --pg-current-bg:#b8941d;
+  --pg-btn-color:#5a4e3e;
+  --pg-btn-border:#e6ddd0;
+  --pg-btn-bg:#fefcf8;
+  --chip-color:#5a4e3e;
+  --chip-bg:#faf6ef;
+  --chip-active-color:#2c241a;
+  --chip-active-border:#b8941d;
+  --chip-active-bg:#b8941d;
+  --chip-hover:#f3e6bf;
+  --card-meta:#8a7a66;
+  --card-excerpt:#5a4e3e;
+  --card-cover-bg:#faf6ef;
+  --card-cover-glow:rgba(184,148,29,.25);
+  --author-dao-color:#2c241a;
+  --author-dao-bg:#b8941d;
+  --author-chao-color:#2c241a;
+  --author-chao-bg:#d98324;
+  --s-1:#faf6ef;
+  --s-2:#f1e9da;
+  --s-3:#e7dcc8;
+  --s-4:#dacdb2;
+  --s-5:#c7b693;
+  --s-6:#ab9670;
+  --s-7:#8a7a66;
+  --s-8:#5a4e3e;
+}
+:root[data-theme="light"]{
+  --bg-page:#f7f2e9;
+  --bg-card:#fefcf8;
+  --bg-panel:#faf6ef;
+  --primary-gold:#b8941d;
+  --primary-gold-light:#d4b84a;
+  --primary-orange:#d98324;
+  --support-wood:#6b8c5c;
+  --support-wood-light:#8ba87a;
+  --text-primary:#2c241a;
+  --text-secondary:#5a4e3e;
+  --text-muted:#8a7a66;
+  --border-default:#e6ddd0;
+  --border-light:#f0e8de;
+  --bg:#f7f2e9;
+  --bg-base:#f7f2e9;
+  --bg-surface:#fefcf8;
+  --bg-elevated:#faf6ef;
+  --bg-inset:#faf6ef;
+  --card:#fefcf8;
+  --card2:#faf6ef;
+  --panel:#fefcf8;
+  --panel-2:#faf6ef;
+  --panel2:#faf6ef;
+  --surface:#fefcf8;
+  --surface2:#faf6ef;
+  --line:#e6ddd0;
+  --border:#e6ddd0;
+  --divider:#e6ddd0;
+  --border-strong:#d8cfbd;
+  --txt:#2c241a;
+  --ink:#2c241a;
+  --text:#2c241a;
+  --sub:#5a4e3e;
+  --txt2:#5a4e3e;
+  --muted:#8a7a66;
+  --gold:#b8941d;
+  --gold-2:#d4b84a;
+  --yellow:#b8941d;
+  --accent:#b8941d;
+  --amber:#b8941d;
+  --warning:#d4b84a;
+  --gold-soft:#f3e6bf;
+  --data:#d98324;
+  --orange:#d98324;
+  --coral:#d98324;
+  --accent-strong:#d98324;
+  --t-signal:#d98324;
+  --data-soft:#fbeede;
+  --green:#6b8c5c;
+  --teal:#6b8c5c;
+  --teal-dark:#eef2e8;
+  --amber-dark:#fbeede;
+  --red:#c0392b;
+  --up:#c0392b;
+  --danger:#c0392b;
+  --down:#1f8a4c;
+  --success:#1f8a4c;
+  --accent-hover:#d4b84a;
+  --purple:#d4b84a;
+  --blue:#b8941d;
+  --warn:#d4b84a;
+  --warn2:#d98324;
+  --ok:#6b8c5c;
+  --t-hover:#f3e6bf;
+  --tl-dot:#b8941d;
+  --tl-dot-bg:#fefcf8;
+  --tl-dot-active:#d98324;
+  --tl-line:#e6ddd0;
+  --cm-avatar:#b8941d;
+  --cm-avatar-bg:#faf6ef;
+  --cm-row-alt:#faf6ef;
+  --cm-meta:#8a7a66;
+  --cm-input-bg:#fefcf8;
+  --cm-input-border:#e6ddd0;
+  --pg-current-color:#2c241a;
+  --pg-current-bg:#b8941d;
+  --pg-btn-color:#5a4e3e;
+  --pg-btn-border:#e6ddd0;
+  --pg-btn-bg:#fefcf8;
+  --chip-color:#5a4e3e;
+  --chip-bg:#faf6ef;
+  --chip-active-color:#2c241a;
+  --chip-active-border:#b8941d;
+  --chip-active-bg:#b8941d;
+  --chip-hover:#f3e6bf;
+  --card-meta:#8a7a66;
+  --card-excerpt:#5a4e3e;
+  --card-cover-bg:#faf6ef;
+  --card-cover-glow:rgba(184,148,29,.25);
+  --author-dao-color:#2c241a;
+  --author-dao-bg:#b8941d;
+  --author-chao-color:#2c241a;
+  --author-chao-bg:#d98324;
+  --s-1:#faf6ef;
+  --s-2:#f1e9da;
+  --s-3:#e7dcc8;
+  --s-4:#dacdb2;
+  --s-5:#c7b693;
+  --s-6:#ab9670;
+  --s-7:#8a7a66;
+  --s-8:#5a4e3e;
+}
+:root[data-theme="dark"]{
+  --bg-page:#1a1612;
+  --bg-card:#25201a;
+  --bg-panel:#2d2822;
+  --primary-gold:#d4a84a;
+  --primary-gold-light:#e0c060;
+  --primary-orange:#e8943a;
+  --support-wood:#7a9a6a;
+  --support-wood-light:#9ab88a;
+  --text-primary:#f0e8de;
+  --text-secondary:#c4b8a8;
+  --text-muted:#8a7a66;
+  --border-default:#3d352e;
+  --border-light:#4d453e;
+  --bg:#1a1612;
+  --bg-base:#1a1612;
+  --bg-surface:#25201a;
+  --bg-elevated:#2d2822;
+  --bg-inset:#2d2822;
+  --card:#25201a;
+  --card2:#2d2822;
+  --panel:#25201a;
+  --panel-2:#2d2822;
+  --panel2:#2d2822;
+  --surface:#25201a;
+  --surface2:#2d2822;
+  --line:#3d352e;
+  --border:#3d352e;
+  --divider:#3d352e;
+  --border-strong:#4d453e;
+  --txt:#f0e8de;
+  --ink:#f0e8de;
+  --text:#f0e8de;
+  --sub:#c4b8a8;
+  --txt2:#c4b8a8;
+  --muted:#8a7a66;
+  --gold:#d4a84a;
+  --gold-2:#e0c060;
+  --yellow:#d4a84a;
+  --accent:#d4a84a;
+  --amber:#d4a84a;
+  --warning:#e0c060;
+  --gold-soft:#3a3115;
+  --data:#e8943a;
+  --orange:#e8943a;
+  --coral:#e8943a;
+  --accent-strong:#e8943a;
+  --t-signal:#e8943a;
+  --data-soft:#332712;
+  --green:#7a9a6a;
+  --teal:#7a9a6a;
+  --teal-dark:#2f3a28;
+  --amber-dark:#332712;
+  --red:#ef6b5e;
+  --up:#ef6b5e;
+  --danger:#ef6b5e;
+  --down:#4cc07d;
+  --success:#4cc07d;
+  --accent-hover:#e0c060;
+  --purple:#e0c060;
+  --blue:#e0c060;
+  --warn:#e0c060;
+  --warn2:#e8943a;
+  --ok:#7a9a6a;
+  --t-hover:#3a3115;
+  --tl-dot:#d4a84a;
+  --tl-dot-bg:#25201a;
+  --tl-dot-active:#e8943a;
+  --tl-line:#3d352e;
+  --cm-avatar:#d4a84a;
+  --cm-avatar-bg:#2d2822;
+  --cm-row-alt:#2d2822;
+  --cm-meta:#8a7a66;
+  --cm-input-bg:#25201a;
+  --cm-input-border:#3d352e;
+  --pg-current-color:#1a1612;
+  --pg-current-bg:#d4a84a;
+  --pg-btn-color:#c4b8a8;
+  --pg-btn-border:#3d352e;
+  --pg-btn-bg:#25201a;
+  --chip-color:#c4b8a8;
+  --chip-bg:#2d2822;
+  --chip-active-color:#1a1612;
+  --chip-active-border:#d4a84a;
+  --chip-active-bg:#d4a84a;
+  --chip-hover:#3a3115;
+  --card-meta:#8a7a66;
+  --card-excerpt:#c4b8a8;
+  --card-cover-bg:#2d2822;
+  --card-cover-glow:rgba(212,168,74,.30);
+  --author-dao-color:#1a1612;
+  --author-dao-bg:#d4a84a;
+  --author-chao-color:#1a1612;
+  --author-chao-bg:#e8943a;
+  --s-1:#4d453e;
+  --s-2:#3d352e;
+  --s-3:#342d27;
+  --s-4:#2d2822;
+  --s-5:#262019;
+  --s-6:#1f1b14;
+  --s-7:#181410;
+  --s-8:#0f0c08;
+}
+/* 中和通用冷色信号框（.signal-box.info 蓝字） */
+:root[data-theme] .signal-box.info{ background:var(--data-soft)!important; border-color:var(--gold)!important; color:var(--gold)!important; }
+/* 工具栏 hover 去蓝 → 金（独立打开时可见） */
+.site-chrome a.back-home:hover,
+.site-chrome button.theme-toggle:hover{ border-color:var(--gold)!important; }
+</style>
+<style id="jingchao-theme">
+/* 配色权威源：木火暖金配色规范.json v1.0（命局壬水喜木火土·忌金水）
+   本块由该规范编译生成（工具脚本/gen_theme.js），覆盖 site.css 全部颜色变量 → 全站统一暖金·土火调。
+   修改规范后请重新生成，勿手改此处。红/绿仅保留 A股「涨红跌绿」金融语义。 */
+:root{ /* 独立打开默认 = 浅色 */
+  --bg-page:#f7f2e9;
+  --bg-card:#fefcf8;
+  --bg-panel:#faf6ef;
+  --primary-gold:#b8941d;
+  --primary-gold-light:#d4b84a;
+  --primary-orange:#d98324;
+  --support-wood:#6b8c5c;
+  --support-wood-light:#8ba87a;
+  --text-primary:#2c241a;
+  --text-secondary:#5a4e3e;
+  --text-muted:#8a7a66;
+  --border-default:#e6ddd0;
+  --border-light:#f0e8de;
+  --bg:#f7f2e9;
+  --bg-base:#f7f2e9;
+  --bg-surface:#fefcf8;
+  --bg-elevated:#faf6ef;
+  --bg-inset:#faf6ef;
+  --card:#fefcf8;
+  --card2:#faf6ef;
+  --panel:#fefcf8;
+  --panel-2:#faf6ef;
+  --panel2:#faf6ef;
+  --surface:#fefcf8;
+  --surface2:#faf6ef;
+  --line:#e6ddd0;
+  --border:#e6ddd0;
+  --divider:#e6ddd0;
+  --border-strong:#d8cfbd;
+  --txt:#2c241a;
+  --ink:#2c241a;
+  --text:#2c241a;
+  --sub:#5a4e3e;
+  --txt2:#5a4e3e;
+  --muted:#8a7a66;
+  --gold:#b8941d;
+  --gold-2:#d4b84a;
+  --yellow:#b8941d;
+  --accent:#b8941d;
+  --amber:#b8941d;
+  --warning:#d4b84a;
+  --gold-soft:#f3e6bf;
+  --data:#d98324;
+  --orange:#d98324;
+  --coral:#d98324;
+  --accent-strong:#d98324;
+  --t-signal:#d98324;
+  --data-soft:#fbeede;
+  --green:#6b8c5c;
+  --teal:#6b8c5c;
+  --teal-dark:#eef2e8;
+  --amber-dark:#fbeede;
+  --red:#c0392b;
+  --up:#c0392b;
+  --danger:#c0392b;
+  --down:#1f8a4c;
+  --success:#1f8a4c;
+  --accent-hover:#d4b84a;
+  --purple:#d4b84a;
+  --blue:#b8941d;
+  --warn:#d4b84a;
+  --warn2:#d98324;
+  --ok:#6b8c5c;
+  --t-hover:#f3e6bf;
+  --tl-dot:#b8941d;
+  --tl-dot-bg:#fefcf8;
+  --tl-dot-active:#d98324;
+  --tl-line:#e6ddd0;
+  --cm-avatar:#b8941d;
+  --cm-avatar-bg:#faf6ef;
+  --cm-row-alt:#faf6ef;
+  --cm-meta:#8a7a66;
+  --cm-input-bg:#fefcf8;
+  --cm-input-border:#e6ddd0;
+  --pg-current-color:#2c241a;
+  --pg-current-bg:#b8941d;
+  --pg-btn-color:#5a4e3e;
+  --pg-btn-border:#e6ddd0;
+  --pg-btn-bg:#fefcf8;
+  --chip-color:#5a4e3e;
+  --chip-bg:#faf6ef;
+  --chip-active-color:#2c241a;
+  --chip-active-border:#b8941d;
+  --chip-active-bg:#b8941d;
+  --chip-hover:#f3e6bf;
+  --card-meta:#8a7a66;
+  --card-excerpt:#5a4e3e;
+  --card-cover-bg:#faf6ef;
+  --card-cover-glow:rgba(184,148,29,.25);
+  --author-dao-color:#2c241a;
+  --author-dao-bg:#b8941d;
+  --author-chao-color:#2c241a;
+  --author-chao-bg:#d98324;
+  --s-1:#faf6ef;
+  --s-2:#f1e9da;
+  --s-3:#e7dcc8;
+  --s-4:#dacdb2;
+  --s-5:#c7b693;
+  --s-6:#ab9670;
+  --s-7:#8a7a66;
+  --s-8:#5a4e3e;
+}
+:root[data-theme="light"]{
+  --bg-page:#f7f2e9;
+  --bg-card:#fefcf8;
+  --bg-panel:#faf6ef;
+  --primary-gold:#b8941d;
+  --primary-gold-light:#d4b84a;
+  --primary-orange:#d98324;
+  --support-wood:#6b8c5c;
+  --support-wood-light:#8ba87a;
+  --text-primary:#2c241a;
+  --text-secondary:#5a4e3e;
+  --text-muted:#8a7a66;
+  --border-default:#e6ddd0;
+  --border-light:#f0e8de;
+  --bg:#f7f2e9;
+  --bg-base:#f7f2e9;
+  --bg-surface:#fefcf8;
+  --bg-elevated:#faf6ef;
+  --bg-inset:#faf6ef;
+  --card:#fefcf8;
+  --card2:#faf6ef;
+  --panel:#fefcf8;
+  --panel-2:#faf6ef;
+  --panel2:#faf6ef;
+  --surface:#fefcf8;
+  --surface2:#faf6ef;
+  --line:#e6ddd0;
+  --border:#e6ddd0;
+  --divider:#e6ddd0;
+  --border-strong:#d8cfbd;
+  --txt:#2c241a;
+  --ink:#2c241a;
+  --text:#2c241a;
+  --sub:#5a4e3e;
+  --txt2:#5a4e3e;
+  --muted:#8a7a66;
+  --gold:#b8941d;
+  --gold-2:#d4b84a;
+  --yellow:#b8941d;
+  --accent:#b8941d;
+  --amber:#b8941d;
+  --warning:#d4b84a;
+  --gold-soft:#f3e6bf;
+  --data:#d98324;
+  --orange:#d98324;
+  --coral:#d98324;
+  --accent-strong:#d98324;
+  --t-signal:#d98324;
+  --data-soft:#fbeede;
+  --green:#6b8c5c;
+  --teal:#6b8c5c;
+  --teal-dark:#eef2e8;
+  --amber-dark:#fbeede;
+  --red:#c0392b;
+  --up:#c0392b;
+  --danger:#c0392b;
+  --down:#1f8a4c;
+  --success:#1f8a4c;
+  --accent-hover:#d4b84a;
+  --purple:#d4b84a;
+  --blue:#b8941d;
+  --warn:#d4b84a;
+  --warn2:#d98324;
+  --ok:#6b8c5c;
+  --t-hover:#f3e6bf;
+  --tl-dot:#b8941d;
+  --tl-dot-bg:#fefcf8;
+  --tl-dot-active:#d98324;
+  --tl-line:#e6ddd0;
+  --cm-avatar:#b8941d;
+  --cm-avatar-bg:#faf6ef;
+  --cm-row-alt:#faf6ef;
+  --cm-meta:#8a7a66;
+  --cm-input-bg:#fefcf8;
+  --cm-input-border:#e6ddd0;
+  --pg-current-color:#2c241a;
+  --pg-current-bg:#b8941d;
+  --pg-btn-color:#5a4e3e;
+  --pg-btn-border:#e6ddd0;
+  --pg-btn-bg:#fefcf8;
+  --chip-color:#5a4e3e;
+  --chip-bg:#faf6ef;
+  --chip-active-color:#2c241a;
+  --chip-active-border:#b8941d;
+  --chip-active-bg:#b8941d;
+  --chip-hover:#f3e6bf;
+  --card-meta:#8a7a66;
+  --card-excerpt:#5a4e3e;
+  --card-cover-bg:#faf6ef;
+  --card-cover-glow:rgba(184,148,29,.25);
+  --author-dao-color:#2c241a;
+  --author-dao-bg:#b8941d;
+  --author-chao-color:#2c241a;
+  --author-chao-bg:#d98324;
+  --s-1:#faf6ef;
+  --s-2:#f1e9da;
+  --s-3:#e7dcc8;
+  --s-4:#dacdb2;
+  --s-5:#c7b693;
+  --s-6:#ab9670;
+  --s-7:#8a7a66;
+  --s-8:#5a4e3e;
+}
+:root[data-theme="dark"]{
+  --bg-page:#1a1612;
+  --bg-card:#25201a;
+  --bg-panel:#2d2822;
+  --primary-gold:#d4a84a;
+  --primary-gold-light:#e0c060;
+  --primary-orange:#e8943a;
+  --support-wood:#7a9a6a;
+  --support-wood-light:#9ab88a;
+  --text-primary:#f0e8de;
+  --text-secondary:#c4b8a8;
+  --text-muted:#8a7a66;
+  --border-default:#3d352e;
+  --border-light:#4d453e;
+  --bg:#1a1612;
+  --bg-base:#1a1612;
+  --bg-surface:#25201a;
+  --bg-elevated:#2d2822;
+  --bg-inset:#2d2822;
+  --card:#25201a;
+  --card2:#2d2822;
+  --panel:#25201a;
+  --panel-2:#2d2822;
+  --panel2:#2d2822;
+  --surface:#25201a;
+  --surface2:#2d2822;
+  --line:#3d352e;
+  --border:#3d352e;
+  --divider:#3d352e;
+  --border-strong:#4d453e;
+  --txt:#f0e8de;
+  --ink:#f0e8de;
+  --text:#f0e8de;
+  --sub:#c4b8a8;
+  --txt2:#c4b8a8;
+  --muted:#8a7a66;
+  --gold:#d4a84a;
+  --gold-2:#e0c060;
+  --yellow:#d4a84a;
+  --accent:#d4a84a;
+  --amber:#d4a84a;
+  --warning:#e0c060;
+  --gold-soft:#3a3115;
+  --data:#e8943a;
+  --orange:#e8943a;
+  --coral:#e8943a;
+  --accent-strong:#e8943a;
+  --t-signal:#e8943a;
+  --data-soft:#332712;
+  --green:#7a9a6a;
+  --teal:#7a9a6a;
+  --teal-dark:#2f3a28;
+  --amber-dark:#332712;
+  --red:#ef6b5e;
+  --up:#ef6b5e;
+  --danger:#ef6b5e;
+  --down:#4cc07d;
+  --success:#4cc07d;
+  --accent-hover:#e0c060;
+  --purple:#e0c060;
+  --blue:#e0c060;
+  --warn:#e0c060;
+  --warn2:#e8943a;
+  --ok:#7a9a6a;
+  --t-hover:#3a3115;
+  --tl-dot:#d4a84a;
+  --tl-dot-bg:#25201a;
+  --tl-dot-active:#e8943a;
+  --tl-line:#3d352e;
+  --cm-avatar:#d4a84a;
+  --cm-avatar-bg:#2d2822;
+  --cm-row-alt:#2d2822;
+  --cm-meta:#8a7a66;
+  --cm-input-bg:#25201a;
+  --cm-input-border:#3d352e;
+  --pg-current-color:#1a1612;
+  --pg-current-bg:#d4a84a;
+  --pg-btn-color:#c4b8a8;
+  --pg-btn-border:#3d352e;
+  --pg-btn-bg:#25201a;
+  --chip-color:#c4b8a8;
+  --chip-bg:#2d2822;
+  --chip-active-color:#1a1612;
+  --chip-active-border:#d4a84a;
+  --chip-active-bg:#d4a84a;
+  --chip-hover:#3a3115;
+  --card-meta:#8a7a66;
+  --card-excerpt:#c4b8a8;
+  --card-cover-bg:#2d2822;
+  --card-cover-glow:rgba(212,168,74,.30);
+  --author-dao-color:#1a1612;
+  --author-dao-bg:#d4a84a;
+  --author-chao-color:#1a1612;
+  --author-chao-bg:#e8943a;
+  --s-1:#4d453e;
+  --s-2:#3d352e;
+  --s-3:#342d27;
+  --s-4:#2d2822;
+  --s-5:#262019;
+  --s-6:#1f1b14;
+  --s-7:#181410;
+  --s-8:#0f0c08;
+}
+/* 中和通用冷色信号框（.signal-box.info 蓝字） */
+:root[data-theme] .signal-box.info{ background:var(--data-soft)!important; border-color:var(--gold)!important; color:var(--gold)!important; }
+/* 工具栏 hover 去蓝 → 金（独立打开时可见） */
+.site-chrome a.back-home:hover,
+.site-chrome button.theme-toggle:hover{ border-color:var(--gold)!important; }
 </style>
 <link rel="stylesheet" href="assets/site.css">
 <script>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t="light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
@@ -186,9 +826,9 @@ function renderFortune(){
     let monthWarn = '';
     if (isSanXingNian && SANXING_MONTH[zm]) {
         const sx = SANXING_MONTH[zm];
-        monthWarn = '<p style="margin-top:10px;color:var(--danger);background:rgba(239,68,68,.1);padding:8px 10px;border-radius:8px;font-size:13px">'+sx.lvl+' <strong>'+y+'年为三刑年（申年）</strong>，当前'+zm+'属三刑月（'+sx.desc+'），仓位 ≤'+sx.posLimit+'。</p>';
+        monthWarn = '<p style="margin-top:10px;color:var(--primary-orange);background:var(--data-soft);padding:8px 10px;border-radius:8px;font-size:13px">'+sx.lvl+' <strong>'+y+'年为三刑年（申年）</strong>，当前'+zm+'属三刑月（'+sx.desc+'），仓位 ≤'+sx.posLimit+'。</p>';
     } else if (zm === '申月') {
-        monthWarn = '<p style="margin-top:10px;color:var(--warn);background:rgba(245,158,11,.1);padding:8px 10px;border-radius:8px;font-size:13px">⚠️ 当前在<strong>申月</strong>（申金生水，为命局忌神月），整体宜降档保守，仓位维持 ≤5%。</p>';
+        monthWarn = '<p style="margin-top:10px;color:var(--primary-gold);background:var(--gold-soft);padding:8px 10px;border-radius:8px;font-size:13px">⚠️ 当前在<strong>申月</strong>（申金生水，为命局忌神月），整体宜降档保守，仓位维持 ≤5%。</p>';
     }
 
     // 当月凶日日历（任意月份自动计算，按地支判定）
@@ -202,15 +842,11 @@ function renderFortune(){
         const z = ganzhi(y,m,i).zhi;
         let c = 'd';
         if(i===d) c += ' today';
-        else if(ZHI_FIERCE[z]) c += ' '+ZHI_FIERCE[z];
-        if(ZHI_FIERCE[z] && i!==d){
-            calHtml += '<div class="'+c+'">'+i+'<span class="fz">'+z+'</span></div>';
-        } else {
-            calHtml += '<div class="'+c+'">'+i+'</div>';
-        }
+        if(ZHI_FIERCE[z]) c += ' '+ZHI_FIERCE[z];
+        calHtml += '<div class="'+c+'">'+i+'</div>';
     }
     calHtml += '</div>';
-    const legend = '<div style="margin-top:8px;font-size:12px;color:var(--sub);text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><span style="background:#dc2626;color:#fff;padding:2px 8px;border-radius:5px;font-weight:600">● 寅 降级（最凶）</span><span style="background:#2563eb;color:#fff;padding:2px 8px;border-radius:5px;font-weight:600">● 申 降档</span><span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:5px;font-weight:600">● 巳 预热</span></div>';
+    const legend = '<div style="margin-top:8px;font-size:11px;color:var(--sub);text-align:center"><span style="background:var(--red);color:#2c241a;padding:1px 5px;border-radius:3px">寅 降级（最凶）</span>、<span style="background:var(--primary-gold);color:#2c241a;padding:1px 5px;border-radius:3px;margin-left:4px">申 降档</span>、<span style="background:var(--support-wood);color:#2c241a;padding:1px 5px;border-radius:3px;margin-left:4px">巳 预热</span></div>';
 
     const html = `
         <div class="fortune-head">

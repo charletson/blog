@@ -369,6 +369,56 @@
     .hero-actions .btn, .cta-actions .btn { flex: 1 1 100%; justify-content: center; }
   }
 
+  /* ===== 响应式补强：小窗口 / iframe 防截断 ===== */
+  img, svg, video, canvas { max-width: 100%; height: auto; }
+  .container, .hero-grid, .cap-grid, .method-grid, .risk-grid, .sanfa-grid, .flow-diagram, .hero-actions, .cta-actions, .cta-contact, .footer-inner, .dtable-wrap { min-width: 0; }
+  .hero h1, .section-title, .cta h2, .risk-card .big, .lead, .section-sub, .cta p, .footer .note { overflow-wrap: anywhere; word-break: break-word; }
+  .dtable-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  @media (max-width: 980px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+    .cap-watch, .cap-flow, .cap-board { grid-column: span 12; }
+    .sanfa-block, .verify-block { grid-column: span 12; }
+  }
+  @media (max-width: 768px) {
+    :root { --s-8: 48px; --s-7: 36px; }
+    .nav-links { display: none; }
+    .hero h1 { font-size: 28px; }
+    .cta h2 { font-size: 22px; }
+    .flow-diagram { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); padding: 8px 0; }
+    .risk-grid { grid-template-columns: 1fr; }
+    .sanfa-grid { grid-template-columns: 1fr; }
+    .dtable { min-width: 360px; }
+  }
+  @media (max-width: 640px) {
+    .container { padding: 0 14px; }
+    .hero { padding: 40px 0 32px; }
+    .section { padding: 40px 0; }
+    .hero h1 { font-size: 24px; }
+    .lead { font-size: 15px; }
+    .hero-actions .btn, .cta-actions .btn { flex: 1 1 100%; justify-content: center; }
+    .hero-contact, .cta-contact { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .terminal { font-size: 13px; }
+    .wl-row .spark { width: 40px; }
+    .risk-card { padding: 20px; }
+    .risk-card .big { font-size: 22px; }
+    .flow-step { padding: 16px; }
+    .sanfa-card { padding: 16px; }
+    .board-figure { height: 120px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .footer .note { max-width: 100%; }
+  }
+  @media (max-width: 480px) {
+    .container { padding: 0 10px; }
+    .brand .name { font-size: 14px; }
+    .terminal-body { padding: 10px 12px 14px; }
+    .dtable { min-width: 320px; font-size: 12px; }
+    .dtable td, .dtable th { padding: 6px 8px; }
+    .signal-row { flex-wrap: wrap; gap: 8px; }
+    .signal-row .name { width: 100%; }
+  }
+
   /* ===== 尊重 prefers-reduced-motion ===== */
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -453,7 +503,7 @@
       <div class="hero-copy">
         <span class="hero-eyebrow"><span class="live"></span>个人投资 · 逆向资金流决策终端</span>
         <h1>个人投资的<br><span class="accent">逆向资金流</span>决策终端</h1>
-        <p class="lead">ChDa 投资管理系统，一款面向个人投资者的桌面终端。以「逆向资金流」为核心，融合壬寅交易系统与三法框架，把多标的跟踪、资金流信号与风控纪律，收束进一个冷静、克制、数据密集的界面。</p>
+        <p class="lead">ChDa 投资管理系统，一款面向个人投资者的桌面终端。以「逆向资金流」为核心，融合靖超量化策略与三法框架，把多标的跟踪、资金流信号与风控纪律，收束进一个冷静、克制、数据密集的界面。</p>
         <div class="hero-actions">
           <a class="btn btn--primary btn--lg" href="#contact">下载 v1.0.0 <span class="arrow">↓</span></a>
           <a class="btn btn--secondary btn--lg" href="#method">查看方法论</a>
@@ -610,9 +660,9 @@
   <!-- ============ 3. 方法论 ============ -->
   <section class="section" id="method">
     <div class="container">
-      <div class="eyebrow"><span class="idx">02</span> 方法论 · 壬寅交易系统 <span class="rule"></span> METHOD</div>
+      <div class="eyebrow"><span class="idx">02</span> 方法论 · 靖超量化策略 <span class="rule"></span> METHOD</div>
       <h2 class="section-title">先选出，再二次筛选</h2>
-      <p class="section-sub">壬寅交易系统以通达信自研公式驱动：战略三滤建立初选池，战术回踩等待布林带回踩中轨/支撑做二次确认。配合三法框架与 RSI、周线 KDJ 多周期验证，把「逆向资金流」落到可执行信号。</p>
+      <p class="section-sub">靖超量化策略以通达信自研公式驱动：战略三滤建立初选池，战术回踩等待布林带回踩中轨/支撑做二次确认。配合三法框架与 RSI、周线 KDJ 多周期验证，把「逆向资金流」落到可执行信号。</p>
 
       <div class="method-grid">
         <!-- 壬寅流程 -->

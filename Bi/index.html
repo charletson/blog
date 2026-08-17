@@ -38,12 +38,6 @@ a.item .go{color:var(--sub);font-size:14px}
   font-size:13px;min-height:44px;display:inline-flex;align-items:center}
 .act-chip.on{background:var(--green);color:#04240f;border-color:var(--green);font-weight:600}
 .act-chip.hot{border-color:var(--red);color:var(--red)}
-.heat-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}
-.heat-cell{aspect-ratio:1/1;border-radius:6px;background:var(--card2);border:1px solid var(--line);
-  font-size:10px;display:flex;align-items:center;justify-content:center;color:var(--sub)}
-.heat-cell.done{background:var(--green);color:#04240f;border-color:var(--green);font-weight:700}
-.heat-cell.part{background:#14532d;color:#86efac}
-.heat-cell.today{outline:2px solid var(--blue);outline-offset:-2px}
 .streak{font-size:13px;color:var(--sub);margin-top:8px}
 .health-sync{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px}
 .mini-btn{display:inline-flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--txt);cursor:pointer;font-family:inherit}
@@ -68,22 +62,50 @@ a.item .go{color:var(--sub);font-size:14px}
 .yd summary h2{margin:0}
 .yd-arrow{color:var(--sub);font-size:14px;transition:transform .2s}
 .yd[open] .yd-arrow{transform:rotate(90deg)}
-/* ===== 全部资料页（加密口令门，与倒数日同源） ===== */
-.mat-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;
-  background:var(--card);border:1px solid var(--line);border-radius:12px;
-  padding:14px 16px;color:var(--txt);font-size:14px;font-weight:600;cursor:pointer;
-  font-family:inherit;transition:border-color .15s ease;margin-top:18px}
-.mat-toggle:hover{border-color:var(--blue)}
-.mat-toggle .ht-caret{transition:transform .2s ease;color:var(--sub);font-size:13px}
-.mat-toggle[aria-expanded="true"] .ht-caret{transform:rotate(90deg)}
-.mat-body{margin-top:10px}
-.mat-body[hidden]{display:none}
+/* ===== 打卡日历（工作台新版风格：凶日三色 + 打卡状态） ===== */
 .cd-item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
 .cd-item:last-child{border-bottom:none}
 .cd-info .cd-name{font-size:15px;font-weight:600}
 .cd-info .cd-date{font-size:12px;color:var(--sub);margin-top:3px}
 .cd-right{text-align:right}
 .cd-num{font-size:24px;font-weight:700;color:var(--blue);letter-spacing:-1px}
+/* ===== 今日运程（fortune 核心内嵌） ===== */
+.fortune-head{text-align:center;padding:6px 0 14px;border-bottom:1px dashed var(--line);margin-bottom:14px}
+.fortune-head .date{font-size:14px;color:var(--sub)}
+.fortune-head .ganzhi{font-size:28px;font-weight:700;margin:6px 0}
+.fortune-head .jieqi{display:inline-block;background:var(--card2);border:1px solid var(--line);padding:3px 10px;border-radius:10px;font-size:12px;font-weight:600;color:var(--accent)}
+.section-title{font-size:13.5px;font-weight:600;margin:16px 0 8px;padding-left:8px;border-left:3px solid var(--accent)}
+.tag{display:inline-block;padding:3px 8px;border-radius:6px;font-size:12px;font-weight:600;margin-right:6px}
+.tag-red{background:rgba(239,68,68,.14);color:var(--red)}
+.tag-yellow{background:rgba(245,158,11,.15);color:var(--orange)}
+.tag-green{background:rgba(34,197,94,.15);color:var(--green)}
+.warn-box{margin-top:10px;padding:8px 10px;border-radius:8px;font-size:13px;background:var(--card2);border:1px solid var(--line);color:var(--sub)}
+.warn-box.warn{border-color:var(--orange);color:var(--orange)}
+.warn-box.danger{border-color:var(--red);color:var(--red)}
+/* ===== 打卡日历（工作台新版风格：凶日三色 + 打卡状态） ===== */
+.hp-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.hp-cal .hd{text-align:center;font-size:11px;color:var(--sub)}
+.hp-cell{position:relative;aspect-ratio:1/1;border-radius:7px;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:12px}
+.hp-cell .fierce-tape{position:absolute;top:0;left:0;right:0;height:15px;border-radius:6px 6px 0 0;
+  display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;letter-spacing:0;white-space:nowrap;overflow:hidden}
+.hp-cell .num{margin-top:15px;font-weight:400}
+.hp-cell.today{outline:2px solid var(--accent);outline-offset:-2px}
+.hp-legend{font-size:11.5px;color:var(--sub);margin-top:10px;line-height:1.8}
+.hp-legend b{color:var(--txt)}
+.sw{display:inline-block;padding:1px 5px;border-radius:3px;font-weight:700}
+.sw-yin{background:var(--red);color:#fff}
+.sw-shen{background:var(--orange);color:#2c241a}
+.sw-si{background:var(--green);color:#04240f}
+.sw-done{background:var(--green);color:#04240f}
+.sw-part{background:var(--orange);color:#2c241a}
+.sw-none{background:var(--card2);border:1px solid var(--line);color:var(--sub)}
+/* ===== 布局优化：双列 + 底部横排 ===== */
+.fort-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.fort-grid .col{min-width:0}
+.fort-grid .section-title{margin-top:4px}
+@media(max-width:560px){.fort-grid{grid-template-columns:1fr}}
+.bar-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px}
 </style>
 <link rel="stylesheet" href="assets/site.css">
 <script>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t="light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
@@ -133,57 +155,41 @@ a.item .go{color:var(--sub);font-size:14px}
     </header>
         <div class="wrap">
 <div class="card">
-  <h2 style="justify-content:space-between"><span>🌿 养生打卡</span><span id="hpDate" style="font-size:12px;font-weight:400;color:var(--sub)"></span></h2>
-  <div class="health-plan hp-row">
-    <div class="hp-main">
-      <div><span class="hp-branch" id="hpBranch"></span> · <span id="hpMonth"></span></div>
-      <div class="hp-plan" id="hpPlan"></div>
-      <div style="font-size:12px;color:var(--sub);margin:10px 0 4px">当月节气条目</div>
-      <div class="health-acts" id="hpActs"></div>
-    </div>
-    <div class="hp-side">
-      <div style="font-size:12px;color:var(--sub);margin-bottom:4px">每日基础（全年通用）</div>
-      <div class="health-acts" id="hpDaily"></div>
-      <div class="health-sync">
-        <button class="mini-btn" type="button" onclick="exportHealth()">⬇ 导出记录</button>
-        <label class="mini-btn" title="选择之前导出的 JSON，按日期×项目取并集合并，不会覆盖已有打卡">⬆ 导入合并<input type="file" accept="application/json,.json" style="display:none" onchange="importHealth(this.files[0]);this.value=''"></label>
-      </div>
+  <h2><span>📅 今日运程</span></h2>
+  <div id="fortuneResult"></div>
+
+  <div class="section-title">🌿 养生 · 当月计划 <span id="hpDate" style="font-size:12px;font-weight:400;color:var(--sub)"></span></div>
+  <div class="health-plan">
+    <div><span class="hp-branch" id="hpBranch"></span> · <span id="hpMonth"></span></div>
+    <div class="hp-plan" id="hpPlan"></div>
+    <div class="hp-label">当月节气条目</div>
+    <div class="health-acts" id="hpActs"></div>
+    <div class="hp-label">每日基础（全年通用）</div>
+    <div class="health-acts" id="hpDaily"></div>
+  </div>
+
+  <div class="section-title">📅 打卡日历（凶日三色 · 打卡状态）</div>
+  <div id="hpCal"></div>
+  <div class="hp-legend">
+    🟦 <b>底色=打卡状态</b>：<span class="sw sw-none">白</span> 未打卡 · <span class="sw sw-part">橙</span> 部分 · <span class="sw sw-done">绿</span> 全完成　|　🔺 <b>顶部斜纹条+同色框=凶日三色</b>：<span class="sw sw-yin">红 寅·降级(最凶)</span> · <span class="sw sw-shen">土黄 申·降档</span> · <span class="sw sw-si">绿 巳·预热</span>，均标「凶日不开仓」　|　🔵 蓝框=今日
+  </div>
+  <div class="bar-row">
+    <div class="streak" id="streak" style="margin:0"></div>
+    <div class="health-sync" style="margin:0">
+      <button class="mini-btn" type="button" onclick="exportHealth()">⬇ 导出记录</button>
+      <label class="mini-btn" title="选择之前导出的 JSON，按日期×项目取并集合并，不会覆盖已有打卡">⬆ 导入合并<input type="file" accept="application/json,.json" style="display:none" onchange="importHealth(this.files[0]);this.value=''"></label>
     </div>
   </div>
-  <div style="font-size:13px;color:var(--sub);margin-bottom:6px">当月打卡热力（绿=完成≥1项）</div>
-  <div class="heat-grid" id="heatGrid"></div>
-  <div class="streak" id="streak"></div>
 </div>
 <details class="card yd">
   <summary class="yd-sum"><h2>🗓 全年节气方案 <span style="font-size:12px;font-weight:400;color:var(--sub)">（当前月自动高亮 · 随日期逐年循环）</span></h2><span class="yd-arrow">▸</span></summary>
   <div class="year-plan" id="yearPlan"></div>
 </details>
 <div class="sec">🧭 其它工具</div>
-<a class="item star" href="fortune.html"><span class="emoji">📅</span><span class="t"><b>今日运程</b></span><span class="go">›</span></a>
 <a class="item hot" href="stock.html"><span class="emoji">📈</span><span class="t"><b>交易计算器</b></span><span class="go">›</span></a>
 <a class="item" href="countdown.html"><span class="emoji">⏳</span><span class="t"><b>倒数日</b></span><span class="go">›</span></a>
 
-<div class="mat-section">
-  <button class="mat-toggle" type="button" aria-expanded="false" aria-controls="materialsBody">
-    <span class="ht-label">📚 全部资料页</span>
-    <span class="ht-caret">▸</span>
-  </button>
-  <div class="mat-body" id="materialsBody" hidden>
-    <div class="card"><div id="materialsResult"></div></div>
-  </div>
-</div>
-<div id="mat-gate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;">
-  <div style="background:#1e1e1e;color:#eee;padding:22px 26px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);font-family:sans-serif;min-width:260px;">
-    <div style="margin-bottom:12px;font-size:14px;">输入口令以查看全部资料页</div>
-    <input id="mat-pw" type="password" style="padding:8px;width:100%;box-sizing:border-box;border:1px solid #555;border-radius:6px;background:#2a2a2a;color:#eee;" placeholder="password" />
-    <div style="margin-top:14px;text-align:right;">
-      <button id="mat-ok" style="padding:7px 16px;border:none;border-radius:6px;background:#4a90d9;color:#fff;cursor:pointer;margin-right:8px;">确定</button>
-      <button id="mat-cancel" style="padding:7px 16px;border:1px solid #555;border-radius:6px;background:transparent;color:#ccc;cursor:pointer;">取消</button>
-    </div>
-  </div>
-</div>
-
-<div class="note">⚠️ 本页为每日养生打卡，数据与各工具共享本地存储。以上为全部离线页面入口；每个页面右上角均有「返回主页」按钮可回到此页。</div>
+<div class="note">⚠️ 本页为每日运程 + 养生打卡，打卡数据存储键 <b style="color:var(--txt)">wb_renyin_health</b>；「导入合并」可接收工作台或 BI 页导出的打卡 JSON（按日期×条目取并集，不覆盖已有）。行情数据以券商实时为准，严格执行止损与仓位纪律。</div>
 </div>
 <script>
 // ========== 养生打卡（迁移自工作台；主键 wb_renyin_health 保持一致以保留数据）==========
@@ -218,19 +224,15 @@ function renderHealth(){
   var hs=lsGet("health",{}), key=todayStr(), rec=hs[key]||{};
   var acts=$("hpActs"); acts.innerHTML="";
   ys.acts.forEach(function(a){ var c=document.createElement("button"); c.className="act-chip"+(rec[a]?" on":""); c.textContent=a;
-    c.onclick=function(){ var h2=lsGet("health",{}); var r=h2[key]||{}; r[a]=!r[a]; h2[key]=r; lsSet("health",h2); renderHealth(); }; acts.appendChild(c); });
+    c.onclick=function(){ var h2=lsGet("health",{}); var r=h2[key]||{}; r[a]=!r[a]; h2[key]=r; lsSet("health",h2); renderHealth(); renderHpCal(); }; acts.appendChild(c); });
   var daily=$("hpDaily"); daily.innerHTML="";
   YANGSHENG_BASE.forEach(function(a){ var c=document.createElement("button"); c.className="act-chip"+(rec[a]?" on":"")+(a==="姜枣茶"?" hot":""); c.textContent=a;
-    c.onclick=function(){ var h2=lsGet("health",{}); var r=h2[key]||{}; r[a]=!r[a]; h2[key]=r; lsSet("health",h2); renderHealth(); }; daily.appendChild(c); });
+    c.onclick=function(){ var h2=lsGet("health",{}); var r=h2[key]||{}; r[a]=!r[a]; h2[key]=r; lsSet("health",h2); renderHealth(); renderHpCal(); }; daily.appendChild(c); });
   var allActs=ys.acts.concat(YANGSHENG_BASE);
-  var grid=$("heatGrid"); grid.innerHTML="";
   var days=new Date(d.getFullYear(),m,0).getDate();
   var doneDays=0,streak=0,curStreak=0;
   for(var day=1;day<=days;day++){ var k=d.getFullYear()+"-"+pad(m)+"-"+pad(day); var r=hs[k]||{};
     var cnt=allActs.filter(function(a){return r[a];}).length;
-    var c=document.createElement("div"); c.className="heat-cell"+(cnt>=allActs.length?" done":cnt>0?" part":"");
-    if(m===d.getMonth()+1&&day===d.getDate()) c.className+=" today";
-    c.textContent=day; grid.appendChild(c);
     if(cnt>0){ doneDays++; curStreak++; streak=Math.max(streak,curStreak); } else { curStreak=0; } }
   $("streak").textContent="当月已完成 "+doneDays+"/"+days+" 天 · 当前连续 "+curStreak+" 天 · 最长连续 "+streak+" 天";
   renderYearPlan();
@@ -280,7 +282,98 @@ function importHealth(file){
   reader.readAsText(file);
 }
 
+// ========== 干支（今日运程/打卡日历共用） ==========
+const GAN='甲乙丙丁戊己庚辛壬癸',ZHI='子丑寅卯辰巳午未申酉戌亥';
+function jdn(y,m,d){ if(m<=2){y-=1;m+=12;} const A=Math.floor(y/100),B=2-A+Math.floor(A/4); return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524; }
+function ganzhi(y,m,d){ const n=(jdn(y,m,d)+49)%60; return {gz:GAN[n%10]+ZHI[n%12],gan:GAN[n%10],zhi:ZHI[n%12]}; }
+const MONTH_BOUND=[
+ {mm:1,dd:6,branch:'丑月',jieqi:'小寒'},{mm:2,dd:4,branch:'寅月',jieqi:'立春'},{mm:3,dd:6,branch:'卯月',jieqi:'惊蛰'},
+ {mm:4,dd:5,branch:'辰月',jieqi:'清明'},{mm:5,dd:6,branch:'巳月',jieqi:'立夏'},{mm:6,dd:6,branch:'午月',jieqi:'芒种'},
+ {mm:7,dd:7,branch:'未月',jieqi:'小暑'},{mm:8,dd:7,branch:'申月',jieqi:'立秋'},{mm:9,dd:8,branch:'酉月',jieqi:'白露'},
+ {mm:10,dd:8,branch:'戌月',jieqi:'寒露'},{mm:11,dd:7,branch:'亥月',jieqi:'立冬'},{mm:12,dd:7,branch:'子月',jieqi:'大雪'}];
+function getMonthInfo(y,m,d){ let info=MONTH_BOUND[11];
+ for(let i=0;i<12;i++){ if(m>MONTH_BOUND[i].mm||(m===MONTH_BOUND[i].mm&&d>=MONTH_BOUND[i].dd)) info=MONTH_BOUND[i]; }
+ return info; }
+function fierceByZhi(z){ if(z==='寅')return '寅日'; if(z==='申')return '申日'; if(z==='巳')return '巳日'; return ''; }
+const ZHI_FIERCE={'寅':1,'申':1,'巳':1};
+
+// ========== 今日运程（fortune 完整页内容整合：干支头/凶日档/三刑月/当月养生/今日提醒） ==========
+const YANGSHENG_FULL={
+ '寅月':{s:'春木萌动，水尚寒',p:['疏肝理气，少酸多甘，晨起拉伸','夜卧早起防春困，情志舒展','可温和艾灸足三里，忌大汗伤阳']},
+ '卯月':{s:'肝木最旺',p:['养肝为主，戒怒，踏青舒气','多食青蔬芽菜，少油腻','保证睡眠，目得血而能视']},
+ '辰月':{s:'湿土当令，脾易受困',p:['健脾祛湿：山药薏米粥常备','少生冷甜腻，防湿气内停','午后散步利湿，衣物防潮']},
+ '巳月':{s:'火气渐升，喜神得令',p:['养心为先，午时小憩','忌大汗耗阴，适量补水','精神佳但防心火过旺易怒']},
+ '午月':{s:'火最旺，命局所喜',p:['养心安神，午觉必睡','忌贪凉饮冷过度','顺势规划，能量充足']},
+ '未月':{s:'暑湿燥土，脾胃承压',p:['健脾化湿，饮食清淡','防暑补水，避开烈日','绿豆冬瓜利湿，莫贪冰']},
+ '申月':{s:'金旺生水，忌神得令',p:['补火为要：艾灸关元/足三里','健脾土：山药薏米，忌寒凉生冷','早睡养肺，整体降档保守']},
+ '酉月':{s:'金最旺，凉燥渐起',p:['润肺防燥，温饮忌冷','仍避寒凉，适当温补','早睡收敛神气']},
+ '戌月':{s:'燥土渐寒，阳气收敛',p:['温补脾肾，艾灸命门','添衣防感冒，避夜寒','少辛增酸，润燥']},
+ '亥月':{s:'水旺为忌，冬藏伊始',p:['补肾藏精，防寒保暖','少房事，温水足浴','温养为主，勿耗散']},
+ '子月':{s:'水最旺，一阳初生',p:['养藏为本，早睡晚起','冬至前后温补，避寒就温','静心少虑，护阳气']},
+ '丑月':{s:'寒湿地冻，隆冬',p:['补肾阳，食温热（姜枣羊肉）','避寒湿，护关节','少动多藏，养精蓄锐']}
+};
+function renderFortune(){
+ const now=new Date(),y=now.getFullYear(),m=now.getMonth()+1,d=now.getDate();
+ const gd=ganzhi(y,m,d),mi=getMonthInfo(y,m,d),zm=mi.branch,jq=mi.jieqi,fierce=fierceByZhi(gd.zhi);
+ let statusTag='<span class="tag tag-green">平日可操作</span>',statusText='非申/寅/巳凶日档，可正常看盘。';
+ if(fierce==='寅日'){ statusTag='<span class="tag tag-red">寅日 · 降级观察</span>'; statusText='寅冲寿元星根，降级为观察日，复盘但不冲动出手。'; }
+ else if(fierce==='申日'){ statusTag='<span class="tag tag-yellow">申日 · 降档不主动</span>'; statusText='申冲太岁引动，仓位降低，不主动进攻。'; }
+ else if(fierce==='巳日'){ statusTag='<span class="tag tag-yellow">巳日 · 预热观望</span>'; statusText='巳参与三刑，预热观望，不急于动手。'; }
+ const yearBranch=ZHI[(y-4)%12],isSanXingNian=(yearBranch==='申');
+ const SANXING_MONTH={'寅月':{lvl:'🔴',desc:'三刑引动·冲寿元星根·按月档降级观察',cap:'8%'},
+  '巳月':{lvl:'⚠️',desc:'三刑参与·预热观望·不急于动手',cap:'8%'},
+  '申月':{lvl:'🔴🔴🔴',desc:'三刑峰值·冲太岁·降档不主动',cap:'8%'}};
+ let monthWarn='';
+ if(isSanXingNian&&SANXING_MONTH[zm]){ const sx=SANXING_MONTH[zm];
+  monthWarn='<div class="warn-box danger">'+sx.lvl+' <b>'+y+'年为三刑年（申年）</b>，当前'+zm+'属三刑月（'+sx.desc+'），仓位 ≤'+sx.cap+'。</div>'; }
+ else if(zm==='申月'){ monthWarn='<div class="warn-box warn">⚠️ 当前在<b>申月</b>（申金生水，为命局忌神月），整体宜降档保守，仓位维持 ≤5%。</div>'; }
+ // 当月养生（fortune 完整页内容）
+ const yf=YANGSHENG_FULL[zm]||YANGSHENG_FULL['申月'];
+ const ysHtml='<div style="background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:10px 12px">'
+  +'<div style="font-size:12px;font-weight:600;color:var(--green);margin-bottom:6px">'+yf.s+' · 壬水命 喜火土木 / 忌金水</div>'
+  +'<ul class="list">'+yf.p.map(function(t){return '<li><span>🌱</span><div>'+t+'</div></li>';}).join('')+'</ul></div>';
+ $('fortuneResult').innerHTML=
+  '<div class="fortune-head"><div class="date">'+y+'年'+pad(m)+'月'+pad(d)+'日</div>'
+  +'<div class="ganzhi">'+gd.gz+'日</div>'
+  +'<div class="jieqi">'+(jq?'当前月令：'+zm+'（'+jq+'起）':'')+'</div></div>'
+  +'<div style="margin-bottom:8px">'+statusTag+'<span style="font-size:13px;color:var(--sub)">'+statusText+'</span></div>'
+  +monthWarn
+  +'<div class="section-title">🌿 当月养生 · '+zm+'</div>'+ysHtml
+  +'<div class="section-title">💡 今日提醒</div>'
+  +'<ul class="list"><li><span>1️⃣</span><div>先查日档：非寅/申/巳日才可正常操作。</div></li>'
+  +'<li><span>2️⃣</span><div>再看月档：'+(isSanXingNian&&SANXING_MONTH[zm]?zm+'为三刑月，仓位≤8%':zm==='申月'?'申月降档，仓位≤5%':'当月无特殊月档')+'。</div></li>'
+  +'<li><span>3️⃣</span><div>最后看个股：盘中用「个股诊断」过一遍实时资金流。</div></li></ul>';
+}
+
+// ========== 打卡日历（工作台新版风格：凶日三色 + 打卡状态，与养生打卡同 key 联动） ==========
+function renderHpCal(){
+ const el=$('hpCal'); if(!el)return;
+ const d=new Date(),y=d.getFullYear(),m=d.getMonth()+1,day=d.getDate();
+ const ys=YANGSHENG[m-1]||YANGSHENG[7];
+ const all=ys.acts.concat(YANGSHENG_BASE);
+ const WD=['日','一','二','三','四','五','六'],fd=new Date(y,m-1,1).getDay(),dim=new Date(y,m,0).getDate();
+ const FZ={'寅':{c:'var(--red)',l:'rgba(239,68,68,.4)',t:'#fff'},'申':{c:'var(--orange)',l:'rgba(245,158,11,.45)',t:'#2c241a'},'巳':{c:'var(--green)',l:'rgba(34,197,94,.4)',t:'#04240f'}};
+ let cal='<div class="hp-cal">';
+ for(let h=0;h<7;h++)cal+='<div class="hd">'+WD[h]+'</div>';
+ for(let i=0;i<fd;i++)cal+='<div></div>';
+ const hs=lsGet('health',{});
+ for(let i=1;i<=dim;i++){ const z=ganzhi(y,m,i).zhi,isF=ZHI_FIERCE[z];
+  let bg='',bd='',tx='',todayOut='';
+  const k=y+'-'+pad(m)+'-'+pad(i),r=hs[k]||{},cnt=all.filter(function(a){return r[a];}).length;
+  if(cnt>=all.length){bg='background:var(--green);';tx='color:#04240f;font-weight:700;';}
+  else if(cnt>0){bg='background:var(--orange);';tx='color:#2c241a;font-weight:700;';}
+  else{bg='background:var(--card);';tx='color:var(--txt);font-weight:400;';}
+  if(i===day)todayOut='outline:2px solid var(--accent);outline-offset:-2px;';
+  let tape=''; if(isF){ const fz=FZ[z]; bd='border:3px solid '+fz.c+';box-shadow:0 0 5px rgba(0,0,0,.14);';
+   tape='<div class="fierce-tape" style="background:repeating-linear-gradient(45deg,'+fz.c+' 0 6px,'+fz.l+' 6px 12px);color:'+fz.t+'">凶日不开仓</div>'; }
+  cal+='<div class="hp-cell'+(i===day?' today':'')+'" style="'+bg+bd+tx+todayOut+'">'+tape+'<span class="num" style="'+(isF?'font-weight:800;':'')+'">'+i+'</span></div>'; }
+ cal+='</div>';
+ el.innerHTML=cal;
+}
+
 renderHealth();
+renderHpCal();
+renderFortune();
 </script>
 <script src="assets/site.js"></script>
     <script>
@@ -302,76 +395,5 @@ renderHealth();
       }
     })();
     </script>
-<script>
-/* ===== 全部资料页：AES-256-GCM + PBKDF2 加密（与 Nav 隐藏链接、倒数日同一方案）=====
-   源码仅为密文 MATERIALS_PARAMS；区块默认折叠（hidden），点开显示锁定卡，输对 Dedicated 口令后还原并渲染 13 个资料入口 */
-const MATERIALS_PARAMS = {"iterations":100000,"salt":"PIBE2pgwTVv4HROTx39eKQ==","iv":"Jgt8ZUHqcq1vh8uV","ct":"gNqvWgUIDDKWXFM8mjdK4u3NHMIH+vpHrdJsfZEb+UVYJCQc13pYr+v/qjjhHm/TCoaTNRXcaQVCweD40YIiZ2xVSpOp6Rm7/4peFMu8HcwIrbCotJ6XS+vZwi1RlqGaqn5W1zEgS+XggpOtBIgmKbOnkVxiJL8aWJo4v8Vecva5NeW6ytqCHdVDVa3sTTvmApKU6sA9zOw5UL6KgnRqQMSzJqw1QgJeGTaaIgqSCeHrtacZu6CIqrJPw1rQpp9Pj44ZVarKkiBTzPiE6UAbK147UOsxO8XNG0F5cPUMQFPYOSENa+Ls16ne7cdOen2JNJGmpwxXA9zsEy+ctg3cHuClt6peK36wtb39fGHW1tsBHYv4/nrucIQIe1H86xki+C85Nc4M7M2tFaidJkWkf/U9LTfYyeuYO+ZWJ1+86NuC7YUBPvV6/jjdCJd2qJTanUHij9/OaAKHkkV540J2Knqk3OsX0amau5ZJlRY7URVRigJdj1CV19mEI4LA4Awp+CGCk4oPUKkirAaKAGrqVxrQMC891ix/8f7/3VmzIlQVS4d0jTtuGKy7nGf/AUuY/mIUz5jH1O0NEdUMV2haWGtU+KfzqdvdnsCjIigkY4NYD07DZ2SBsb8ZNEKbBIlNTuNXmWtRUeOlSdi91BlCDs+jXy7IaqKa0tcfDT4UZISJ2p08x9BJTKZr2WCbUh34FFK+QPjmsFv6cINSKnVgfLWPU1vBPsunpdXm+8ShzsXwiQma5fTcboLgffSrziuXlVtlJRwcULC3TWatkd4I0VgI3z+e6gKwO91QZVysjOgMkPkkNPNeUJsN9CnyrH1oLzkk/jPUy38X3CI5w4XoFDUHBcYcVGO1FQarka6+Y41y1K/j43ihB6HHNocP2Dm/tP4BKi5eRGUq49KOCB1TcxJUWf31TaNaFY2m+v3Ed1F4DFM7C0zyMMiuZAFudgzSF6+ziVf4MBsQLHqGEah2hufx8HaApDMC754l2XTBSwnnJ/jwuVMiMWJ+De97pFKcXca9ml1Il/mhZWqu9m3gOgxHT8r/I2hkIP9y5/XYthwtfnD70lud4yl/WL+2NP8XoGpwoptWg84PeChRI2NooLdYY+KSai47IdN5QPllEH6Rf1OJBy100GKzI93jaaRqvWeG7S7ahhcdDkfGiolauKYteG3CcgMBaBBZmiCLwZ4zispNpzp0fBGCF4yPHfFp8Z0I0HgZ1Pj6HXuoq2ym/hTIPmCthKeWw3A7wuEcGxXZBXNoOD263qh59I+TygG03xEHo8Mvgi44xJrr/YI29nKg9BaF1tQJ9z98/YL4dZrjppb4/osNYGA9c8RE"};
-let MATERIALS_DECRYPTED = null;
-function b64ToBytes(b){ return Uint8Array.from(atob(b), function(c){ return c.charCodeAt(0); }); }
-async function decryptMaterials(pw){
-  if(!window.crypto || !crypto.subtle){ alert('当前环境不支持解密（需 https 或 localhost 安全上下文）'); return false; }
-  try{
-    const enc = new TextEncoder();
-    const salt = b64ToBytes(MATERIALS_PARAMS.salt);
-    const iv = b64ToBytes(MATERIALS_PARAMS.iv);
-    const ct = b64ToBytes(MATERIALS_PARAMS.ct);
-    const baseKey = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']);
-    const key = await crypto.subtle.deriveKey({ name:'PBKDF2', salt:salt, iterations:MATERIALS_PARAMS.iterations, hash:'SHA-256' }, baseKey, { name:'AES-GCM', length:256 }, false, ['decrypt']);
-    const plainBuf = await crypto.subtle.decrypt({ name:'AES-GCM', iv:iv }, key, ct);
-    MATERIALS_DECRYPTED = JSON.parse(new TextDecoder().decode(plainBuf));
-    return true;
-  }catch(e){ return false; }
-}
-function renderMaterials(arr){
-  let html = '';
-  arr.forEach(function(it){
-    html += '<a class="item" href="'+it.h+'"><span class="emoji">'+it.e+'</span><span class="t"><b>'+it.t+'</b></span><span class="go">›</span></a>';
-  });
-  document.getElementById('materialsResult').innerHTML = html;
-}
-function showMaterialsLocked(){
-  document.getElementById('materialsResult').innerHTML = '<div class="cd-item"><div class="cd-info">'
-    + '<div class="cd-name">🔒 全部资料页已加密</div>'
-    + '<div class="cd-date">需输入口令查看</div></div>'
-    + '<div class="cd-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">'
-    + '<div class="cd-num" style="font-size:15px;color:var(--orange)">锁定</div>'
-    + '<button id="mat-unlock" style="padding:6px 12px;border:none;border-radius:8px;background:var(--blue);color:#fff;font-size:12px;cursor:pointer;">🔓 输入口令解锁</button>'
-    + '</div></div>';
-  const ub = document.getElementById('mat-unlock');
-  if(ub){ ub.addEventListener('click', openMatGate); }
-}
-function openMatGate(){
-  const gate = document.getElementById('mat-gate');
-  const pwInput = document.getElementById('mat-pw');
-  if(!gate) return;
-  gate.style.display = 'flex';
-  setTimeout(function(){ if(pwInput) pwInput.focus(); }, 50);
-}
-(function(){
-  const mt = document.querySelector('.mat-toggle');
-  const mb = document.getElementById('materialsBody');
-  const gate = document.getElementById('mat-gate');
-  const pwInput = document.getElementById('mat-pw');
-  if(!mt || !mb) return;
-  function closeGate(){ if(gate){ gate.style.display='none'; if(pwInput) pwInput.value=''; } }
-  async function doUnlock(){
-    const ok = await decryptMaterials(pwInput ? pwInput.value : '');
-    if(ok){ renderMaterials(MATERIALS_DECRYPTED); closeGate(); }
-    else { alert('口令错误'); }
-  }
-  mt.addEventListener('click', function(){
-    const open = mb.hasAttribute('hidden');
-    if(open){
-      mb.removeAttribute('hidden'); mt.setAttribute('aria-expanded','true');
-      if(MATERIALS_DECRYPTED){ renderMaterials(MATERIALS_DECRYPTED); } else { showMaterialsLocked(); }
-    } else { mb.setAttribute('hidden',''); mt.setAttribute('aria-expanded','false'); }
-  });
-  if(gate){
-    document.getElementById('mat-ok').addEventListener('click', doUnlock);
-    document.getElementById('mat-cancel').addEventListener('click', closeGate);
-    pwInput.addEventListener('keydown', function(e){ if(e.key==='Enter') doUnlock(); });
-  }
-})();
-</script>
 </body>
 </html>
