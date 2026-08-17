@@ -127,7 +127,6 @@ a.item .go{color:var(--sub);font-size:14px}
                     <a class="menu-item" href="/nav">Nav</a>
 
                     <a class="menu-item" href="/Bi">Bi</a>
-                    <a class="menu-item" href="http://192.168.1.110:8765/" target="_blank">工作台</a>
 <input id="switch_default" type="checkbox" class="switch_default">
                 <label for="switch_default" class="toggleBtn"></label>
             </div>
@@ -150,7 +149,6 @@ a.item .go{color:var(--sub);font-size:14px}
                     <a class="menu-item" href="/nav">Nav</a>
 
                     <a class="menu-item" href="/Bi">Bi</a>
-                    <a class="menu-item" href="http://192.168.1.110:8765/" target="_blank">工作台</a>
 </div>
         </div>
     </nav>
@@ -190,8 +188,6 @@ a.item .go{color:var(--sub);font-size:14px}
 <div class="sec">🧭 其它工具</div>
 <a class="item hot" href="stock.html"><span class="emoji">📈</span><span class="t"><b>交易计算器</b></span><span class="go">›</span></a>
 <a class="item" href="countdown.html"><span class="emoji">⏳</span><span class="t"><b>倒数日</b></span><span class="go">›</span></a>
-
-<div class="note">⚠️ 本页为每日运程 + 养生打卡，打卡数据存储键 <b style="color:var(--txt)">wb_renyin_health</b>；「导入合并」可接收工作台或 BI 页导出的打卡 JSON（按日期×条目取并集，不覆盖已有）。行情数据以券商实时为准，严格执行止损与仓位纪律。</div>
 </div>
 <script>
 // ========== 养生打卡（迁移自工作台；主键 wb_renyin_health 保持一致以保留数据）==========
@@ -299,7 +295,7 @@ function getMonthInfo(y,m,d){ let info=MONTH_BOUND[11];
 function fierceByZhi(z){ if(z==='寅')return '寅日'; if(z==='申')return '申日'; if(z==='巳')return '巳日'; return ''; }
 const ZHI_FIERCE={'寅':1,'申':1,'巳':1};
 
-// ========== 今日运程（fortune 完整页内容整合：干支头/凶日档/三刑月/当月养生/今日提醒） ==========
+// ========== 今日运程（renderFortune 仅渲染干支头：日期 / 干支 / 月令；其余区块已迁出） ==========
 const YANGSHENG_FULL={
  '寅月':{s:'春木萌动，水尚寒',p:['疏肝理气，少酸多甘，晨起拉伸','夜卧早起防春困，情志舒展','可温和艾灸足三里，忌大汗伤阳']},
  '卯月':{s:'肝木最旺',p:['养肝为主，戒怒，踏青舒气','多食青蔬芽菜，少油腻','保证睡眠，目得血而能视']},
@@ -316,35 +312,11 @@ const YANGSHENG_FULL={
 };
 function renderFortune(){
  const now=new Date(),y=now.getFullYear(),m=now.getMonth()+1,d=now.getDate();
- const gd=ganzhi(y,m,d),mi=getMonthInfo(y,m,d),zm=mi.branch,jq=mi.jieqi,fierce=fierceByZhi(gd.zhi);
- let statusTag='<span class="tag tag-green">平日可操作</span>',statusText='非申/寅/巳凶日档，可正常看盘。';
- if(fierce==='寅日'){ statusTag='<span class="tag tag-red">寅日 · 降级观察</span>'; statusText='寅冲寿元星根，降级为观察日，复盘但不冲动出手。'; }
- else if(fierce==='申日'){ statusTag='<span class="tag tag-yellow">申日 · 降档不主动</span>'; statusText='申冲太岁引动，仓位降低，不主动进攻。'; }
- else if(fierce==='巳日'){ statusTag='<span class="tag tag-yellow">巳日 · 预热观望</span>'; statusText='巳参与三刑，预热观望，不急于动手。'; }
- const yearBranch=ZHI[(y-4)%12],isSanXingNian=(yearBranch==='申');
- const SANXING_MONTH={'寅月':{lvl:'🔴',desc:'三刑引动·冲寿元星根·按月档降级观察',cap:'8%'},
-  '巳月':{lvl:'⚠️',desc:'三刑参与·预热观望·不急于动手',cap:'8%'},
-  '申月':{lvl:'🔴🔴🔴',desc:'三刑峰值·冲太岁·降档不主动',cap:'8%'}};
- let monthWarn='';
- if(isSanXingNian&&SANXING_MONTH[zm]){ const sx=SANXING_MONTH[zm];
-  monthWarn='<div class="warn-box danger">'+sx.lvl+' <b>'+y+'年为三刑年（申年）</b>，当前'+zm+'属三刑月（'+sx.desc+'），仓位 ≤'+sx.cap+'。</div>'; }
- else if(zm==='申月'){ monthWarn='<div class="warn-box warn">⚠️ 当前在<b>申月</b>（申金生水，为命局忌神月），整体宜降档保守，仓位维持 ≤5%。</div>'; }
- // 当月养生（fortune 完整页内容）
- const yf=YANGSHENG_FULL[zm]||YANGSHENG_FULL['申月'];
- const ysHtml='<div style="background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:10px 12px">'
-  +'<div style="font-size:12px;font-weight:600;color:var(--green);margin-bottom:6px">'+yf.s+' · 壬水命 喜火土木 / 忌金水</div>'
-  +'<ul class="list">'+yf.p.map(function(t){return '<li><span>🌱</span><div>'+t+'</div></li>';}).join('')+'</ul></div>';
+ const gd=ganzhi(y,m,d),mi=getMonthInfo(y,m,d),zm=mi.branch,jq=mi.jieqi;
  $('fortuneResult').innerHTML=
   '<div class="fortune-head"><div class="date">'+y+'年'+pad(m)+'月'+pad(d)+'日</div>'
   +'<div class="ganzhi">'+gd.gz+'日</div>'
-  +'<div class="jieqi">'+(jq?'当前月令：'+zm+'（'+jq+'起）':'')+'</div></div>'
-  +'<div style="margin-bottom:8px">'+statusTag+'<span style="font-size:13px;color:var(--sub)">'+statusText+'</span></div>'
-  +monthWarn
-  +'<div class="section-title">🌿 当月养生 · '+zm+'</div>'+ysHtml
-  +'<div class="section-title">💡 今日提醒</div>'
-  +'<ul class="list"><li><span>1️⃣</span><div>先查日档：非寅/申/巳日才可正常操作。</div></li>'
-  +'<li><span>2️⃣</span><div>再看月档：'+(isSanXingNian&&SANXING_MONTH[zm]?zm+'为三刑月，仓位≤8%':zm==='申月'?'申月降档，仓位≤5%':'当月无特殊月档')+'。</div></li>'
-  +'<li><span>3️⃣</span><div>最后看个股：盘中用「个股诊断」过一遍实时资金流。</div></li></ul>';
+  +'<div class="jieqi">'+(jq?'当前月令：'+zm+'（'+jq+'起）':'')+'</div></div>';
 }
 
 // ========== 打卡日历（工作台新版风格：凶日三色 + 打卡状态，与养生打卡同 key 联动） ==========
