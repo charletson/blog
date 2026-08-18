@@ -83,7 +83,6 @@ h1{font-size:20px;font-weight:800;margin-bottom:4px}
     </nav>
     </header>
         <div class="wrap">
-<a class="back" href="index.html">‹ 返回主页</a>
 <h1>倒数日</h1>
 
 <div class="card">
@@ -113,7 +112,30 @@ h1{font-size:20px;font-weight:800;margin-bottom:4px}
 </div>
 <script>
 function $(id){ return document.getElementById(id); }
+/* 春节（农历正月初一）公历日期表，用于「自动续年」轮转；数据已核对 2026–2035 */
+const SPRING_FESTIVAL = {2026:'2026-02-17',2027:'2027-02-06',2028:'2028-01-26',2029:'2029-02-13',2030:'2030-02-03',2031:'2031-01-23',2032:'2032-02-11',2033:'2033-01-31',2034:'2034-02-19',2035:'2035-02-08'};
+/* 年度轮转：返回下一个 >= 今天的生效日期（节气/节日按真实月日，春节按农历正月初一） */
+function effectiveDate(it){
+    if(!it.recur) return {date:it.date, name:it.name, rolled:false};
+    const today = new Date(); today.setHours(0,0,0,0);
+    if(it.recur.type === 'year'){
+        let y = today.getFullYear();
+        let cand = new Date(y, it.recur.m-1, it.recur.d);
+        while(cand < today){ y++; cand = new Date(y, it.recur.m-1, it.recur.d); }
+        return {date: y+'-'+String(it.recur.m).padStart(2,'0')+'-'+String(it.recur.d).padStart(2,'0'), name:it.name, rolled:true, year:y};
+    }
+    const years = Object.keys(SPRING_FESTIVAL).map(Number).sort(function(a,b){return a-b;});
+    for(let i=0;i<years.length;i++){ const y=years[i]; const d=new Date(SPRING_FESTIVAL[y]); if(d>=today) return {date:SPRING_FESTIVAL[y], name:it.name+'（'+y+'）', rolled:true, year:y}; }
+    const last = years[years.length-1];
+    return {date:(last+1)+'-02-01', name:it.name+'（'+(last+1)+'）', rolled:true, year:last+1};
+}
 const COUNTDOWN_ITEMS = [
+    /* 年度轮转节点（过期自动指向下一次，永远显示「还剩」） */
+    {name:'白露（申月结束·转酉月）', recur:{type:'year', m:9, d:8}},
+    {name:'国庆节', recur:{type:'year', m:10, d:1}},
+    {name:'立春（换年柱）', recur:{type:'year', m:2, d:4}},
+    {name:'春节', recur:{type:'spring'}},
+    /* 纪念日（已过去） */
     {name:'执子之手', date:'2012-04-21'},
     {name:'手机号入网许可', date:'2015-09-11'},
     {name:'静思悟道者', date:'2020-09-18'}
@@ -124,15 +146,17 @@ function renderCountdown(){
     const today = new Date(ty, tm-1, td);
     let html = '';
     COUNTDOWN_ITEMS.forEach(function(it){
-        const p = it.date.split('-');
+        const eff = effectiveDate(it);
+        const p = eff.date.split('-');
         const target = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
         const diff = Math.round((today - target) / 86400000);
         let num, label;
         if(diff > 0){ num = diff; label = '已过去'; }
         else if(diff < 0){ num = -diff; label = '还剩'; }
         else { num = 0; label = '就是今天'; }
-        html += '<div class="cd-item"><div class="cd-info"><div class="cd-name">'+it.name+'</div>'
-              + '<div class="cd-date">'+it.date+'</div></div>'
+        const sub = eff.rolled ? ' · ⟳ 年度轮转' : '';
+        html += '<div class="cd-item"><div class="cd-info"><div class="cd-name">'+eff.name+'</div>'
+              + '<div class="cd-date">'+eff.date+sub+'</div></div>'
               + '<div class="cd-right"><div class="cd-num">'+num+'<span class="unit">天</span></div>'
               + '<div class="cd-label">'+label+'</div></div></div>';
     });
