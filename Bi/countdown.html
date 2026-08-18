@@ -114,10 +114,44 @@ h1{font-size:20px;font-weight:800;margin-bottom:4px}
 function $(id){ return document.getElementById(id); }
 /* 春节（农历正月初一）公历日期表，用于「自动续年」轮转；数据已核对 2026–2035 */
 const SPRING_FESTIVAL = {2026:'2026-02-17',2027:'2027-02-06',2028:'2028-01-26',2029:'2029-02-13',2030:'2030-02-03',2031:'2031-01-23',2032:'2032-02-11',2033:'2033-01-31',2034:'2034-02-19',2035:'2035-02-08'};
-/* 年度轮转：返回下一个 >= 今天的生效日期（节气/节日按真实月日，春节按农历正月初一） */
+/* ===== 天文精确节气（Meeus 低精度太阳黄经 + 二分查找，北京时间 UTC+8）===== */
+function jdFromDate(y,m,d,hh){ return Date.UTC(y,m-1,d,hh||0,0,0)/86400000 + 2440587.5; }
+function jdToDate(jd,tz){ var ms=(jd-2440587.5)*86400000 + (tz||0)*3600000; var dt=new Date(ms); return {y:dt.getUTCFullYear(),m:dt.getUTCMonth()+1,d:dt.getUTCDate()}; }
+function sunApparentLongitudeJD(jd){
+  var T=(jd-2451545.0)/36525;
+  var L0=280.46646+36000.76983*T+0.0003032*T*T;
+  var M=357.52911+35999.05029*T-0.0001537*T*T; var Mr=M*Math.PI/180;
+  var C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(Mr)+(0.019993-0.000101*T)*Math.sin(2*Mr)+0.000289*Math.sin(3*Mr);
+  var trueLong=L0+C; var omega=125.04-1934.136*T;
+  var lambda=trueLong-0.00569-0.00478*Math.sin(omega*Math.PI/180);
+  return ((lambda%360)+360)%360;
+}
+function deltaSigned(jd,target){ var lon=sunApparentLongitudeJD(jd); return ((lon-target+180)%360+360)%360 - 180; }
+function solarTermChinaDate(year,targetLong,anchorM,anchorD){
+  var baseOff=-20; var prevJD=jdFromDate(year,anchorM,anchorD+baseOff,12);
+  var cross=null;
+  for(var off=1;off<=44;off++){
+    var curJD=jdFromDate(year,anchorM,anchorD+baseOff+off,12);
+    if(deltaSigned(prevJD,targetLong)<0 && deltaSigned(curJD,targetLong)>=0){ cross=anchorD+baseOff+off; break; }
+    prevJD=curJD;
+  }
+  if(cross===null) cross=anchorD;
+  var lo=jdFromDate(year,anchorM,cross-1,0); var hi=jdFromDate(year,anchorM,cross,12);
+  for(var i=0;i<60;i++){ var mid=(lo+hi)/2; if(deltaSigned(mid,targetLong)<0) lo=mid; else hi=mid; }
+  var bd=jdToDate((lo+hi)/2,8);
+  return bd.y+'-'+String(bd.m).padStart(2,'0')+'-'+String(bd.d).padStart(2,'0');
+}
+/* 年度轮转：返回下一个 >= 今天的生效日期（节气按天文黄经，节日按真实月日，春节按农历正月初一） */
 function effectiveDate(it){
     if(!it.recur) return {date:it.date, name:it.name, rolled:false};
     const today = new Date(); today.setHours(0,0,0,0);
+    if(it.recur.type === 'term'){
+        const y0 = today.getFullYear();
+        let y = y0, cand = solarTermChinaDate(y, it.recur.long, it.recur.m, it.recur.d);
+        const todayISO = y0+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+        while(cand < todayISO){ y++; cand = solarTermChinaDate(y, it.recur.long, it.recur.m, it.recur.d); }
+        return {date:cand, name:it.name, rolled:true, year:y};
+    }
     if(it.recur.type === 'year'){
         let y = today.getFullYear();
         let cand = new Date(y, it.recur.m-1, it.recur.d);
@@ -131,9 +165,9 @@ function effectiveDate(it){
 }
 const COUNTDOWN_ITEMS = [
     /* 年度轮转节点（过期自动指向下一次，永远显示「还剩」） */
-    {name:'白露（申月结束·转酉月）', recur:{type:'year', m:9, d:8}},
+    {name:'白露（申月结束·转酉月）', recur:{type:'term', long:165, m:9, d:7}},
     {name:'国庆节', recur:{type:'year', m:10, d:1}},
-    {name:'立春（换年柱）', recur:{type:'year', m:2, d:4}},
+    {name:'立春（换年柱）', recur:{type:'term', long:315, m:2, d:4}},
     {name:'春节', recur:{type:'spring'}},
     /* 纪念日（已过去） */
     {name:'执子之手', date:'2012-04-21'},
